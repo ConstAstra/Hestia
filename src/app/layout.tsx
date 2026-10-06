@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { AppShell } from "@/components/AppShell";
-// Polices : Edensor (titres) et Oranienbaum (texte courant), déclarées dans globals.css ;
+// Polices : Weekdays Roman Slant (titres) et Oranienbaum (texte courant), déclarées dans globals.css ;
 // Cormorant Garamond (nom de marque, capitales classiques comme sur le logo).
 import "@fontsource/cormorant-garamond/latin-600.css";
 import "./globals.css";
