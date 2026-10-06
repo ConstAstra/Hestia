@@ -49,7 +49,7 @@ export function CategoryPickerDialog({ keys, onClose }: CategoryPickerDialogProp
     >
       <div className="p-6">
         <div className="mb-1 flex items-center justify-between">
-          <h2 className="font-heading text-2xl">Classer</h2>
+          <h2 className="font-display text-2xl">Classer</h2>
           <button onClick={onClose} className="rounded-full px-2 text-2xl leading-none text-muted hover:text-foreground" aria-label="Fermer">
             ×
           </button>

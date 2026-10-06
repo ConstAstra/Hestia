@@ -43,7 +43,7 @@ export default function HomePage() {
             <p className="kicker before:hidden">Gardienne du foyer</p>
             <Laurel className="h-6 w-9" flip />
           </div>
-          <h1 className="font-display text-5xl leading-[1.05] md:text-7xl">
+          <h1 className="font-display text-[2.1rem] leading-[1.12] md:text-6xl">
             Le foyer de vos rêves, <em className="font-medium text-accent">sans le prix des rêves.</em>
           </h1>
           <p className="max-w-lg text-lg text-muted">
@@ -82,7 +82,7 @@ export default function HomePage() {
               <p className="kicker">
                 {["I", "II", "III"][index]} · {feature.kicker}
               </p>
-              <h2 className="font-heading text-[1.7rem] leading-snug">{feature.title}</h2>
+              <h2 className="font-display text-2xl leading-snug">{feature.title}</h2>
               <p className="flex-1 text-sm text-muted">{feature.text}</p>
               <span className="text-sm font-medium text-accent-strong">{feature.cta} →</span>
             </div>

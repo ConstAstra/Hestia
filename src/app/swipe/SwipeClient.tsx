@@ -75,7 +75,7 @@ export function SwipeClient() {
       <header className="space-y-4">
         <div className="space-y-2">
           <p className="kicker">Swipe</p>
-          <h1 className="font-display text-5xl md:text-6xl">Ça vous plaît ?</h1>
+          <h1 className="font-display text-3xl md:text-5xl">Ça vous plaît ?</h1>
           <p className="text-muted">Glissez à droite pour garder, à gauche pour passer. Au clavier : ← et →.</p>
         </div>
         <div className="inline-flex rounded-full border border-border bg-surface p-1" role="tablist">
@@ -151,7 +151,7 @@ export function SwipeClient() {
             </>
           ) : (
             <div className="card flex aspect-[3/4] flex-col items-center justify-center gap-4 p-8 text-center">
-              <p className="font-heading text-2xl font-semibold">Vous avez tout vu !</p>
+              <p className="font-display text-2xl">Vous avez tout vu !</p>
               <p className="text-sm text-muted">
                 {mode === "product" && (query || category !== "all")
                   ? "Aucun autre produit ne correspond à ces filtres."
@@ -235,7 +235,7 @@ function SwipeCard({ card, onDecide }: { card: Card; onDecide: (liked: boolean) 
         <IconHeart filled className="h-36 w-36 text-like drop-shadow-[0_8px_18px_rgba(0,0,0,0.25)]" />
       </div>
       <span
-        className="pointer-events-none absolute right-6 top-6 rotate-12 rounded-full border-2 border-nope bg-surface/80 px-4 py-1 font-heading text-2xl text-nope"
+        className="pointer-events-none absolute right-6 top-6 rotate-12 rounded-full border-2 border-nope bg-surface/80 px-4 py-1 font-display text-2xl text-nope"
         style={{ opacity: nopeOpacity }}
       >
         BOF
@@ -334,7 +334,7 @@ function Favorites({ mode, onSave }: { mode: SwipeKind; onSave: (items: NewBoard
 
       <div className="space-y-3">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="font-heading text-2xl font-semibold">
+          <h2 className="font-display text-2xl">
             Vos coups de cœur {mode === "inspiration" ? "· ambiances" : "· produits"}
           </h2>
           <Link href="/coups-de-coeur" className="text-sm font-semibold text-accent hover:underline">

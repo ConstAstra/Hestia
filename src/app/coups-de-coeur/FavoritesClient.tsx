@@ -168,7 +168,7 @@ export function FavoritesClient() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-2">
           <p className="kicker">Coups de cœur</p>
-          <h1 className="font-display text-5xl md:text-6xl">Tout ce que vous avez aimé</h1>
+          <h1 className="font-display text-3xl md:text-5xl">Tout ce que vous avez aimé</h1>
           <p className="text-muted">
             {allEntries.length} coup{allEntries.length > 1 ? "s" : ""} de cœur. Rangez-les dans vos propres catégories et
             classez-les comme bon vous semble.
@@ -189,7 +189,7 @@ export function FavoritesClient() {
 
       {allEntries.length === 0 ? (
         <div className="card flex flex-col items-center gap-4 px-6 py-16 text-center">
-          <p className="font-heading text-2xl">Pas encore de coup de cœur</p>
+          <p className="font-display text-2xl">Pas encore de coup de cœur</p>
           <p className="max-w-md text-muted">Swipez à droite les ambiances et les produits qui vous plaisent : ils vous attendront ici.</p>
           <Link href="/swipe" className="btn-primary">
             Commencer à swiper

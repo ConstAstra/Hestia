@@ -1,17 +1,30 @@
 @import "tailwindcss";
 
 /*
+ * Roman SD, de Steve Deffeyes (freeware, voir public/fonts/roman-sd/_Read_Me.txt).
+ * La licence interdit de redistribuer un fichier modifié : le .ttf est servi tel
+ * quel, sans conversion ni sous-ensemble.
+ */
+@font-face {
+  font-family: "Roman SD";
+  src: url("/fonts/roman-sd/Roman_SD.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
  * Direction artistique « Hestia » : la mythologie grecque, version moderne et joyeuse.
- * Crème, terracotta, olive, relevés de safran et de rose poudré : une déco « dopamine »
- * chaleureuse, avec arches, colonnes et méandres.
+ * Fond terracotta clair, cartes crème, olive, relevés de safran et de rose poudré :
+ * une déco chaleureuse, avec arches, colonnes et méandres.
  */
 :root {
-  --background: #fbf3e6;
-  --surface: #fffaf1;
-  --surface-muted: #f5e7d3;
+  --background: #f1d5c1;
+  --surface: #fdf6ee;
+  --surface-muted: #f6e2d3;
   --foreground: #3a2a22;
-  --muted: #86705f;
-  --border: #ecdcc5;
+  --muted: #80604f;
+  --border: #e6c4ad;
   --accent: #d0583a;
   --accent-strong: #a8401f;
   --accent-soft: #fbdccf;
@@ -27,12 +40,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #201813;
+    --background: #2b1810;
     --surface: #2a201a;
     --surface-muted: #352920;
     --foreground: #f8ecdc;
     --muted: #c3ae98;
-    --border: #4a3a2e;
+    --border: #553a2c;
     --accent: #ef7552;
     --accent-strong: #ff9473;
     --accent-soft: #4a2619;
@@ -66,7 +79,7 @@
   --color-like: var(--like);
   --color-nope: var(--nope);
   --font-sans: "Playfair Display Variable", Georgia, "Times New Roman", serif;
-  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-serif: "Roman SD", "Cormorant Garamond", Georgia, serif;
   --font-brand: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
 }
 
@@ -83,12 +96,17 @@ body {
   color: var(--accent-strong);
 }
 
-/* Grands titres : Instrument Serif, fine et étroite, à employer en grand */
+/* Titres : Roman SD, capitales lapidaires dessinées à la plume */
 .font-display {
   font-family: var(--font-serif);
   font-weight: 400;
-  letter-spacing: -0.005em;
-  line-height: 1.02;
+  letter-spacing: 0.03em;
+  word-spacing: -0.15em;
+  line-height: 1.12;
+}
+/* Roman SD n'a pas d'italique : la mise en valeur passe par la couleur. */
+.font-display em {
+  font-style: normal;
 }
 
 /* Titres secondaires, prix, intitulés : Playfair Display */

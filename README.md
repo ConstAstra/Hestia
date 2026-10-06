@@ -23,8 +23,8 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
 
 La direction artistique s'inspire de la mythologie grecque, revue dans un esprit moderne : chaleureuse et élégante.
 
-- **Palette :** crème de marbre, terracotta d'amphore, olive, avec une touche d'ocre pour les ornements. Un mode sombre est prévu.
-- **Typographies, auto-hébergées :** Instrument Serif pour les grands titres, Playfair Display pour tous les autres textes, Cormorant Garamond pour le nom de marque.
+- **Palette :** fond terracotta clair, cartes crème, olive, avec des touches de safran et de rose poudré. Un mode sombre est prévu.
+- **Typographies, auto-hébergées :** Roman SD de Steve Deffeyes pour les titres (freeware, servie sans modification avec sa licence dans `public/fonts/roman-sd/`), Playfair Display pour tous les autres textes, Cormorant Garamond pour le nom de marque.
 - **Logo :** H-maison olive, flamme du foyer, soleil terracotta et rameaux d'olivier, redessiné en vectoriel (`src/components/LogoEmblem.tsx`).
 - **Icônes :** dessinées à la main, trait d'encre sur tache de couleur organique (`src/components/Ornaments.tsx`).
 - **Motifs :** les images sont encadrées en arche, des frises en méandre et des rameaux de laurier ornent les pages, et les illustrations génératives font apparaître portiques et colonnes cannelées.
