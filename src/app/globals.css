@@ -22,17 +22,17 @@
 }
 
 /*
- * Direction artistique « Hestia » : la mythologie grecque, version moderne et joyeuse.
- * Fond terracotta clair, cartes crème, olive, relevés de safran et de rose poudré :
- * une déco chaleureuse, avec arches, colonnes et méandres.
+ * Direction artistique « Hestia » : les photos d'abord, comme sur Pinterest.
+ * Fond très clair légèrement rosé pour faire ressortir les images ; terracotta pour
+ * les actions, olive, safran et rose poudré en touches.
  */
 :root {
-  --background: #f1d5c1;
-  --surface: #fdf6ee;
-  --surface-muted: #f6e2d3;
+  --background: #fbf4ef;
+  --surface: #ffffff;
+  --surface-muted: #f5e9e1;
   --foreground: #3a2a22;
   --muted: #80604f;
-  --border: #e6c4ad;
+  --border: #efdfd4;
   --accent: #d0583a;
   --accent-strong: #a8401f;
   --accent-soft: #fbdccf;
@@ -48,8 +48,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #2b1810;
-    --surface: #2a201a;
+    --background: #1c1512;
+    --surface: #261d18;
     --surface-muted: #352920;
     --foreground: #f8ecdc;
     --muted: #c3ae98;
@@ -200,11 +200,6 @@ body {
 }
 @utility input {
   @apply w-full rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm outline-none transition focus:border-accent;
-}
-/* Cadre en arche, motif des portiques et des niches antiques */
-@utility arch {
-  border-radius: 999px 999px 1.25rem 1.25rem;
-  overflow: hidden;
 }
 
 /* Grille façon Pinterest */

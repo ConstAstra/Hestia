@@ -4,6 +4,8 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
 
 ## Fonctionnalités
 
+0. **Fil d'inspiration** (`/`), façon Pinterest : mosaïque de photos réelles d'intérieurs de tous styles (Pexels), défilement infini, recherche libre et thèmes (pièces, styles, envies). Un clic ouvre la fiche de la photo, avec « Enregistrer », « J'aime », « Recréer ce look avec l'IA » et des idées similaires à l'infini. Le fil « Pour vous » s'oriente selon les styles aimés.
+
 1. **Dupes IA** (`/dupes`) : l'utilisateur dépose une inspiration (épingle Pinterest enregistrée ou capture), et s'il le souhaite une photo de sa pièce, puis fixe un budget. Claude analyse l'image, identifie chaque pièce qui fait l'ambiance, cherche sur le web des équivalents réellement en vente chez des enseignes qui livrent en France, puis renvoie :
    - une sélection qui tient dans le budget, en distinguant les pièces essentielles des pièces bonus ;
    - la palette de couleurs ;
@@ -27,13 +29,13 @@ La direction artistique s'inspire de la mythologie grecque, revue dans un esprit
 - **Typographies, auto-hébergées :** Weekdays Roman Slant de Manfred Klein pour les titres (**licence à vérifier avant mise en ligne**, voir `public/fonts/weekdays-roman-slant/`), Oranienbaum pour le texte courant (SIL Open Font License, servie sans modification dans `public/fonts/oranienbaum/`), Cormorant Garamond pour le nom de marque.
 - **Logo :** H-maison olive, flamme du foyer, soleil terracotta et rameaux d'olivier, redessiné en vectoriel (`src/components/LogoEmblem.tsx`).
 - **Icônes :** dessinées à la main, trait d'encre sur tache de couleur organique (`src/components/Ornaments.tsx`).
-- **Motifs :** les images sont encadrées en arche, des frises en méandre et des rameaux de laurier ornent les pages, et les illustrations génératives font apparaître portiques et colonnes cannelées.
+- **Mise en page :** les photos d'abord, en mosaïque à coins arrondis sur fond très clair ; le terracotta est réservé aux actions.
 
 ## Démarrer
 
 ```bash
 npm install
-cp .env.example .env.local   # puis renseigner ANTHROPIC_API_KEY
+cp .env.example .env.local   # puis renseigner ANTHROPIC_API_KEY et PEXELS_API_KEY
 npm run dev                  # http://localhost:3000
 ```
 
@@ -48,6 +50,7 @@ Vérifications : `npx tsc --noEmit`, `npm run lint`, `npm run build`.
 | Appel Claude : vision, recherche web, outil `submit_dupes` en mode strict | `src/lib/server/dupes.ts` |
 | Schémas Zod partagés client/serveur | `src/lib/dupes-schema.ts` |
 | État local (tableaux, likes), persisté dans `localStorage` | `src/lib/store.ts` |
+| Fil d'inspiration : API photos, thèmes, mosaïque, épingles | `src/app/api/photos`, `src/lib/server/pexels.ts`, `src/lib/topics.ts`, `src/components/Pins.tsx` |
 | Catalogue de démonstration (48 produits, 16 ambiances) | `src/lib/catalog.ts` |
 | Visuels génératifs (en l'absence de photo produit) | `src/components/Visual.tsx` |
 

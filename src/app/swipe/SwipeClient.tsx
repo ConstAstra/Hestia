@@ -15,8 +15,10 @@ import {
   ROOM_LABELS,
   STYLE_LABELS,
 } from "@/lib/catalog";
+import { usePhotoFeed } from "@/lib/feed";
 import { type NewBoardItem, type SwipeKind, useHestia, useHydrated } from "@/lib/store";
-import type { Inspiration, Product, ProductCategory } from "@/lib/types";
+import { forYouQueries } from "@/lib/topics";
+import type { Inspiration, Photo, Product, ProductCategory } from "@/lib/types";
 
 const SWIPE_THRESHOLD = 110;
 
@@ -34,7 +36,12 @@ function matchesQuery(product: Product, query: string): boolean {
     .every((word) => haystack.includes(word));
 }
 
-type Card = { kind: "product"; item: Product } | { kind: "inspiration"; item: Inspiration };
+type Card =
+  | { kind: "product"; item: Product }
+  | { kind: "inspiration"; item: Inspiration }
+  | { kind: "photo"; item: Photo };
+
+const PHOTO_QUERIES = forYouQueries([]);
 
 export function SwipeClient() {
   const hydrated = useHydrated();
@@ -46,28 +53,60 @@ export function SwipeClient() {
   const seen = useHestia((s) => s.seen);
   const swipe = useHestia((s) => s.swipe);
   const resetSeen = useHestia((s) => s.resetSeen);
+  const likedPhotos = useHestia((s) => s.likedPhotos);
+  const likePhoto = useHestia((s) => s.likePhoto);
+
+  // Mode « Ambiances » : de vraies photos quand la banque d'images est configurée.
+  const photoFeed = usePhotoFeed(PHOTO_QUERIES);
+  const [seenPhotos, setSeenPhotos] = useState<Set<string>>(new Set());
+  const usePhotos = photoFeed.configured !== false;
 
   const deck: Card[] = useMemo(() => {
     const seenIds = new Set(seen[mode]);
     if (mode === "inspiration") {
+      if (usePhotos) {
+        return photoFeed.items.flatMap((entry): Card[] =>
+          entry.kind === "photo" && !seenPhotos.has(entry.photo.id) && !likedPhotos[entry.photo.id]
+            ? [{ kind: "photo", item: entry.photo }]
+            : [],
+        );
+      }
       return INSPIRATIONS.filter((i) => !seenIds.has(i.id)).map((item) => ({ kind: "inspiration", item }));
     }
     return PRODUCTS.filter(
       (p) => !seenIds.has(p.id) && (category === "all" || p.category === category) && matchesQuery(p, query),
     ).map((item) => ({ kind: "product", item }));
-  }, [seen, mode, category, query]);
+  }, [seen, mode, category, query, usePhotos, photoFeed.items, seenPhotos, likedPhotos]);
+
+  // Recharge des photos quand la pile s'amenuise.
+  const { loadMore, loading: photosLoading, done: photosDone } = photoFeed;
+  useEffect(() => {
+    if (mode === "inspiration" && usePhotos && deck.length < 6 && !photosLoading && !photosDone) void loadMore();
+  }, [mode, usePhotos, deck.length, photosLoading, photosDone, loadMore]);
 
   const top = deck[0];
   const decide = useCallback(
     (liked: boolean) => {
-      if (top) swipe(top.kind, top.item.id, liked);
+      if (!top) return;
+      if (top.kind === "photo") {
+        if (liked) likePhoto(top.item);
+        setSeenPhotos((previous) => new Set(previous).add(top.item.id));
+      } else {
+        swipe(top.kind, top.item.id, liked);
+      }
     },
-    [top, swipe],
+    [top, swipe, likePhoto],
   );
 
   const saveTop = () => {
     if (!top) return;
-    setSaving([top.kind === "product" ? { kind: "product", productId: top.item.id } : { kind: "inspiration", inspirationId: top.item.id }]);
+    setSaving([
+      top.kind === "photo"
+        ? { kind: "photo", photo: top.item }
+        : top.kind === "product"
+          ? { kind: "product", productId: top.item.id }
+          : { kind: "inspiration", inspirationId: top.item.id },
+    ]);
   };
 
   return (
@@ -124,8 +163,8 @@ export function SwipeClient() {
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,420px)_1fr]">
         <section className="mx-auto w-full max-w-[420px]">
-          {!hydrated ? (
-            <div className="aspect-[3/4] animate-pulse rounded-[2rem] bg-surface-muted" />
+          {!hydrated || (mode === "inspiration" && usePhotos && deck.length === 0 && !photosDone) ? (
+            <div className="aspect-[3/4] animate-pulse rounded-[1.75rem] bg-surface-muted" />
           ) : top ? (
             <>
               <div className="relative aspect-[3/4]">
@@ -157,7 +196,10 @@ export function SwipeClient() {
                   ? "Aucun autre produit ne correspond à ces filtres."
                   : "Retrouvez vos coups de cœur ci-contre, ou recommencez la sélection."}
               </p>
-              <button onClick={() => resetSeen(mode)} className="btn-ghost">
+              <button onClick={() => {
+                  resetSeen(mode);
+                  setSeenPhotos(new Set());
+                }} className="btn-ghost">
                 Tout revoir
               </button>
             </div>
@@ -245,10 +287,23 @@ function SwipeCard({ card, onDecide }: { card: Card; onDecide: (liked: boolean) 
 }
 
 function CardFace({ card }: { card: Card }) {
+  if (card.kind === "photo") {
+    const photo = card.item;
+    return (
+      <div className="relative h-full overflow-hidden rounded-[1.75rem] shadow-xl" style={{ background: photo.color }}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- photo du CDN Pexels */}
+        <img src={photo.src.large} alt={photo.alt} draggable={false} className="h-full w-full object-cover" />
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-5 pt-16 text-white">
+          <p className="line-clamp-2 text-lg leading-snug first-letter:uppercase">{photo.alt}</p>
+          <p className="mt-1 text-xs opacity-80">Photo : {photo.photographer} · Pexels</p>
+        </div>
+      </div>
+    );
+  }
   const palette = card.item.palette;
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-surface shadow-xl">
-      <div className="arch m-3 mb-0 min-h-0 flex-1">
+    <div className="flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-xl">
+      <div className="min-h-0 flex-1 overflow-hidden">
         <Visual
           palette={palette}
           seed={card.item.id}

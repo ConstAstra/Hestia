@@ -1,17 +1,21 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
 import { DupeCard } from "@/components/DupeCard";
 import { ImageDrop } from "@/components/ImageDrop";
 import { formatPrice, ROOM_LABELS } from "@/lib/catalog";
 import type { DupesStreamEvent } from "@/lib/dupes-schema";
 import { compressImage, type CompressedImage } from "@/lib/image";
+import { DUPES_PHOTO_KEY } from "@/lib/actions";
 import type { NewBoardItem } from "@/lib/store";
-import type { Dupe, DupesResult } from "@/lib/types";
+import type { Dupe, DupesResult, Photo } from "@/lib/types";
 
 interface Picked {
-  api: CompressedImage;
+  /** Image déposée par l'utilisateur, prête pour l'API. */
+  api?: CompressedImage;
+  /** Ou photo venue du fil d'inspiration (« Recréer ce look »). */
+  photo?: Photo;
   /** Version légère pour l'aperçu et les tableaux (stockés localement). */
   thumb: string;
 }
@@ -36,6 +40,20 @@ export function DupesClient() {
   const [verified, setVerified] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState<NewBoardItem[] | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Photo choisie dans le fil (« Recréer ce look ») : on la reprend comme inspiration.
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem(DUPES_PHOTO_KEY);
+      if (!stored) return;
+      sessionStorage.removeItem(DUPES_PHOTO_KEY);
+      const photo = JSON.parse(stored) as Photo;
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- lecture unique du stockage de session au montage
+      setInspiration({ photo, thumb: photo.src.medium });
+    } catch {
+      /* stockage indisponible : l'utilisateur déposera l'image lui-même */
+    }
+  }, []);
 
   const handleFile = (setter: (picked: Picked) => void) => async (file: File) => {
     setError(null);
@@ -62,8 +80,9 @@ export function DupesClient() {
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
         body: JSON.stringify({
-          inspiration: { mediaType: inspiration.api.mediaType, data: inspiration.api.base64 },
-          room: room ? { mediaType: room.api.mediaType, data: room.api.base64 } : undefined,
+          inspiration: inspiration.api ? { mediaType: inspiration.api.mediaType, data: inspiration.api.base64 } : undefined,
+          inspirationUrl: inspiration.photo?.src.large,
+          room: room?.api ? { mediaType: room.api.mediaType, data: room.api.base64 } : undefined,
           budget,
           roomType: ROOM_LABELS[roomType as keyof typeof ROOM_LABELS],
           notes: notes.trim() || undefined,
@@ -107,7 +126,8 @@ export function DupesClient() {
   const saveAll = () => {
     if (!result) return;
     const items: NewBoardItem[] = [];
-    if (inspiration) items.push({ kind: "image", src: inspiration.thumb, caption: "Inspiration" });
+    if (inspiration?.photo) items.push({ kind: "photo", photo: inspiration.photo });
+    else if (inspiration) items.push({ kind: "image", src: inspiration.thumb, caption: "Inspiration" });
     for (const dupe of result.dupes) items.push({ kind: "dupe", dupe });
     setSaving(items);
   };

@@ -3,7 +3,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { Board, BoardItem } from "./types";
+import type { Board, BoardItem, Photo } from "./types";
 
 export type SwipeKind = "product" | "inspiration";
 
@@ -20,12 +20,15 @@ export interface FavoriteCategory {
   color: string;
 }
 
-/** Clé unique d'un coup de cœur : « product:jp-vase », « inspiration:insp-… ». */
-export type FavoriteKey = `${SwipeKind}:${string}`;
-export const favoriteKey = (kind: SwipeKind, id: string): FavoriteKey => `${kind}:${id}`;
-export function parseFavoriteKey(key: FavoriteKey): { kind: SwipeKind; id: string } {
+/** Types de coups de cœur : produits et ambiances du catalogue, photos du fil. */
+export type FavoriteKind = SwipeKind | "photo";
+
+/** Clé unique d'un coup de cœur : « product:jp-vase », « photo:12345 »… */
+export type FavoriteKey = `${FavoriteKind}:${string}`;
+export const favoriteKey = (kind: FavoriteKind, id: string): FavoriteKey => `${kind}:${id}`;
+export function parseFavoriteKey(key: FavoriteKey): { kind: FavoriteKind; id: string } {
   const index = key.indexOf(":");
-  return { kind: key.slice(0, index) as SwipeKind, id: key.slice(index + 1) };
+  return { kind: key.slice(0, index) as FavoriteKind, id: key.slice(index + 1) };
 }
 
 /** Teintes proposées aux catégories, tirées de la direction artistique. */
@@ -35,6 +38,8 @@ interface HestiaState {
   boards: Board[];
   likedProducts: string[];
   likedInspirations: string[];
+  /** Photos aimées dans le fil, conservées en entier (elles ne sont pas dans le catalogue). */
+  likedPhotos: Record<string, Photo>;
   /** Éléments déjà vus en swipe (aimés ou non), pour ne pas les reproposer. */
   seen: Record<SwipeKind, string[]>;
   /** Catégories personnelles de coups de cœur, et leur attribution (plusieurs possibles). */
@@ -51,7 +56,8 @@ interface HestiaState {
   removeFromBoard: (boardId: string, itemId: string) => void;
 
   swipe: (kind: SwipeKind, id: string, liked: boolean) => void;
-  unlike: (kind: SwipeKind, id: string) => void;
+  unlike: (kind: FavoriteKind, id: string) => void;
+  likePhoto: (photo: Photo) => void;
   resetSeen: (kind: SwipeKind) => void;
 
   createFavoriteCategory: (name: string) => string;
@@ -100,6 +106,7 @@ export const useHestia = create<HestiaState>()(
       boards: [],
       likedProducts: [],
       likedInspirations: [],
+      likedPhotos: {},
       seen: { product: [], inspiration: [] },
       favoriteCategories: [],
       favoriteTags: {},
@@ -179,13 +186,28 @@ export const useHestia = create<HestiaState>()(
           const likedAt = { ...state.likedAt };
           delete favoriteTags[fav];
           delete likedAt[fav];
+          const likedPhotos = { ...state.likedPhotos };
+          delete likedPhotos[id];
           return {
             ...(kind === "product"
               ? { likedProducts: state.likedProducts.filter((x) => x !== id) }
-              : { likedInspirations: state.likedInspirations.filter((x) => x !== id) }),
+              : kind === "inspiration"
+                ? { likedInspirations: state.likedInspirations.filter((x) => x !== id) }
+                : { likedPhotos }),
             favoriteTags,
             likedAt,
             favoriteOrder: state.favoriteOrder.filter((k) => k !== fav),
+          };
+        }),
+
+      likePhoto: (photo) =>
+        set((state) => {
+          if (state.likedPhotos[photo.id]) return {};
+          const fav = favoriteKey("photo", photo.id);
+          return {
+            likedPhotos: { ...state.likedPhotos, [photo.id]: photo },
+            likedAt: { ...state.likedAt, [fav]: Date.now() },
+            favoriteOrder: [fav, ...state.favoriteOrder.filter((k) => k !== fav)],
           };
         }),
 

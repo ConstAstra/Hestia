@@ -81,6 +81,17 @@ const ink = {
 };
 const blob = { fill: "var(--blob, transparent)" };
 
+export function IconHome({ className = "" }: IconProps) {
+  return (
+    <svg aria-hidden viewBox="0 0 32 32" className={className}>
+      <path {...blob} d="M6.5 8c3.5-3.5 10-4.5 14.5-2.5S28 12 27 17s-4.5 9-10 9.5S6 24.5 5 19.5 3 11.5 6.5 8z" />
+      <path {...ink} d="M7.6 14.6c2.8-2.5 5.6-4.9 8.5-7.3 2.8 2.3 5.6 4.7 8.4 7.1" />
+      <path {...ink} d="M9.6 13.2c-.2 3.4-.2 6.9 0 10.3 4.3.2 8.6.2 12.9 0 .2-3.4.2-6.9 0-10.4" />
+      <path {...ink} d="M14 23.4c0-1.9 0-3.8.1-5.7 1.3-.1 2.6-.1 3.9 0 .1 1.9.1 3.8 0 5.7" />
+    </svg>
+  );
+}
+
 export function IconSpark({ className = "" }: IconProps) {
   return (
     <svg aria-hidden viewBox="0 0 32 32" className={className}>

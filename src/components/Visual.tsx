@@ -59,31 +59,20 @@ export function Visual({ palette, seed, category, image, alt, className = "" }: 
   }
   const colors = palette.length >= 3 ? palette : [...palette, "#efe4d3", "#c9a77f", "#6b6e3a"];
   const h = hash(seed);
-  // Composition « antique moderne » : niche en arche, disque solaire, colonne cannelée.
-  const archX = 14 + (h % 34);
-  const archW = 38 + ((h >> 6) % 14);
-  const sunX = (h >> 3) % 2 ? 74 : 26;
-  const sunR = 10 + ((h >> 9) % 8);
-  const columnX = archX + archW + 6 > 88 ? archX - 14 : archX + archW + 6;
+  // Composition « planche de tendances » : grands aplats de la palette, sans motif d'arche.
+  const split = 38 + (h % 26);
+  const circleX = (h >> 3) % 2 ? 70 : 30;
+  const circleR = 14 + ((h >> 7) % 10);
   const glyphColor = colors[colors.length - 1];
   return (
     <svg viewBox="0 0 100 100" role="img" aria-label={alt} preserveAspectRatio="xMidYMid slice" className={`h-full w-full ${className}`}>
       <rect width="100" height="100" fill={colors[0]} />
-      <circle cx={sunX} cy={24} r={sunR} fill="#b4532f" opacity="0.22" />
-      <path d={`M${archX} 100V${40 + archW / 2}a${archW / 2} ${archW / 2} 0 0 1 ${archW} 0V100z`} fill={colors[1]} opacity="0.75" />
-      <path d={`M${archX + 5} 100V${44 + archW / 2}a${archW / 2 - 5} ${archW / 2 - 5} 0 0 1 ${archW - 10} 0V100`} fill="none" stroke={colors[2]} strokeWidth="0.8" opacity="0.6" />
-      <g opacity="0.45" fill={colors[2]}>
-        <rect x={columnX - 1} y="34" width="10" height="2.5" rx="0.6" />
-        {[0, 2.6, 5.2].map((dx) => (
-          <rect key={dx} x={columnX + dx} y="37" width="1.6" height="57" rx="0.8" />
-        ))}
-        <rect x={columnX - 1} y="94" width="10" height="2.5" rx="0.6" />
-      </g>
-      <rect y="94" width="100" height="6" fill={colors[2]} opacity="0.25" />
+      <rect y={split} width="100" height={100 - split} fill={colors[1]} opacity="0.55" />
+      <rect x={(h >> 5) % 2 ? 0 : 58} y={split - 18} width="42" height="60" rx="3" fill={colors[2]} opacity="0.4" />
+      <circle cx={circleX} cy={split - 6} r={circleR} fill={glyphColor} opacity="0.16" />
       {category && (
         <g>
-          <circle cx="50" cy="52" r="27" fill={colors[0]} opacity="0.88" />
-          <circle cx="50" cy="52" r="27" fill="none" stroke={glyphColor} strokeWidth="0.6" opacity="0.4" />
+          <circle cx="50" cy="52" r="27" fill={colors[0]} opacity="0.9" />
           <g transform="translate(14 16.5) scale(0.72)">
             <Glyph category={category} color={glyphColor} />
           </g>

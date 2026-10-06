@@ -12,13 +12,29 @@ export const ImageInputSchema = z.object({
     .regex(/^[A-Za-z0-9+/=]+$/, "Encodage base64 invalide"),
 });
 
-export const DupesRequestSchema = z.object({
-  inspiration: ImageInputSchema,
-  room: ImageInputSchema.optional(),
-  budget: z.number().min(30).max(50_000),
-  roomType: z.string().max(40).optional(),
-  notes: z.string().max(600).optional(),
-});
+/** Photo du fil d'inspiration, transmise par son adresse : seul le CDN Pexels est accepté. */
+const PexelsImageUrl = z
+  .string()
+  .url()
+  .refine((value) => {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && url.hostname === "images.pexels.com";
+    } catch {
+      return false;
+    }
+  }, "Adresse d'image non autorisée");
+
+export const DupesRequestSchema = z
+  .object({
+    inspiration: ImageInputSchema.optional(),
+    inspirationUrl: PexelsImageUrl.optional(),
+    room: ImageInputSchema.optional(),
+    budget: z.number().min(30).max(50_000),
+    roomType: z.string().max(40).optional(),
+    notes: z.string().max(600).optional(),
+  })
+  .refine((value) => value.inspiration || value.inspirationUrl, "Ajoutez une image d'inspiration.");
 
 export type ImageInput = z.infer<typeof ImageInputSchema>;
 export type DupesRequest = z.infer<typeof DupesRequestSchema>;

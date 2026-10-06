@@ -61,13 +61,29 @@ export interface Inspiration {
   productIds: string[];
 }
 
+/** Une photo d'inspiration issue de la banque d'images (Pexels). */
+export interface Photo {
+  id: string;
+  width: number;
+  height: number;
+  alt: string;
+  /** Couleur moyenne, affichée pendant le chargement. */
+  color: string;
+  src: { medium: string; large: string; original: string };
+  photographer: string;
+  photographerUrl: string;
+  /** Page de la photo chez le fournisseur (crédit obligatoire). */
+  pageUrl: string;
+}
+
 /** Un élément épinglé dans un tableau. */
 export type BoardItem =
   | { id: string; kind: "product"; productId: string; addedAt: number }
   | { id: string; kind: "inspiration"; inspirationId: string; addedAt: number }
   | { id: string; kind: "image"; src: string; caption?: string; addedAt: number }
   | { id: string; kind: "note"; text: string; color: string; addedAt: number }
-  | { id: string; kind: "dupe"; dupe: Dupe; addedAt: number };
+  | { id: string; kind: "dupe"; dupe: Dupe; addedAt: number }
+  | { id: string; kind: "photo"; photo: Photo; addedAt: number };
 
 export interface Board {
   id: string;

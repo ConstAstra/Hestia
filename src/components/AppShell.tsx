@@ -4,13 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, Suspense, useEffect, useState } from "react";
 import { LogoStacked } from "@/components/LogoEmblem";
-import { IconBoard, IconCards, IconHeart, IconSpark, Logo, Meander } from "@/components/Ornaments";
+import { IconBoard, IconCards, IconHeart, IconHome, IconSpark, Logo } from "@/components/Ornaments";
 import { STORAGE_FULL_EVENT, useRehydrateOnMount } from "@/lib/store";
 
 // Chaque onglet a sa couleur : safran, rose poudré, terracotta, olive.
 const LINKS = [
-  { href: "/dupes", label: "Dupes IA", Icon: IconSpark, color: "var(--gold)", soft: "var(--gold-soft)" },
-  { href: "/swipe", label: "Swipe", Icon: IconCards, color: "var(--blush)", soft: "var(--blush-soft)" },
+  { href: "/", label: "Accueil", Icon: IconHome, color: "var(--blush)", soft: "var(--blush-soft)" },
+  { href: "/swipe", label: "Swipe", Icon: IconCards, color: "var(--gold)", soft: "var(--gold-soft)" },
+  { href: "/dupes", label: "Dupes IA", Icon: IconSpark, color: "var(--accent)", soft: "var(--accent-soft)" },
   { href: "/coups-de-coeur", label: "Coups de cœur", Icon: IconHeart, color: "var(--like)", soft: "var(--accent-soft)" },
   { href: "/tableaux", label: "Tableaux", Icon: IconBoard, color: "var(--olive)", soft: "var(--olive-soft)" },
 ];
@@ -27,8 +28,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-full flex-col">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+      <header className="sticky top-0 z-30 bg-background/95 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-[1500px] items-center justify-between px-4">
           <Link href="/" aria-label="Hestia, accueil">
             <Logo />
           </Link>
@@ -40,12 +41,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-12 pt-6">{children}</main>
+      <main className="mx-auto w-full max-w-[1500px] flex-1 px-4 pb-12 pt-4">{children}</main>
 
-      <footer className="mx-auto w-full max-w-6xl px-4 pb-28 md:pb-10">
-        <Meander className="text-gold/60" />
-        <LogoStacked className="mx-auto mt-8 w-40 text-base" />
-        <p className="pt-4 text-center text-base italic text-muted">
+      <footer className="mx-auto w-full max-w-[1500px] px-4 pb-28 md:pb-10">
+        <LogoStacked className="mx-auto mt-10 w-28 text-sm" />
+        <p className="pt-3 text-center text-sm text-muted">
           Hestia, gardienne du foyer : la décoration qui vous ressemble.
         </p>
       </footer>
@@ -67,7 +67,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur md:hidden"
         aria-label="Navigation mobile"
       >
-        <div className="mx-auto grid max-w-md grid-cols-4">
+        <div className="mx-auto grid max-w-lg grid-cols-5">
           <Suspense fallback={<NavLinks variant="mobile" pathname="" />}>
             <CurrentNavLinks variant="mobile" />
           </Suspense>
@@ -85,7 +85,7 @@ function CurrentNavLinks({ variant }: { variant: Variant }) {
 }
 
 function NavLinks({ variant, pathname }: { variant: Variant; pathname: string }) {
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`));
   return LINKS.map(({ href, label, Icon, color, soft }) => {
     const active = isActive(href);
     // La tache de couleur derrière le trait : douce au repos, franche sur l'onglet actif.

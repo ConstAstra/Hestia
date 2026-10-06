@@ -94,7 +94,9 @@ const imageBlock = (image: ImageInput) => ({
 function buildUserContent(request: DupesRequest) {
   const content: Exclude<BetaMessageParam["content"], string> = [
     { type: "text", text: "Voici mon inspiration :" },
-    imageBlock(request.inspiration),
+    request.inspiration
+      ? imageBlock(request.inspiration)
+      : { type: "image", source: { type: "url", url: request.inspirationUrl! } },
   ];
   if (request.room) {
     content.push({ type: "text", text: "Et voici ma pièce telle qu'elle est aujourd'hui :" }, imageBlock(request.room));

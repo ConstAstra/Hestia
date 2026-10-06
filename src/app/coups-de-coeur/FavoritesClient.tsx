@@ -19,24 +19,28 @@ import {
   favoriteKey,
   type NewBoardItem,
   parseFavoriteKey,
-  type SwipeKind,
+  type FavoriteKind,
   useHestia,
   useHydrated,
 } from "@/lib/store";
-import type { DecorStyle, ProductCategory } from "@/lib/types";
+import type { DecorStyle, Photo, ProductCategory } from "@/lib/types";
 
 interface Entry {
   key: FavoriteKey;
-  kind: SwipeKind;
+  kind: FavoriteKind;
   id: string;
   title: string;
   subtitle: string;
   price?: number;
-  style: DecorStyle;
+  /** Absent pour les photos du fil, qui ne sont pas rattachées à un style du catalogue. */
+  style?: DecorStyle;
   palette: string[];
   category?: ProductCategory;
   image?: string;
+  photo?: Photo;
 }
+
+const styleLabel = (entry: Entry) => (entry.style ? STYLE_LABELS[entry.style] : "");
 
 type Sort = "manual" | "recent" | "oldest" | "price-asc" | "price-desc" | "style" | "name";
 
@@ -56,6 +60,7 @@ export function FavoritesClient() {
   const hydrated = useHydrated();
   const likedProducts = useHestia((s) => s.likedProducts);
   const likedInspirations = useHestia((s) => s.likedInspirations);
+  const likedPhotos = useHestia((s) => s.likedPhotos);
   const categories = useHestia((s) => s.favoriteCategories);
   const tags = useHestia((s) => s.favoriteTags);
   const order = useHestia((s) => s.favoriteOrder);
@@ -64,7 +69,7 @@ export function FavoritesClient() {
     useHestia.getState();
 
   const [activeCategory, setActiveCategory] = useState<"all" | "none" | string>("all");
-  const [typeFilter, setTypeFilter] = useState<"all" | SwipeKind>("all");
+  const [typeFilter, setTypeFilter] = useState<"all" | FavoriteKind>("all");
   const [sort, setSort] = useState<Sort>("manual");
   const [query, setQuery] = useState("");
   const [selecting, setSelecting] = useState(false);
@@ -78,6 +83,7 @@ export function FavoritesClient() {
   // Tous les coups de cœur, dans l'ordre choisi par l'utilisateur.
   const allEntries: Entry[] = useMemo(() => {
     const liked: FavoriteKey[] = [
+      ...Object.keys(likedPhotos).map((id) => favoriteKey("photo", id)),
       ...likedInspirations.map((id) => favoriteKey("inspiration", id)),
       ...likedProducts.map((id) => favoriteKey("product", id)),
     ];
@@ -85,6 +91,12 @@ export function FavoritesClient() {
     const ordered = [...order.filter((k) => likedSet.has(k)), ...liked.filter((k) => !order.includes(k))];
     return ordered.flatMap((key): Entry[] => {
       const { kind, id } = parseFavoriteKey(key);
+      if (kind === "photo") {
+        const photo = likedPhotos[id];
+        return photo
+          ? [{ key, kind, id, title: photo.alt, subtitle: `Photo de ${photo.photographer}`, palette: [photo.color], photo }]
+          : [];
+      }
       if (kind === "product") {
         const p = PRODUCTS_BY_ID[id];
         return p
@@ -94,7 +106,7 @@ export function FavoritesClient() {
       const i = INSPIRATIONS_BY_ID[id];
       return i ? [{ key, kind, id, title: i.title, subtitle: ROOM_LABELS[i.room], style: i.style, palette: i.palette, image: i.image }] : [];
     });
-  }, [likedProducts, likedInspirations, order]);
+  }, [likedProducts, likedInspirations, likedPhotos, order]);
 
   const counts = useMemo(() => {
     const result: Record<string, number> = { all: allEntries.length, none: 0 };
@@ -113,7 +125,7 @@ export function FavoritesClient() {
       if (activeCategory === "none" && entryTags.length > 0) return false;
       if (activeCategory !== "all" && activeCategory !== "none" && !entryTags.includes(activeCategory)) return false;
       if (typeFilter !== "all" && entry.kind !== typeFilter) return false;
-      if (q && !normalize(`${entry.title} ${entry.subtitle} ${STYLE_LABELS[entry.style]}`).includes(q)) return false;
+      if (q && !normalize(`${entry.title} ${entry.subtitle} ${styleLabel(entry)}`).includes(q)) return false;
       return true;
     });
     const time = (e: Entry) => likedAt[e.key] ?? 0;
@@ -124,7 +136,7 @@ export function FavoritesClient() {
       oldest: (a, b) => time(a) - time(b),
       "price-asc": (a, b) => price(a) - price(b),
       "price-desc": (a, b) => (b.price ?? -1) - (a.price ?? -1),
-      style: (a, b) => STYLE_LABELS[a.style].localeCompare(STYLE_LABELS[b.style], "fr"),
+      style: (a, b) => styleLabel(a).localeCompare(styleLabel(b), "fr"),
       name: (a, b) => a.title.localeCompare(b.title, "fr"),
     };
     const sorter = sorters[sort];
@@ -305,6 +317,7 @@ export function FavoritesClient() {
               {(
                 [
                   ["all", "Tout"],
+                  ["photo", "Photos"],
                   ["inspiration", "Ambiances"],
                   ["product", "Produits"],
                 ] as const
@@ -359,11 +372,16 @@ export function FavoritesClient() {
                     } ${isSelected ? "ring-2 ring-accent" : ""} ${selecting ? "cursor-pointer" : ""}`}
                   >
                     <div className="relative">
-                      <div className="arch aspect-[4/5]">
-                        <Visual palette={entry.palette} seed={entry.id} category={entry.category} image={entry.image} alt={entry.title} />
+                      <div className="aspect-[4/5] overflow-hidden rounded-2xl">
+                        {entry.photo ? (
+                          // eslint-disable-next-line @next/next/no-img-element -- photo du CDN Pexels
+                          <img src={entry.photo.src.medium} alt={entry.title} loading="lazy" className="h-full w-full object-cover" style={{ background: entry.photo.color }} />
+                        ) : (
+                          <Visual palette={entry.palette} seed={entry.id} category={entry.category} image={entry.image} alt={entry.title} />
+                        )}
                       </div>
                       <span className="absolute bottom-2 left-2 rounded-full bg-surface/90 px-2.5 py-0.5 text-[11px] font-semibold">
-                        {entry.kind === "product" ? "Produit" : "Ambiance"}
+                        {entry.kind === "product" ? "Produit" : entry.kind === "photo" ? "Photo" : "Ambiance"}
                       </span>
                       {selecting && (
                         <span
@@ -380,7 +398,7 @@ export function FavoritesClient() {
                       <div>
                         <p className="line-clamp-2 text-sm font-medium leading-snug">{entry.title}</p>
                         <p className="text-xs text-muted">
-                          {STYLE_LABELS[entry.style]} · {entry.price !== undefined ? formatPrice(entry.price) : entry.subtitle}
+                          {[styleLabel(entry), entry.price !== undefined ? formatPrice(entry.price) : entry.subtitle].filter(Boolean).join(" · ")}
                         </p>
                       </div>
                       <div className="flex flex-wrap gap-1">
@@ -397,7 +415,13 @@ export function FavoritesClient() {
                           </button>
                           <button
                             onClick={() =>
-                              setSaving([entry.kind === "product" ? { kind: "product", productId: entry.id } : { kind: "inspiration", inspirationId: entry.id }])
+                              setSaving([
+                                entry.photo
+                                  ? { kind: "photo", photo: entry.photo }
+                                  : entry.kind === "product"
+                                    ? { kind: "product", productId: entry.id }
+                                    : { kind: "inspiration", inspirationId: entry.id },
+                              ])
                             }
                             className="rounded-full px-2.5 py-1 text-xs text-muted hover:bg-surface-muted hover:text-foreground"
                           >

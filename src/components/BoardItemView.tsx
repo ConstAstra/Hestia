@@ -19,6 +19,8 @@ export function BoardItemThumb({ item }: { item: BoardItem }) {
     }
     case "note":
       return <div className="h-full w-full p-2 text-[10px] leading-tight" style={{ background: item.color }}>{item.text}</div>;
+    case "photo":
+      return <img src={item.photo.src.medium} alt={item.photo.alt} className="h-full w-full object-cover" style={{ background: item.photo.color }} />;
     case "dupe":
       return (
         <div className="flex h-full w-full items-center justify-center bg-accent-soft p-2 text-center text-[10px] font-medium text-accent-strong">
@@ -78,5 +80,17 @@ export function BoardItemCard({ item }: { item: BoardItem }) {
       );
     case "dupe":
       return <DupeCard dupe={item.dupe} />;
+    case "photo":
+      return (
+        <figure className="overflow-hidden rounded-2xl bg-surface-muted">
+          <img
+            src={item.photo.src.medium}
+            alt={item.photo.alt}
+            loading="lazy"
+            className="w-full"
+            style={{ background: item.photo.color, aspectRatio: `${item.photo.width} / ${item.photo.height}` }}
+          />
+        </figure>
+      );
   }
 }
