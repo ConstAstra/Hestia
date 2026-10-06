@@ -13,12 +13,36 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
   : never;
 export type NewBoardItem = DistributiveOmit<BoardItem, "id" | "addedAt">;
 
+/** Catégorie de coups de cœur créée par l'utilisateur. */
+export interface FavoriteCategory {
+  id: string;
+  name: string;
+  color: string;
+}
+
+/** Clé unique d'un coup de cœur : « product:jp-vase », « inspiration:insp-… ». */
+export type FavoriteKey = `${SwipeKind}:${string}`;
+export const favoriteKey = (kind: SwipeKind, id: string): FavoriteKey => `${kind}:${id}`;
+export function parseFavoriteKey(key: FavoriteKey): { kind: SwipeKind; id: string } {
+  const index = key.indexOf(":");
+  return { kind: key.slice(0, index) as SwipeKind, id: key.slice(index + 1) };
+}
+
+/** Teintes proposées aux catégories, tirées de la direction artistique. */
+export const CATEGORY_COLORS = ["#b4532f", "#6b6e3a", "#b98b3e", "#8f3d20", "#7d8f8a", "#a8677a"];
+
 interface HestiaState {
   boards: Board[];
   likedProducts: string[];
   likedInspirations: string[];
   /** Éléments déjà vus en swipe (aimés ou non), pour ne pas les reproposer. */
   seen: Record<SwipeKind, string[]>;
+  /** Catégories personnelles de coups de cœur, et leur attribution (plusieurs possibles). */
+  favoriteCategories: FavoriteCategory[];
+  favoriteTags: Record<FavoriteKey, string[]>;
+  /** Ordre choisi à la main par l'utilisateur. */
+  favoriteOrder: FavoriteKey[];
+  likedAt: Record<FavoriteKey, number>;
 
   createBoard: (name: string, description?: string) => string;
   renameBoard: (id: string, name: string, description?: string) => void;
@@ -29,6 +53,14 @@ interface HestiaState {
   swipe: (kind: SwipeKind, id: string, liked: boolean) => void;
   unlike: (kind: SwipeKind, id: string) => void;
   resetSeen: (kind: SwipeKind) => void;
+
+  createFavoriteCategory: (name: string) => string;
+  renameFavoriteCategory: (id: string, name: string) => void;
+  recolorFavoriteCategory: (id: string, color: string) => void;
+  deleteFavoriteCategory: (id: string) => void;
+  /** Ajoute (on = true) ou retire une catégorie sur un ou plusieurs coups de cœur. */
+  setFavoriteCategory: (keys: FavoriteKey[], categoryId: string, on: boolean) => void;
+  setFavoriteOrder: (keys: FavoriteKey[]) => void;
 }
 
 const uid = () =>
@@ -69,6 +101,10 @@ export const useHestia = create<HestiaState>()(
       likedProducts: [],
       likedInspirations: [],
       seen: { product: [], inspiration: [] },
+      favoriteCategories: [],
+      favoriteTags: {},
+      favoriteOrder: [],
+      likedAt: {},
 
       createBoard: (name, description) => {
         const id = uid();
@@ -119,26 +155,85 @@ export const useHestia = create<HestiaState>()(
         set((state) => {
           const key = kind === "product" ? "likedProducts" : "likedInspirations";
           const likes = state[key];
+          const isNewLike = liked && !likes.includes(id);
+          const fav = favoriteKey(kind, id);
           return {
+            ...(isNewLike && {
+              likedAt: { ...state.likedAt, [fav]: Date.now() },
+              favoriteOrder: [fav, ...state.favoriteOrder.filter((k) => k !== fav)],
+            }),
             seen: {
               ...state.seen,
               [kind]: state.seen[kind].includes(id)
                 ? state.seen[kind]
                 : [...state.seen[kind], id],
             },
-            [key]: liked && !likes.includes(id) ? [id, ...likes] : likes,
+            [key]: isNewLike ? [id, ...likes] : likes,
           };
         }),
 
       unlike: (kind, id) =>
-        set((state) =>
-          kind === "product"
-            ? { likedProducts: state.likedProducts.filter((x) => x !== id) }
-            : { likedInspirations: state.likedInspirations.filter((x) => x !== id) },
-        ),
+        set((state) => {
+          const fav = favoriteKey(kind, id);
+          const favoriteTags = { ...state.favoriteTags };
+          const likedAt = { ...state.likedAt };
+          delete favoriteTags[fav];
+          delete likedAt[fav];
+          return {
+            ...(kind === "product"
+              ? { likedProducts: state.likedProducts.filter((x) => x !== id) }
+              : { likedInspirations: state.likedInspirations.filter((x) => x !== id) }),
+            favoriteTags,
+            likedAt,
+            favoriteOrder: state.favoriteOrder.filter((k) => k !== fav),
+          };
+        }),
 
       resetSeen: (kind) =>
         set((state) => ({ seen: { ...state.seen, [kind]: [] } })),
+
+      createFavoriteCategory: (name) => {
+        const id = uid();
+        set((state) => ({
+          favoriteCategories: [
+            ...state.favoriteCategories,
+            { id, name, color: CATEGORY_COLORS[state.favoriteCategories.length % CATEGORY_COLORS.length] },
+          ],
+        }));
+        return id;
+      },
+
+      renameFavoriteCategory: (id, name) =>
+        set((state) => ({
+          favoriteCategories: state.favoriteCategories.map((c) => (c.id === id ? { ...c, name } : c)),
+        })),
+
+      recolorFavoriteCategory: (id, color) =>
+        set((state) => ({
+          favoriteCategories: state.favoriteCategories.map((c) => (c.id === id ? { ...c, color } : c)),
+        })),
+
+      deleteFavoriteCategory: (id) =>
+        set((state) => ({
+          favoriteCategories: state.favoriteCategories.filter((c) => c.id !== id),
+          favoriteTags: Object.fromEntries(
+            Object.entries(state.favoriteTags).map(([key, ids]) => [key, ids.filter((x) => x !== id)]),
+          ),
+        })),
+
+      setFavoriteCategory: (keys, categoryId, on) =>
+        set((state) => {
+          const favoriteTags = { ...state.favoriteTags };
+          for (const key of keys) {
+            const current = favoriteTags[key] ?? [];
+            favoriteTags[key] = on
+              ? current.includes(categoryId) ? current : [...current, categoryId]
+              : current.filter((x) => x !== categoryId);
+          }
+          return { favoriteTags };
+        }),
+
+      setFavoriteOrder: (keys) => set({ favoriteOrder: keys }),
     }),
     {
       name: "hestia-v1",

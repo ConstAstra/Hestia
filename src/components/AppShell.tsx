@@ -3,13 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, Suspense, useEffect, useState } from "react";
-import { IconColumns, IconHeart, IconSpark, Logo, Meander } from "@/components/Ornaments";
+import { LogoStacked } from "@/components/LogoEmblem";
+import { IconBoard, IconCards, IconHeart, IconSpark, Logo, Meander } from "@/components/Ornaments";
 import { STORAGE_FULL_EVENT, useRehydrateOnMount } from "@/lib/store";
 
+// Chaque onglet a sa couleur : safran, rose poudré, terracotta, olive.
 const LINKS = [
-  { href: "/dupes", label: "Dupes IA", Icon: IconSpark },
-  { href: "/swipe", label: "Swipe", Icon: IconHeart },
-  { href: "/tableaux", label: "Tableaux", Icon: IconColumns },
+  { href: "/dupes", label: "Dupes IA", Icon: IconSpark, color: "var(--gold)", soft: "var(--gold-soft)" },
+  { href: "/swipe", label: "Swipe", Icon: IconCards, color: "var(--blush)", soft: "var(--blush-soft)" },
+  { href: "/coups-de-coeur", label: "Coups de cœur", Icon: IconHeart, color: "var(--like)", soft: "var(--accent-soft)" },
+  { href: "/tableaux", label: "Tableaux", Icon: IconBoard, color: "var(--olive)", soft: "var(--olive-soft)" },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -41,6 +44,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <footer className="mx-auto w-full max-w-6xl px-4 pb-28 md:pb-10">
         <Meander className="text-gold/60" />
+        <LogoStacked className="mx-auto mt-8 w-40 text-base" />
         <p className="pt-4 text-center font-serif text-base italic text-muted">
           Hestia, gardienne du foyer : la décoration qui vous ressemble.
         </p>
@@ -63,7 +67,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur md:hidden"
         aria-label="Navigation mobile"
       >
-        <div className="mx-auto grid max-w-md grid-cols-3">
+        <div className="mx-auto grid max-w-md grid-cols-4">
           <Suspense fallback={<NavLinks variant="mobile" pathname="" />}>
             <CurrentNavLinks variant="mobile" />
           </Suspense>
@@ -82,28 +86,32 @@ function CurrentNavLinks({ variant }: { variant: Variant }) {
 
 function NavLinks({ variant, pathname }: { variant: Variant; pathname: string }) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
-  return LINKS.map((link) =>
-    variant === "desktop" ? (
+  return LINKS.map(({ href, label, Icon, color, soft }) => {
+    const active = isActive(href);
+    // La tache de couleur derrière le trait : douce au repos, franche sur l'onglet actif.
+    const blobStyle = { "--blob": active ? color : soft } as React.CSSProperties;
+    return variant === "desktop" ? (
       <Link
-        key={link.href}
-        href={link.href}
-        className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-          isActive(link.href) ? "bg-accent-soft text-accent-strong" : "text-muted hover:text-foreground"
+        key={href}
+        href={href}
+        className={`hover-wiggle flex items-center gap-1.5 rounded-full py-1 pl-1 pr-3.5 text-sm font-bold transition ${
+          active ? "text-foreground" : "text-muted hover:text-foreground"
         }`}
+        style={blobStyle}
       >
-        {link.label}
+        <Icon className="h-9 w-9 text-foreground" />
+        {label}
       </Link>
     ) : (
       <Link
-        key={link.href}
-        href={link.href}
-        className={`flex flex-col items-center gap-0.5 py-3 text-xs font-medium ${
-          isActive(link.href) ? "text-accent" : "text-muted"
-        }`}
+        key={href}
+        href={href}
+        className={`hover-wiggle flex flex-col items-center gap-0.5 py-1.5 text-[11px] font-bold ${active ? "text-foreground" : "text-muted"}`}
+        style={blobStyle}
       >
-        <link.Icon className="h-6 w-6" />
-        {link.label}
+        <Icon className="h-9 w-9 text-foreground" />
+        {label}
       </Link>
-    ),
-  );
+    );
+  });
 }

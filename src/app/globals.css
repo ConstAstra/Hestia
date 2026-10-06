@@ -1,42 +1,49 @@
 @import "tailwindcss";
 
 /*
- * Direction artistique « Hestia » : la mythologie grecque, version moderne.
- * Crème de marbre, terracotta d'amphore, olivier ; ornements en méandre.
+ * Direction artistique « Hestia » : la mythologie grecque, version moderne et joyeuse.
+ * Crème, terracotta, olive, relevés de safran et de rose poudré : une déco « dopamine »
+ * chaleureuse, avec arches, colonnes et méandres.
  */
 :root {
-  --background: #f6efe3;
-  --surface: #fffaf2;
-  --surface-muted: #efe4d3;
-  --foreground: #2f2620;
-  --muted: #7b6b5d;
-  --border: #e3d5c1;
-  --accent: #b4532f;
-  --accent-strong: #8f3d20;
-  --accent-soft: #f3dccf;
-  --olive: #6b6e3a;
-  --olive-soft: #e6e3c9;
-  --gold: #b98b3e;
-  --like: #b4532f;
-  --nope: #6b6e3a;
+  --background: #fbf3e6;
+  --surface: #fffaf1;
+  --surface-muted: #f5e7d3;
+  --foreground: #3a2a22;
+  --muted: #86705f;
+  --border: #ecdcc5;
+  --accent: #d0583a;
+  --accent-strong: #a8401f;
+  --accent-soft: #fbdccf;
+  --olive: #74843a;
+  --olive-soft: #e8ebcb;
+  --gold: #e3a33b;
+  --gold-soft: #fbe8c2;
+  --blush: #ee9f8f;
+  --blush-soft: #fde3dc;
+  --like: #e0503a;
+  --nope: #74843a;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1d1814;
-    --surface: #27201a;
-    --surface-muted: #312820;
-    --foreground: #f3e9da;
-    --muted: #b9a893;
-    --border: #43372c;
-    --accent: #d9764f;
-    --accent-strong: #ec9270;
-    --accent-soft: #43261b;
-    --olive: #a7ab6c;
-    --olive-soft: #34331f;
-    --gold: #d6ad62;
-    --like: #d9764f;
-    --nope: #a7ab6c;
+    --background: #201813;
+    --surface: #2a201a;
+    --surface-muted: #352920;
+    --foreground: #f8ecdc;
+    --muted: #c3ae98;
+    --border: #4a3a2e;
+    --accent: #ef7552;
+    --accent-strong: #ff9473;
+    --accent-soft: #4a2619;
+    --olive: #b3c46a;
+    --olive-soft: #343a1d;
+    --gold: #f2bb59;
+    --gold-soft: #45351a;
+    --blush: #f4ae9f;
+    --blush-soft: #4a2a25;
+    --like: #ff6b52;
+    --nope: #b3c46a;
   }
 }
 
@@ -53,11 +60,14 @@
   --color-olive: var(--olive);
   --color-olive-soft: var(--olive-soft);
   --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-blush: var(--blush);
+  --color-blush-soft: var(--blush-soft);
   --color-like: var(--like);
   --color-nope: var(--nope);
-  --font-sans: "Jost", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-serif: "Cormorant Garamond", "Iowan Old Style", Palatino, Georgia, serif;
-  --font-inscription: "Marcellus", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Nunito Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "DM Serif Display", "Iowan Old Style", Georgia, serif;
+  --font-brand: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
 }
 
 body {
@@ -71,27 +81,74 @@ body {
   color: var(--accent-strong);
 }
 
-/* Titres : garalde élégante */
+/* Titres : DM Serif Display, une didone douce aux courbes généreuses */
 .font-display {
   font-family: var(--font-serif);
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
-/* Petites capitales gravées, comme une inscription sur un fronton */
+/* Nom de marque, comme sur le logo : capitales classiques espacées */
+.wordmark {
+  font-family: var(--font-brand);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #6a6b2f;
+  line-height: 1;
+}
+@media (prefers-color-scheme: dark) {
+  .wordmark {
+    color: var(--olive);
+  }
+}
+
+/* Sur-titre : petites capitales terracotta précédées d'un filet */
 .kicker {
-  font-family: var(--font-inscription);
-  font-size: 0.78rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.kicker::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-8deg) scale(1.08); }
+  75% { transform: rotate(6deg) scale(1.08); }
+}
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.hover-wiggle:hover > svg {
+  animation: wiggle 0.45s ease-in-out;
+}
+.pop {
+  animation: pop 0.35s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-wiggle:hover > svg,
+  .pop {
+    animation: none;
+  }
 }
 
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium tracking-wide transition disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-50;
 }
 @utility btn-primary {
-  @apply btn bg-accent text-white shadow-[0_6px_18px_-8px_var(--accent)] hover:bg-accent-strong;
+  @apply btn bg-accent text-white shadow-[0_8px_20px_-8px_var(--accent)] hover:-translate-y-0.5 hover:bg-accent-strong;
 }
 @utility btn-ghost {
   @apply btn border border-border bg-surface hover:border-olive hover:bg-olive-soft;

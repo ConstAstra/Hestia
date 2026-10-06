@@ -40,7 +40,7 @@ export default function HomePage() {
         <div className="space-y-6">
           <div className="flex items-center gap-3 text-olive">
             <Laurel className="h-6 w-9" />
-            <p className="kicker">Gardienne du foyer</p>
+            <p className="kicker before:hidden">Gardienne du foyer</p>
             <Laurel className="h-6 w-9" flip />
           </div>
           <h1 className="font-display text-5xl leading-[1.05] md:text-7xl">

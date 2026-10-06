@@ -1,3 +1,4 @@
+import { LogoEmblem } from "@/components/LogoEmblem";
 import { useId } from "react";
 
 /** Frise en méandre (grecque), étirable à n'importe quelle largeur. */
@@ -58,48 +59,88 @@ export function HestiaMark({ className = "" }: { className?: string }) {
 
 export function Logo() {
   return (
-    <span className="flex items-center gap-2.5 text-foreground">
-      <HestiaMark className="h-8 w-8 text-olive" />
-      <span className="font-inscription text-xl tracking-[0.32em]">HESTIA</span>
+    <span className="flex items-center gap-2.5">
+      <LogoEmblem className="h-11 w-auto" />
+      <span className="wordmark text-[1.35rem]">HESTIA</span>
     </span>
   );
 }
 
-/* Icônes de navigation, au trait */
-const stroke = { fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+/*
+ * Icônes dessinées à la main, dans l'esprit illustré du logo : un trait d'encre
+ * légèrement irrégulier posé sur une tache de couleur organique (variable CSS --blob).
+ */
+type IconProps = { className?: string };
 
-export function IconSpark({ className = "" }: { className?: string }) {
+const ink = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.7,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
+const blob = { fill: "var(--blob, transparent)" };
+
+export function IconSpark({ className = "" }: IconProps) {
   return (
-    <svg aria-hidden viewBox="0 0 24 24" className={className}>
-      <path {...stroke} d="M12 3v4M12 17v4M3 12h4M17 12h4M12 8.5l1.2 2.3 2.3 1.2-2.3 1.2L12 15.5l-1.2-2.3L8.5 12l2.3-1.2z" />
+    <svg aria-hidden viewBox="0 0 32 32" className={className}>
+      <path {...blob} d="M6 9c2.5-4.5 9-6 14-4.5s8.5 5 8 10.5-3.5 10.5-9 11.5-11-.5-13.5-4.5S3.5 13.5 6 9z" />
+      <path {...ink} d="M13.6 7.2c3.3-.2 6.1 2.4 6.2 5.7.1 3.4-2.5 6.2-5.8 6.3-3.3.1-6-2.5-6.1-5.8-.1-3.3 2.4-6 5.7-6.2z" />
+      <path {...ink} strokeWidth={2.4} d="M18.6 17.8c1.6 1.8 3.4 3.7 5.2 5.5" />
+      <path {...ink} strokeWidth={1.4} d="M13.7 10.1c-.1 1.3 0 2.5.1 3.8M11.8 12.1c1.3-.1 2.5 0 3.8 0" />
     </svg>
   );
 }
 
-export function IconHeart({ className = "", filled = false }: { className?: string; filled?: boolean }) {
+export function IconCards({ className = "" }: IconProps) {
   return (
-    <svg aria-hidden viewBox="0 0 24 24" className={className}>
+    <svg aria-hidden viewBox="0 0 32 32" className={className}>
+      <path {...blob} d="M8.5 5.5c4.5-2 10.5-1.5 14.5 1.5s5.5 8.5 4 13-6 8-11.5 8.5-10-2-11.5-6.5 0-14.5 4.5-16.5z" />
+      <path {...ink} d="M7.4 10.6c2.4-.8 4.9-1.5 7.4-2.2.9 2.6 3.2 9.8 4.1 12.5-2.5.8-5 1.6-7.5 2.3-1.3-4.2-2.6-8.4-4-12.6z" />
+      <path {...ink} fill="var(--surface)" d="M14.4 8.5c2.7.1 5.4.4 8.1.6-.2 4.4-.5 8.8-.9 13.2-2.7-.1-5.4-.3-8.1-.5.2-4.4.5-8.9.9-13.3z" />
       <path
-        {...stroke}
-        fill={filled ? "currentColor" : "none"}
-        d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"
+        fill="currentColor"
+        d="M18.1 13.4c-.6-1-2.3-.7-2.3.6 0 1.3 2.1 2.6 2.1 2.6s2.1-1.2 2.2-2.4c.1-1.4-1.6-1.7-2-.8z"
       />
     </svg>
   );
 }
 
-export function IconColumns({ className = "" }: { className?: string }) {
+export function IconHeart({ className = "", filled = false }: IconProps & { filled?: boolean }) {
+  const heart =
+    "M16 25.2c-1.2-.8-9.2-5.6-9.6-11.2-.3-3.4 2.2-6 5.2-5.6 2 .2 3.4 1.6 4.3 3.2.9-1.7 2.5-3.2 4.6-3.3 3-.1 5.2 2.7 4.7 6-.8 5.3-7.9 10-9.2 10.9z";
+  if (filled) {
+    return (
+      <svg aria-hidden viewBox="0 0 32 32" className={className}>
+        <path fill="currentColor" d={heart} />
+        <path fill="none" stroke="#fff" strokeOpacity="0.55" strokeWidth="1.5" strokeLinecap="round" d="M10.8 12.6c.3-1.3 1.3-2.1 2.4-2.2" />
+      </svg>
+    );
+  }
   return (
-    <svg aria-hidden viewBox="0 0 24 24" className={className}>
-      <path {...stroke} d="M3 7l9-4 9 4M4 7h16M6 7v11M10 7v11M14 7v11M18 7v11M4 18h16M3 21h18" />
+    <svg aria-hidden viewBox="0 0 32 32" className={className}>
+      <path {...blob} d="M5 13c0-5 4.5-8.5 10-8.5S27 7 27.5 13s-3 11-8.5 12.5S5.5 24 5 19z" />
+      <path {...ink} d={heart} />
+      <path {...ink} strokeWidth={1.3} d="M10.6 12.6c.3-1.2 1.2-1.9 2.3-2" />
     </svg>
   );
 }
 
-export function IconClose({ className = "" }: { className?: string }) {
+export function IconBoard({ className = "" }: IconProps) {
   return (
-    <svg aria-hidden viewBox="0 0 24 24" className={className}>
-      <path {...stroke} strokeWidth={2.2} d="M6 6l12 12M18 6L6 18" />
+    <svg aria-hidden viewBox="0 0 32 32" className={className}>
+      <path {...blob} d="M7 7.5c3.5-3 11-3.5 15.5-1s6 9 4.5 13.5-6.5 7.5-12 7S5.5 23 4.5 18.5 3.5 10.5 7 7.5z" />
+      <path {...ink} d="M8.3 9.8c4.9-.5 9.9-1 14.8-1.5.3 4.9.7 9.7 1.1 14.6-4.9.5-9.8 1.1-14.6 1.6-.5-4.9-.9-9.8-1.3-14.7z" />
+      <path {...ink} strokeWidth={1.4} d="M12 15.3c2.8-.2 5.6-.5 8.4-.7M12.3 18.8c1.9-.2 3.7-.3 5.6-.5" />
+      <path fill="var(--accent)" stroke="currentColor" strokeWidth="1.2" d="M15.6 6.4c1-.4 2.2.1 2.5 1.1.4 1-.1 2.1-1.1 2.5-1 .4-2.1-.1-2.5-1.1-.4-1 .1-2.1 1.1-2.5z" />
+    </svg>
+  );
+}
+
+export function IconClose({ className = "" }: IconProps) {
+  return (
+    <svg aria-hidden viewBox="0 0 32 32" className={className}>
+      <path {...ink} strokeWidth={3} d="M9.5 9.8c4.2 4.1 8.4 8.3 12.8 12.6M22.4 9.4c-4.2 4.4-8.5 8.7-12.9 13" />
     </svg>
   );
 }

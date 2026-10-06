@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
-import { IconClose, IconColumns, IconHeart } from "@/components/Ornaments";
+import { IconClose, IconBoard, IconHeart } from "@/components/Ornaments";
 import { Visual } from "@/components/Visual";
 import {
   CATEGORY_LABELS,
@@ -136,14 +137,14 @@ export function SwipeClient() {
                 <SwipeCard key={`${top.kind}-${top.item.id}`} card={top} onDecide={decide} />
               </div>
               <div className="mt-6 flex items-center justify-center gap-5">
-                <button onClick={() => decide(false)} aria-label="Passer" className="grid h-16 w-16 place-items-center rounded-full border border-border bg-surface text-nope shadow-sm transition hover:scale-105 hover:border-olive">
-                  <IconClose className="h-6 w-6" />
+                <button onClick={() => decide(false)} aria-label="Passer" className="hover-wiggle grid h-16 w-16 place-items-center rounded-full bg-olive-soft text-olive shadow-sm transition hover:scale-110 active:scale-90">
+                  <IconClose className="h-8 w-8" />
                 </button>
-                <button onClick={saveTop} aria-label="Enregistrer dans un tableau" className="grid h-12 w-12 place-items-center rounded-full border border-border bg-surface text-gold shadow-sm transition hover:scale-105">
-                  <IconColumns className="h-5 w-5" />
+                <button onClick={saveTop} aria-label="Enregistrer dans un tableau" className="hover-wiggle grid h-12 w-12 place-items-center rounded-full bg-gold-soft text-gold shadow-sm transition hover:scale-110 active:scale-90">
+                  <IconBoard className="h-8 w-8 text-foreground" />
                 </button>
-                <button onClick={() => decide(true)} aria-label="J'aime" className="grid h-16 w-16 place-items-center rounded-full bg-like text-white shadow-[0_8px_20px_-8px_var(--accent)] transition hover:scale-105">
-                  <IconHeart filled className="h-7 w-7" />
+                <button onClick={() => decide(true)} aria-label="J'aime" className="hover-wiggle grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-like text-white shadow-[0_10px_24px_-8px_var(--like)] transition hover:scale-110 active:scale-90">
+                  <IconHeart filled className="h-9 w-9" />
                 </button>
               </div>
               <p className="mt-3 text-center text-xs text-muted">{deck.length} restant{deck.length > 1 ? "s" : ""}</p>
@@ -231,10 +232,10 @@ function SwipeCard({ card, onDecide }: { card: Card; onDecide: (liked: boolean) 
         className="pointer-events-none absolute inset-x-0 top-[22%] flex justify-center"
         style={{ opacity: likeOpacity, transform: `scale(${0.6 + likeOpacity * 0.5}) rotate(-8deg)` }}
       >
-        <IconHeart filled className="h-28 w-28 text-like drop-shadow-[0_6px_14px_rgba(0,0,0,0.25)] [&_path]:stroke-[#fffaf2] [&_path]:stroke-[1.2]" />
+        <IconHeart filled className="h-36 w-36 text-like drop-shadow-[0_8px_18px_rgba(0,0,0,0.25)]" />
       </div>
       <span
-        className="pointer-events-none absolute right-6 top-6 rotate-12 rounded-full border-2 border-nope bg-surface/80 px-4 py-1 font-inscription text-xl tracking-[0.25em] text-nope"
+        className="pointer-events-none absolute right-6 top-6 rotate-12 rounded-full border-2 border-nope bg-surface/80 px-4 py-1 font-display text-2xl text-nope"
         style={{ opacity: nopeOpacity }}
       >
         BOF
@@ -332,9 +333,14 @@ function Favorites({ mode, onSave }: { mode: SwipeKind; onSave: (items: NewBoard
       )}
 
       <div className="space-y-3">
-        <h2 className="font-display text-2xl font-semibold">
-          Vos coups de cœur {mode === "inspiration" ? "· ambiances" : "· produits"}
-        </h2>
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="font-display text-2xl font-semibold">
+            Vos coups de cœur {mode === "inspiration" ? "· ambiances" : "· produits"}
+          </h2>
+          <Link href="/coups-de-coeur" className="text-sm font-semibold text-accent hover:underline">
+            Tout voir et classer →
+          </Link>
+        </div>
         {(mode === "inspiration" ? inspirations.length : products.length) === 0 ? (
           <p className="text-sm text-muted">Swipez à droite pour retrouver ici ce qui vous plaît.</p>
         ) : (

@@ -1,13 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { AppShell } from "@/components/AppShell";
-// Polices auto-hébergées : Marcellus (inscriptions), Cormorant Garamond (titres), Jost (texte).
-import "@fontsource/marcellus/latin-400.css";
-import "@fontsource/cormorant-garamond/latin-500.css";
+// Polices auto-hébergées : DM Serif Display (titres, chaleureuse), Nunito Sans (texte, douce),
+// Cormorant Garamond (nom de marque, capitales classiques comme sur le logo).
+import "@fontsource/dm-serif-display/latin-400.css";
+import "@fontsource/dm-serif-display/latin-400-italic.css";
+import "@fontsource-variable/nunito-sans/index.css";
 import "@fontsource/cormorant-garamond/latin-600.css";
-import "@fontsource/cormorant-garamond/latin-500-italic.css";
-import "@fontsource/jost/latin-400.css";
-import "@fontsource/jost/latin-500.css";
-import "@fontsource/jost/latin-600.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
