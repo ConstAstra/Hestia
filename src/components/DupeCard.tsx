@@ -16,7 +16,7 @@ export function DupeCard({ dupe, verified, onSave }: { dupe: Dupe; verified?: bo
           <h4 className="font-semibold leading-snug">{dupe.productName}</h4>
           <p className="text-sm text-muted">{dupe.retailer}</p>
         </div>
-        <p className="font-display text-xl font-semibold text-accent-strong">{formatPrice(dupe.price)}</p>
+        <p className="font-heading text-xl font-semibold text-accent-strong">{formatPrice(dupe.price)}</p>
       </div>
       <p className="flex-1 text-sm text-muted">{dupe.whyItMatches}</p>
       <div className="flex flex-wrap items-center gap-2">

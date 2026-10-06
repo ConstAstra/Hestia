@@ -82,7 +82,7 @@ export default function HomePage() {
               <p className="kicker">
                 {["I", "II", "III"][index]} · {feature.kicker}
               </p>
-              <h2 className="font-display text-[1.7rem] leading-snug">{feature.title}</h2>
+              <h2 className="font-heading text-[1.7rem] leading-snug">{feature.title}</h2>
               <p className="flex-1 text-sm text-muted">{feature.text}</p>
               <span className="text-sm font-medium text-accent-strong">{feature.cta} →</span>
             </div>

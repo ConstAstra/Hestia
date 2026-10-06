@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { AppShell } from "@/components/AppShell";
-// Polices auto-hébergées : DM Serif Display (titres, chaleureuse), Nunito Sans (texte, douce),
+// Polices auto-hébergées : Instrument Serif (grands titres), Playfair Display (tous les autres textes),
 // Cormorant Garamond (nom de marque, capitales classiques comme sur le logo).
-import "@fontsource/dm-serif-display/latin-400.css";
-import "@fontsource/dm-serif-display/latin-400-italic.css";
-import "@fontsource-variable/nunito-sans/index.css";
+import "@fontsource/instrument-serif/latin-400.css";
+import "@fontsource/instrument-serif/latin-400-italic.css";
+import "@fontsource-variable/playfair-display/index.css";
+import "@fontsource-variable/playfair-display/wght-italic.css";
 import "@fontsource/cormorant-garamond/latin-600.css";
 import "./globals.css";
 

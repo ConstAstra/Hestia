@@ -54,7 +54,7 @@ export function AddToBoardDialog({ items, title = "Enregistrer dans un tableau",
     >
       <div className="p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-xl font-semibold">{title}</h2>
+          <h2 className="font-heading text-xl font-semibold">{title}</h2>
           <button onClick={onClose} className="rounded-full px-2 text-2xl leading-none text-muted hover:text-foreground" aria-label="Fermer">
             ×
           </button>

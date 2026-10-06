@@ -65,8 +65,8 @@
   --color-blush-soft: var(--blush-soft);
   --color-like: var(--like);
   --color-nope: var(--nope);
-  --font-sans: "Nunito Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-serif: "DM Serif Display", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Playfair Display Variable", Georgia, "Times New Roman", serif;
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
   --font-brand: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
 }
 
@@ -74,6 +74,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  /* Chiffres alignés : plus lisibles pour les prix et les compteurs */
+  font-variant-numeric: lining-nums;
 }
 
 ::selection {
@@ -81,11 +83,19 @@ body {
   color: var(--accent-strong);
 }
 
-/* Titres : DM Serif Display, une didone douce aux courbes généreuses */
+/* Grands titres : Instrument Serif, fine et étroite, à employer en grand */
 .font-display {
   font-family: var(--font-serif);
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
+  line-height: 1.02;
+}
+
+/* Titres secondaires, prix, intitulés : Playfair Display */
+.font-heading {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.005em;
 }
 
 /* Nom de marque, comme sur le logo : capitales classiques espacées */

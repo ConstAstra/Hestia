@@ -116,7 +116,7 @@ export function DupesClient() {
     <div className="space-y-10">
       <header className="max-w-2xl space-y-3">
         <p className="kicker">Dupes IA</p>
-        <h1 className="font-display text-4xl font-semibold leading-tight">Recréez une inspiration, dans votre budget</h1>
+        <h1 className="font-display text-5xl md:text-6xl leading-tight">Recréez une inspiration, dans votre budget</h1>
         <p className="text-muted">
           Enregistrez l&apos;épingle Pinterest qui vous plaît (capture d&apos;écran ou « Télécharger l&apos;image »), ajoutez
           si vous le souhaitez une photo de votre pièce, et laissez l&apos;IA dénicher les équivalents.
@@ -264,7 +264,7 @@ function Results({
       <div className="card space-y-5 p-6 md:p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl space-y-2">
-            <h2 className="font-display text-3xl font-semibold">L&apos;ambiance décryptée</h2>
+            <h2 className="font-display text-4xl">L&apos;ambiance décryptée</h2>
             <p className="text-muted">{result.ambianceSummary}</p>
           </div>
           <button onClick={onSaveAll} className="btn-primary">
@@ -297,7 +297,7 @@ function Results({
       {groups.map(([title, dupes]) =>
         dupes.length ? (
           <div key={title} className="space-y-4">
-            <h3 className="font-display text-2xl font-semibold">{title}</h3>
+            <h3 className="font-heading text-2xl font-semibold">{title}</h3>
             <div className="grid gap-4 md:grid-cols-2">
               {dupes.map((dupe) => (
                 <DupeCard key={dupe.url + dupe.productName} dupe={dupe} verified={verified.has(dupe.url)} onSave={() => onSave([{ kind: "dupe", dupe }])} />
@@ -309,7 +309,7 @@ function Results({
 
       {result.budgetTips.length > 0 && (
         <div className="card p-6">
-          <h3 className="mb-3 font-display text-2xl font-semibold">Astuces budget</h3>
+          <h3 className="mb-3 font-heading text-2xl font-semibold">Astuces budget</h3>
           <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted">
             {result.budgetTips.map((tip) => (
               <li key={tip}>{tip}</li>

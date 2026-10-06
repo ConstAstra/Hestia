@@ -45,7 +45,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <footer className="mx-auto w-full max-w-6xl px-4 pb-28 md:pb-10">
         <Meander className="text-gold/60" />
         <LogoStacked className="mx-auto mt-8 w-40 text-base" />
-        <p className="pt-4 text-center font-serif text-base italic text-muted">
+        <p className="pt-4 text-center text-base italic text-muted">
           Hestia, gardienne du foyer : la décoration qui vous ressemble.
         </p>
       </footer>

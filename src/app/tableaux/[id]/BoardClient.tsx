@@ -34,7 +34,7 @@ export function BoardClient() {
   if (!board) {
     return (
       <div className="space-y-4 py-16 text-center">
-        <p className="font-display text-2xl font-semibold">Ce tableau n&apos;existe pas (ou plus).</p>
+        <p className="font-heading text-2xl font-semibold">Ce tableau n&apos;existe pas (ou plus).</p>
         <Link href="/tableaux" className="btn-ghost">
           ← Retour aux tableaux
         </Link>
@@ -68,7 +68,7 @@ export function BoardClient() {
 
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="font-display text-4xl font-semibold">{board.name}</h1>
+          <h1 className="font-display text-5xl md:text-6xl">{board.name}</h1>
           {board.description && <p className="text-muted">{board.description}</p>}
           <p className="text-sm text-muted">
             {board.items.length} idée{board.items.length > 1 ? "s" : ""}
