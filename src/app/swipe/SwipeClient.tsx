@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
+import { IconClose, IconColumns, IconHeart } from "@/components/Ornaments";
 import { Visual } from "@/components/Visual";
 import {
   CATEGORY_LABELS,
@@ -72,7 +73,7 @@ export function SwipeClient() {
     <div className="space-y-8">
       <header className="space-y-4">
         <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Swipe</p>
+          <p className="kicker">Swipe</p>
           <h1 className="font-display text-4xl font-semibold">Ça vous plaît ?</h1>
           <p className="text-muted">Glissez à droite pour garder, à gauche pour passer. Au clavier : ← et →.</p>
         </div>
@@ -135,14 +136,14 @@ export function SwipeClient() {
                 <SwipeCard key={`${top.kind}-${top.item.id}`} card={top} onDecide={decide} />
               </div>
               <div className="mt-6 flex items-center justify-center gap-5">
-                <button onClick={() => decide(false)} aria-label="Passer" className="grid h-16 w-16 place-items-center rounded-full border border-border bg-surface text-2xl text-nope shadow-sm transition hover:scale-105">
-                  ✕
+                <button onClick={() => decide(false)} aria-label="Passer" className="grid h-16 w-16 place-items-center rounded-full border border-border bg-surface text-nope shadow-sm transition hover:scale-105 hover:border-olive">
+                  <IconClose className="h-6 w-6" />
                 </button>
-                <button onClick={saveTop} aria-label="Enregistrer dans un tableau" className="grid h-12 w-12 place-items-center rounded-full border border-border bg-surface text-lg shadow-sm transition hover:scale-105">
-                  ▦
+                <button onClick={saveTop} aria-label="Enregistrer dans un tableau" className="grid h-12 w-12 place-items-center rounded-full border border-border bg-surface text-gold shadow-sm transition hover:scale-105">
+                  <IconColumns className="h-5 w-5" />
                 </button>
-                <button onClick={() => decide(true)} aria-label="J'aime" className="grid h-16 w-16 place-items-center rounded-full bg-like text-2xl text-white shadow-sm transition hover:scale-105">
-                  ♥
+                <button onClick={() => decide(true)} aria-label="J'aime" className="grid h-16 w-16 place-items-center rounded-full bg-like text-white shadow-[0_8px_20px_-8px_var(--accent)] transition hover:scale-105">
+                  <IconHeart filled className="h-7 w-7" />
                 </button>
               </div>
               <p className="mt-3 text-center text-xs text-muted">{deck.length} restant{deck.length > 1 ? "s" : ""}</p>
@@ -225,10 +226,17 @@ function SwipeCard({ card, onDecide }: { card: Card; onDecide: (liked: boolean) 
       }}
     >
       <CardFace card={card} />
-      <span className="pointer-events-none absolute left-6 top-6 -rotate-12 rounded-xl border-4 border-like px-3 py-1 text-2xl font-black text-like" style={{ opacity: likeOpacity }}>
-        J&apos;AIME
-      </span>
-      <span className="pointer-events-none absolute right-6 top-6 rotate-12 rounded-xl border-4 border-nope px-3 py-1 text-2xl font-black text-nope" style={{ opacity: nopeOpacity }}>
+      {/* Cœur qui apparaît en glissant vers la droite */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-[22%] flex justify-center"
+        style={{ opacity: likeOpacity, transform: `scale(${0.6 + likeOpacity * 0.5}) rotate(-8deg)` }}
+      >
+        <IconHeart filled className="h-28 w-28 text-like drop-shadow-[0_6px_14px_rgba(0,0,0,0.25)] [&_path]:stroke-[#fffaf2] [&_path]:stroke-[1.2]" />
+      </div>
+      <span
+        className="pointer-events-none absolute right-6 top-6 rotate-12 rounded-full border-2 border-nope bg-surface/80 px-4 py-1 font-inscription text-xl tracking-[0.25em] text-nope"
+        style={{ opacity: nopeOpacity }}
+      >
         BOF
       </span>
     </div>
@@ -239,7 +247,7 @@ function CardFace({ card }: { card: Card }) {
   const palette = card.item.palette;
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-surface shadow-xl">
-      <div className="min-h-0 flex-1">
+      <div className="arch m-3 mb-0 min-h-0 flex-1">
         <Visual
           palette={palette}
           seed={card.item.id}

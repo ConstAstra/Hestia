@@ -18,6 +18,14 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
    Les coups de cœur alimentent un **profil déco**, qui indique les styles dominants.
 3. **Tableaux** (`/tableaux`) : des mood boards dans l'esprit de Pinterest, affichés en grille. On y épingle des photos personnelles, des notes de couleur, des coups de cœur et des dupes. Chaque tableau se renomme et se supprime.
 
+## Direction artistique
+
+La direction artistique s'inspire de la mythologie grecque, revue dans un esprit moderne : chaleureuse et élégante.
+
+- **Palette :** crème de marbre, terracotta d'amphore, olive, avec une touche d'ocre pour les ornements. Un mode sombre est prévu.
+- **Typographies, auto-hébergées :** Marcellus pour les inscriptions et le logo, Cormorant Garamond pour les titres, Jost pour le texte.
+- **Motifs :** l'emblème est la flamme d'Hestia sous une arche. Les images sont encadrées en arche, des frises en méandre et des rameaux de laurier ornent les pages, et les illustrations génératives font apparaître portiques et colonnes cannelées.
+
 ## Démarrer
 
 ```bash

@@ -1,5 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { AppShell } from "@/components/AppShell";
+// Polices auto-hébergées : Marcellus (inscriptions), Cormorant Garamond (titres), Jost (texte).
+import "@fontsource/marcellus/latin-400.css";
+import "@fontsource/cormorant-garamond/latin-500.css";
+import "@fontsource/cormorant-garamond/latin-600.css";
+import "@fontsource/cormorant-garamond/latin-500-italic.css";
+import "@fontsource/jost/latin-400.css";
+import "@fontsource/jost/latin-500.css";
+import "@fontsource/jost/latin-600.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,7 +21,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf6f0" },
+    { media: "(prefers-color-scheme: light)", color: "#f6efe3" },
     { media: "(prefers-color-scheme: dark)", color: "#1b1714" },
   ],
 };

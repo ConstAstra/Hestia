@@ -26,7 +26,7 @@ export function BoardsClient() {
   return (
     <div className="space-y-10">
       <header className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Tableaux</p>
+        <p className="kicker">Tableaux</p>
         <h1 className="font-display text-4xl font-semibold">Vos mood boards</h1>
         <p className="text-muted">Un tableau par pièce, par projet ou par envie : épinglez-y tout ce qui vous inspire.</p>
       </header>

@@ -115,7 +115,7 @@ export function DupesClient() {
   return (
     <div className="space-y-10">
       <header className="max-w-2xl space-y-3">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Dupes IA</p>
+        <p className="kicker">Dupes IA</p>
         <h1 className="font-display text-4xl font-semibold leading-tight">Recréez une inspiration, dans votre budget</h1>
         <p className="text-muted">
           Enregistrez l&apos;épingle Pinterest qui vous plaît (capture d&apos;écran ou « Télécharger l&apos;image »), ajoutez
@@ -285,7 +285,7 @@ function Results({
             <span className="text-muted">Budget : {formatPrice(budget)}</span>
           </div>
           <div className="h-2.5 overflow-hidden rounded-full bg-surface-muted">
-            <div className={`h-full rounded-full ${total > budget ? "bg-nope" : "bg-sage"}`} style={{ width: `${ratio * 100}%` }} />
+            <div className={`h-full rounded-full ${total > budget ? "bg-nope" : "bg-olive"}`} style={{ width: `${ratio * 100}%` }} />
           </div>
         </div>
         <div className="rounded-2xl bg-surface-muted p-5">

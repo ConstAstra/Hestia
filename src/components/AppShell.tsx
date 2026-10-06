@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, Suspense, useEffect, useState } from "react";
+import { IconColumns, IconHeart, IconSpark, Logo, Meander } from "@/components/Ornaments";
 import { STORAGE_FULL_EVENT, useRehydrateOnMount } from "@/lib/store";
 
 const LINKS = [
-  { href: "/dupes", label: "Dupes IA", icon: "✦" },
-  { href: "/swipe", label: "Swipe", icon: "♥" },
-  { href: "/tableaux", label: "Tableaux", icon: "▦" },
+  { href: "/dupes", label: "Dupes IA", Icon: IconSpark },
+  { href: "/swipe", label: "Swipe", Icon: IconHeart },
+  { href: "/tableaux", label: "Tableaux", Icon: IconColumns },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -25,8 +26,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-full flex-col">
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="font-display text-2xl font-semibold text-foreground">
-            Hestia<span className="text-accent">.</span>
+          <Link href="/" aria-label="Hestia, accueil">
+            <Logo />
           </Link>
           <nav className="hidden gap-1 md:flex" aria-label="Navigation principale">
             <Suspense fallback={<NavLinks variant="desktop" pathname="" />}>
@@ -36,7 +37,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-6 md:pb-12">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-12 pt-6">{children}</main>
+
+      <footer className="mx-auto w-full max-w-6xl px-4 pb-28 md:pb-10">
+        <Meander className="text-gold/60" />
+        <p className="pt-4 text-center font-serif text-base italic text-muted">
+          Hestia, gardienne du foyer : la décoration qui vous ressemble.
+        </p>
+      </footer>
 
       {storageFull && (
         <div role="alert" className="fixed inset-x-4 bottom-24 z-40 mx-auto flex max-w-md items-start gap-3 rounded-2xl bg-foreground p-4 text-sm text-background shadow-xl md:bottom-6">
@@ -93,7 +101,7 @@ function NavLinks({ variant, pathname }: { variant: Variant; pathname: string })
           isActive(link.href) ? "text-accent" : "text-muted"
         }`}
       >
-        <span aria-hidden className="text-lg leading-none">{link.icon}</span>
+        <link.Icon className="h-6 w-6" />
         {link.label}
       </Link>
     ),

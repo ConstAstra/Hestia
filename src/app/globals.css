@@ -1,34 +1,42 @@
 @import "tailwindcss";
 
+/*
+ * Direction artistique « Hestia » : la mythologie grecque, version moderne.
+ * Crème de marbre, terracotta d'amphore, olivier ; ornements en méandre.
+ */
 :root {
-  --background: #faf6f0;
-  --surface: #ffffff;
-  --surface-muted: #f2ebe1;
-  --foreground: #2b2420;
-  --muted: #7a6d63;
-  --border: #e6dccf;
-  --accent: #b5543a;
-  --accent-strong: #973f28;
-  --accent-soft: #f6e2d8;
-  --sage: #6f7d5c;
-  --like: #3f8f5a;
-  --nope: #c2463b;
+  --background: #f6efe3;
+  --surface: #fffaf2;
+  --surface-muted: #efe4d3;
+  --foreground: #2f2620;
+  --muted: #7b6b5d;
+  --border: #e3d5c1;
+  --accent: #b4532f;
+  --accent-strong: #8f3d20;
+  --accent-soft: #f3dccf;
+  --olive: #6b6e3a;
+  --olive-soft: #e6e3c9;
+  --gold: #b98b3e;
+  --like: #b4532f;
+  --nope: #6b6e3a;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1b1714;
-    --surface: #25201c;
-    --surface-muted: #2f2924;
-    --foreground: #f3ebe2;
-    --muted: #b3a597;
-    --border: #3d352f;
-    --accent: #e0805f;
-    --accent-strong: #f09a7b;
-    --accent-soft: #3d2a22;
-    --sage: #a3b18a;
-    --like: #5fbf7f;
-    --nope: #ef6b5f;
+    --background: #1d1814;
+    --surface: #27201a;
+    --surface-muted: #312820;
+    --foreground: #f3e9da;
+    --muted: #b9a893;
+    --border: #43372c;
+    --accent: #d9764f;
+    --accent-strong: #ec9270;
+    --accent-soft: #43261b;
+    --olive: #a7ab6c;
+    --olive-soft: #34331f;
+    --gold: #d6ad62;
+    --like: #d9764f;
+    --nope: #a7ab6c;
   }
 }
 
@@ -42,11 +50,14 @@
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
   --color-accent-soft: var(--accent-soft);
-  --color-sage: var(--sage);
+  --color-olive: var(--olive);
+  --color-olive-soft: var(--olive-soft);
+  --color-gold: var(--gold);
   --color-like: var(--like);
   --color-nope: var(--nope);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-sans: "Jost", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Cormorant Garamond", "Iowan Old Style", Palatino, Georgia, serif;
+  --font-inscription: "Marcellus", "Cormorant Garamond", Georgia, serif;
 }
 
 body {
@@ -55,25 +66,46 @@ body {
   font-family: var(--font-sans);
 }
 
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* Titres : garalde élégante */
 .font-display {
   font-family: var(--font-serif);
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+/* Petites capitales gravées, comme une inscription sur un fronton */
+.kicker {
+  font-family: var(--font-inscription);
+  font-size: 0.78rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium tracking-wide transition disabled:cursor-not-allowed disabled:opacity-50;
 }
 @utility btn-primary {
-  @apply btn bg-accent text-white hover:bg-accent-strong;
+  @apply btn bg-accent text-white shadow-[0_6px_18px_-8px_var(--accent)] hover:bg-accent-strong;
 }
 @utility btn-ghost {
-  @apply btn border border-border bg-surface hover:bg-surface-muted;
+  @apply btn border border-border bg-surface hover:border-olive hover:bg-olive-soft;
 }
 @utility card {
-  @apply rounded-3xl border border-border bg-surface;
+  @apply rounded-[1.75rem] border border-border bg-surface shadow-[0_1px_0_0_var(--border)];
 }
 @utility input {
   @apply w-full rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm outline-none transition focus:border-accent;
+}
+/* Cadre en arche, motif des portiques et des niches antiques */
+@utility arch {
+  border-radius: 999px 999px 1.25rem 1.25rem;
+  overflow: hidden;
 }
 
 /* Grille façon Pinterest */
