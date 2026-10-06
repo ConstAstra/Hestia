@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf6f0;
+  --surface: #ffffff;
+  --surface-muted: #f2ebe1;
+  --foreground: #2b2420;
+  --muted: #7a6d63;
+  --border: #e6dccf;
+  --accent: #b5543a;
+  --accent-strong: #973f28;
+  --accent-soft: #f6e2d8;
+  --sage: #6f7d5c;
+  --like: #3f8f5a;
+  --nope: #c2463b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1b1714;
+    --surface: #25201c;
+    --surface-muted: #2f2924;
+    --foreground: #f3ebe2;
+    --muted: #b3a597;
+    --border: #3d352f;
+    --accent: #e0805f;
+    --accent-strong: #f09a7b;
+    --accent-soft: #3d2a22;
+    --sage: #a3b18a;
+    --like: #5fbf7f;
+    --nope: #ef6b5f;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-sage: var(--sage);
+  --color-like: var(--like);
+  --color-nope: var(--nope);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-accent text-white hover:bg-accent-strong;
+}
+@utility btn-ghost {
+  @apply btn border border-border bg-surface hover:bg-surface-muted;
+}
+@utility card {
+  @apply rounded-3xl border border-border bg-surface;
+}
+@utility input {
+  @apply w-full rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm outline-none transition focus:border-accent;
+}
+
+/* Grille façon Pinterest */
+.masonry {
+  column-gap: 1rem;
+  columns: 2 160px;
+}
+@media (min-width: 768px) {
+  .masonry {
+    columns: 4 200px;
+  }
+}
+.masonry > * {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
