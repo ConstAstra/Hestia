@@ -13,6 +13,15 @@
   font-display: swap;
 }
 
+/* Oranienbaum (Oleg Pospelov et Jovanny Lemonad, SIL OFL 1.1), servie telle quelle. */
+@font-face {
+  font-family: "Oranienbaum";
+  src: url("/fonts/oranienbaum/Oranienbaum.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /*
  * Direction artistique « Hestia » : la mythologie grecque, version moderne et joyeuse.
  * Fond terracotta clair, cartes crème, olive, relevés de safran et de rose poudré :
@@ -78,9 +87,14 @@
   --color-blush-soft: var(--blush-soft);
   --color-like: var(--like);
   --color-nope: var(--nope);
-  --font-sans: "Playfair Display Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Oranienbaum", Georgia, "Times New Roman", serif;
   --font-serif: "Roman SD", "Cormorant Garamond", Georgia, serif;
   --font-brand: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+}
+
+/* Oranienbaum est une didone fine : un corps un peu plus grand garde le texte confortable. */
+html {
+  font-size: 106.25%;
 }
 
 body {
@@ -89,6 +103,8 @@ body {
   font-family: var(--font-sans);
   /* Chiffres alignés : plus lisibles pour les prix et les compteurs */
   font-variant-numeric: lining-nums;
+  /* Une seule graisse, pas d'italique : on interdit au navigateur d'en fabriquer de fausses. */
+  font-synthesis: none;
 }
 
 ::selection {
@@ -109,11 +125,11 @@ body {
   font-style: normal;
 }
 
-/* Titres secondaires, prix, intitulés : Playfair Display */
+/* Titres secondaires, prix, intitulés : Oranienbaum, mis en valeur par la taille */
 .font-heading {
   font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  font-weight: 400;
+  letter-spacing: 0.005em;
 }
 
 /* Nom de marque, comme sur le logo : capitales classiques espacées */
@@ -136,8 +152,8 @@ body {
   align-items: center;
   gap: 0.6rem;
   color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }

@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { AppShell } from "@/components/AppShell";
-// Polices : Roman SD (titres, déclarée dans globals.css), Playfair Display (tous les autres textes),
+// Polices : Roman SD (titres) et Oranienbaum (texte courant), déclarées dans globals.css ;
 // Cormorant Garamond (nom de marque, capitales classiques comme sur le logo).
-import "@fontsource-variable/playfair-display/index.css";
-import "@fontsource-variable/playfair-display/wght-italic.css";
 import "@fontsource/cormorant-garamond/latin-600.css";
 import "./globals.css";
 
