@@ -168,7 +168,7 @@ export function FavoritesClient() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-2">
           <p className="kicker">Coups de cœur</p>
-          <h1 className="font-display text-3xl md:text-5xl">Tout ce que vous avez aimé</h1>
+          <h1 className="font-display text-4xl md:text-6xl">Tout ce que vous avez aimé</h1>
           <p className="text-muted">
             {allEntries.length} coup{allEntries.length > 1 ? "s" : ""} de cœur. Rangez-les dans vos propres catégories et
             classez-les comme bon vous semble.

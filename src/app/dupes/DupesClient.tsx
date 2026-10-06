@@ -116,7 +116,7 @@ export function DupesClient() {
     <div className="space-y-10">
       <header className="max-w-2xl space-y-3">
         <p className="kicker">Dupes IA</p>
-        <h1 className="font-display text-3xl md:text-5xl leading-tight">Recréez une inspiration, dans votre budget</h1>
+        <h1 className="font-display text-4xl md:text-6xl leading-tight">Recréez une inspiration, dans votre budget</h1>
         <p className="text-muted">
           Enregistrez l&apos;épingle Pinterest qui vous plaît (capture d&apos;écran ou « Télécharger l&apos;image »), ajoutez
           si vous le souhaitez une photo de votre pièce, et laissez l&apos;IA dénicher les équivalents.

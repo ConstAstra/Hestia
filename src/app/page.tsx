@@ -43,7 +43,7 @@ export default function HomePage() {
             <p className="kicker before:hidden">Gardienne du foyer</p>
             <Laurel className="h-6 w-9" flip />
           </div>
-          <h1 className="font-display text-[2.1rem] leading-[1.12] md:text-6xl">
+          <h1 className="font-display text-[2.6rem] leading-[1.05] md:text-7xl">
             Le foyer de vos rêves, <em className="font-medium text-accent">sans le prix des rêves.</em>
           </h1>
           <p className="max-w-lg text-lg text-muted">

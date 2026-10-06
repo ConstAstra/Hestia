@@ -68,7 +68,7 @@ export function BoardClient() {
 
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="font-display text-3xl md:text-5xl">{board.name}</h1>
+          <h1 className="font-display text-4xl md:text-6xl">{board.name}</h1>
           {board.description && <p className="text-muted">{board.description}</p>}
           <p className="text-sm text-muted">
             {board.items.length} idée{board.items.length > 1 ? "s" : ""}

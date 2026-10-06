@@ -75,7 +75,7 @@ export function SwipeClient() {
       <header className="space-y-4">
         <div className="space-y-2">
           <p className="kicker">Swipe</p>
-          <h1 className="font-display text-3xl md:text-5xl">Ça vous plaît ?</h1>
+          <h1 className="font-display text-4xl md:text-6xl">Ça vous plaît ?</h1>
           <p className="text-muted">Glissez à droite pour garder, à gauche pour passer. Au clavier : ← et →.</p>
         </div>
         <div className="inline-flex rounded-full border border-border bg-surface p-1" role="tablist">

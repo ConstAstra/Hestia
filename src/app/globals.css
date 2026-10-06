@@ -1,16 +1,19 @@
 @import "tailwindcss";
 
 /*
- * Roman SD, de Steve Deffeyes (freeware, voir public/fonts/roman-sd/_Read_Me.txt).
- * La licence interdit de redistribuer un fichier modifié : le .ttf est servi tel
- * quel, sans conversion ni sous-ensemble.
+ * Edensor FREE (Wahyu Setiya Rahmawan, FactoryType), servie telle quelle — licence à
+ * vérifier, voir public/fonts/edensor/LICENCE-A-VERIFIER.txt.
+ * Cette version ne contient que les lettres sans accent et les chiffres (et affiche
+ * les lettres accentuées sans leur accent) : on la limite à ces caractères, et les
+ * accents comme la ponctuation sont fournis par Oranienbaum, au dessin très proche.
  */
 @font-face {
-  font-family: "Roman SD";
-  src: url("/fonts/roman-sd/Roman_SD.ttf") format("truetype");
+  font-family: "Edensor";
+  src: url("/fonts/edensor/Edensor-FREE.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0020, U+0030-0039, U+0041-005A, U+0061-007A;
 }
 
 /* Oranienbaum (Oleg Pospelov et Jovanny Lemonad, SIL OFL 1.1), servie telle quelle. */
@@ -88,7 +91,7 @@
   --color-like: var(--like);
   --color-nope: var(--nope);
   --font-sans: "Oranienbaum", Georgia, "Times New Roman", serif;
-  --font-serif: "Roman SD", "Cormorant Garamond", Georgia, serif;
+  --font-serif: "Edensor", "Oranienbaum", Georgia, serif;
   --font-brand: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
 }
 
@@ -112,15 +115,14 @@ body {
   color: var(--accent-strong);
 }
 
-/* Titres : Roman SD, capitales lapidaires dessinées à la plume */
+/* Titres : Edensor, didone fine et ample (accents et ponctuation en Oranienbaum) */
 .font-display {
   font-family: var(--font-serif);
   font-weight: 400;
-  letter-spacing: 0.03em;
-  word-spacing: -0.15em;
-  line-height: 1.12;
+  letter-spacing: 0;
+  line-height: 1.08;
 }
-/* Roman SD n'a pas d'italique : la mise en valeur passe par la couleur. */
+/* Pas d'italique dans Edensor : la mise en valeur passe par la couleur. */
 .font-display em {
   font-style: normal;
 }

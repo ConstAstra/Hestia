@@ -1,0 +1,11 @@
+Edensor FREE — Wahyu Setiya Rahmawan / FactoryType (https://www.factory738.com/)
+
+Le fichier ne contient aucune licence explicite (mention « Freebies »). Les versions
+« FREE » de cette fonderie sont des versions allégées, généralement réservées à un
+usage personnel : vérifier les conditions sur factory738.com et, si nécessaire,
+acquérir une licence commerciale (web) avant toute mise en ligne publique.
+
+La version complète inclut accents et ponctuation ; dans l'application, ces caractères
+sont pour l'instant fournis par Oranienbaum (voir src/app/globals.css).
+
+Fichier servi tel quel, sans modification.
