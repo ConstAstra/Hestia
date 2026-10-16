@@ -105,6 +105,18 @@ export interface Dupe {
   retailer: string;
   price: number;
   url: string;
+  /** Référence de l'enseigne, recopiée de la fiche produit. */
+  reference?: string;
+  /** Dimensions, matière, coloris… tels qu'indiqués sur la fiche. */
+  details?: string;
+  material?: string;
+  color?: string;
+  /** En ligne, en magasin, délai de livraison. */
+  availability?: string;
+  /** Fiche produit ouverte et lue par Hestia pendant la recherche. */
+  verified?: boolean;
+  /** Lien d'achat via Hestia (/acheter…), qui porte l'affiliation. */
+  buyUrl?: string;
   whyItMatches: string;
   /** "essentiel" = indispensable pour l'ambiance ; "bonus" = si le budget le permet. */
   priority: "essentiel" | "bonus";

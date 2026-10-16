@@ -42,7 +42,7 @@ export function DupesClient() {
   const [log, setLog] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<DupesResult | null>(null);
-  const [verified, setVerified] = useState<Set<string>>(new Set());
+  const [discarded, setDiscarded] = useState(0);
   const [saving, setSaving] = useState<NewBoardItem[] | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -117,7 +117,7 @@ export function DupesClient() {
           if (event.type === "error") setError(event.message);
           if (event.type === "result") {
             setResult(event.result);
-            setVerified(new Set(event.verifiedUrls));
+            setDiscarded(event.discarded);
           }
         }
       }
@@ -280,7 +280,7 @@ export function DupesClient() {
         </section>
       )}
 
-      {result && <Results result={result} budget={budget} verified={verified} onSave={setSaving} onSaveAll={saveAll} />}
+      {result && <Results result={result} budget={budget} discarded={discarded} onSave={setSaving} onSaveAll={saveAll} />}
 
       <AddToBoardDialog items={saving} onClose={() => setSaving(null)} />
     </div>
@@ -290,13 +290,13 @@ export function DupesClient() {
 function Results({
   result,
   budget,
-  verified,
+  discarded,
   onSave,
   onSaveAll,
 }: {
   result: DupesResult;
   budget: number;
-  verified: Set<string>;
+  discarded: number;
   onSave: (items: NewBoardItem[]) => void;
   onSaveAll: () => void;
 }) {
@@ -330,10 +330,13 @@ function Results({
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="font-medium">Total : {formatPrice(total)}</span>
-            <span className="text-muted">Budget : {formatPrice(budget)}</span>
+            <span className={total > budget ? "font-medium text-accent-strong" : "text-muted"}>
+              Budget : {formatPrice(budget)}
+              {total > budget && ` · dépassé de ${formatPrice(total - budget)}`}
+            </span>
           </div>
           <div className="h-2.5 overflow-hidden rounded-full bg-surface-muted">
-            <div className={`h-full rounded-full ${total > budget ? "bg-nope" : "bg-olive"}`} style={{ width: `${ratio * 100}%` }} />
+            <div className={`h-full rounded-full ${total > budget ? "bg-accent" : "bg-olive"}`} style={{ width: `${ratio * 100}%` }} />
           </div>
         </div>
         <div className="rounded-2xl bg-surface-muted p-5">
@@ -342,13 +345,22 @@ function Results({
         </div>
       </div>
 
+      <p className="flex items-start gap-2 rounded-2xl bg-olive-soft/60 px-4 py-3 text-sm">
+        <span aria-hidden>✓</span>
+        <span>
+          Chaque produit a été trouvé en ligne par Hestia, avec sa référence et son prix relevés sur la fiche de l&apos;enseigne.
+          {discarded > 0 &&
+            ` ${discarded} proposition${discarded > 1 ? "s" : ""} non confirmée${discarded > 1 ? "s" : ""} en ligne ${discarded > 1 ? "ont" : "a"} été écartée${discarded > 1 ? "s" : ""}.`}
+        </span>
+      </p>
+
       {groups.map(([title, dupes]) =>
         dupes.length ? (
           <div key={title} className="space-y-4">
             <h3 className="font-display text-2xl">{title}</h3>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {dupes.map((dupe) => (
-                <DupeCard key={dupe.url + dupe.productName} dupe={dupe} verified={verified.has(dupe.url)} onSave={() => onSave([{ kind: "dupe", dupe }])} />
+                <DupeCard key={dupe.url + dupe.productName} dupe={dupe} onSave={() => onSave([{ kind: "dupe", dupe }])} />
               ))}
             </div>
           </div>
@@ -368,7 +380,8 @@ function Results({
 
       <p className="text-xs text-muted">
         Les prix et disponibilités proviennent de recherches web au moment de la demande et peuvent avoir changé. Vérifiez
-        toujours la fiche produit avant d&apos;acheter.
+        toujours la fiche produit avant d&apos;acheter. Les liens « Acheter via Hestia » peuvent être des liens affiliés : Hestia
+        perçoit alors une petite commission, sans aucun surcoût pour vous.
       </p>
     </section>
   );

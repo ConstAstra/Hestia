@@ -5,12 +5,16 @@ import type {
   BetaTool,
   BetaToolUseBlock,
 } from "@anthropic-ai/sdk/resources/beta/messages/messages";
+import { hestiaBuyLink } from "./affiliate";
 import {
   DupesResultSchema,
   type DupesRequest,
   type DupesStreamEvent,
   type ImageInput,
 } from "../dupes-schema";
+import type { z } from "zod";
+
+type DupesResult = z.infer<typeof DupesResultSchema>;
 
 const MODEL = "claude-opus-5-5";
 const MAX_TURNS = 8;
@@ -22,7 +26,13 @@ Méthode :
 2. Si une photo de la pièce de l'utilisateur est fournie, observe-la : volumes, lumière, sol, murs, meubles déjà présents à conserver. Ne propose pas ce que la personne possède déjà ; adapte les tailles à l'espace visible.
 3. Pour chaque pièce, cherche sur le web un équivalent actuellement disponible chez des enseignes livrant en France (par exemple IKEA, Maisons du Monde, La Redoute Intérieurs, AM.PM, H&M Home, Zara Home, Leroy Merlin, Castorama, Conforama, Made in Design, Westwing, Bocage, Fnac-Darty, Amazon, Etsy). Le dupe doit s'inspirer directement de l'objet de l'inspiration : même silhouette, même matière ou un rendu proche, même teinte.
 4. Respecte le budget total : la somme des prix des dupes ne doit pas le dépasser. Classe en « essentiel » ce qui porte l'ambiance et en « bonus » le reste ; si le budget est serré, privilégie les essentiels et explique les arbitrages.
-5. N'invente jamais un produit, un prix ni une URL. N'utilise que des pages produit que tu as vues dans tes résultats de recherche. Si tu ne trouves pas de dupe fiable pour une pièce, omets-la et mentionne-la dans les conseils.
+5. Si l'utilisateur a choisi des couleurs ou des matières, chaque produit doit les respecter (ou en avoir l'aspect fidèle) : vérifie-le sur la fiche.
+6. Produits réels uniquement. N'invente jamais un produit, une référence, un prix ni une URL. Pour chaque dupe retenu :
+   - ouvre la page produit elle-même avec web_fetch (pas une page de catégorie ni un résultat de recherche) ;
+   - recopie depuis cette page le nom exact, la référence de l'enseigne (numéro d'article, SKU, réf.) — laisse vide si la fiche n'en affiche pas —, le prix affiché, les dimensions, la matière et le coloris ;
+   - indique où le trouver : en ligne, en magasin, délai de livraison si la fiche le précise ;
+   - écarte le produit s'il est indisponible, en rupture ou si la page ne charge pas.
+   Si tu ne trouves pas de dupe fiable pour une pièce, omets-la et mentionne-la dans les conseils. Hestia écarte automatiquement tout produit dont la page n'a pas été vue pendant la recherche.
 
 Quand tes recherches sont terminées, appelle l'outil submit_dupes une seule fois avec le résultat complet, rédigé en français, sur un ton chaleureux et précis. Les prix sont en euros.`;
 
@@ -63,14 +73,31 @@ const SUBMIT_TOOL: BetaTool = {
         items: {
           type: "object",
           additionalProperties: false,
-          required: ["originalItem", "category", "productName", "retailer", "price", "url", "whyItMatches", "priority"],
+          required: [
+            "originalItem", "category", "productName", "retailer", "price", "url",
+            "reference", "details", "material", "color", "availability", "whyItMatches", "priority",
+          ],
           properties: {
             originalItem: { type: "string", description: "L'objet tel qu'il apparaît dans l'inspiration." },
             category: { type: "string" },
-            productName: { type: "string" },
+            productName: { type: "string", description: "Nom exact du produit, tel qu'affiché sur la fiche." },
             retailer: { type: "string" },
-            price: { type: "number", description: "Prix constaté en euros." },
-            url: { type: "string", description: "URL de la page produit, vue dans les résultats de recherche." },
+            price: { type: "number", description: "Prix affiché sur la fiche, en euros." },
+            url: { type: "string", description: "URL de la page produit, ouverte avec web_fetch." },
+            reference: {
+              type: "string",
+              description: "Référence de l'enseigne (n° d'article, SKU), recopiée de la fiche. Chaîne vide si la fiche n'en affiche pas.",
+            },
+            details: {
+              type: "string",
+              description: "Informations de la fiche en une ou deux phrases : dimensions, composition, finition, entretien.",
+            },
+            material: { type: "string", description: "Matière principale indiquée sur la fiche." },
+            color: { type: "string", description: "Coloris indiqué sur la fiche." },
+            availability: {
+              type: "string",
+              description: "Où le trouver : « En ligne », « En ligne et en magasin », délai de livraison si indiqué.",
+            },
             whyItMatches: { type: "string", description: "En une phrase, pourquoi ce produit reproduit l'original." },
             priority: { type: "string", enum: ["essentiel", "bonus"] },
           },
@@ -119,15 +146,53 @@ function buildUserContent(request: DupesRequest) {
   return content;
 }
 
+/** Forme comparable d'une URL : sans « www », sans ancre ni barre finale. */
+function normalizeUrl(raw: string): string | null {
+  try {
+    const url = new URL(raw);
+    url.hash = "";
+    return `${url.hostname.toLowerCase().replace(/^www\./, "")}${url.pathname.replace(/\/+$/, "")}${url.search}`;
+  } catch {
+    return null;
+  }
+}
+
+interface SeenUrls {
+  /** Pages vues dans les résultats de recherche. */
+  searched: Set<string>;
+  /** Pages ouvertes et lues (web_fetch) : la preuve la plus forte. */
+  fetched: Set<string>;
+}
+
 /** Relève les URLs vues dans les résultats de recherche / de lecture de pages. */
-function collectUrls(blocks: BetaContentBlock[], into: Set<string>) {
+function collectUrls(blocks: BetaContentBlock[], into: SeenUrls) {
+  const add = (set: Set<string>, url: string) => {
+    const normalized = normalizeUrl(url);
+    if (normalized) set.add(normalized);
+  };
   for (const block of blocks) {
     if (block.type === "web_search_tool_result" && Array.isArray(block.content)) {
-      for (const result of block.content) into.add(result.url);
+      for (const result of block.content) add(into.searched, result.url);
     } else if (block.type === "web_fetch_tool_result" && block.content.type === "web_fetch_result") {
-      into.add(block.content.url);
+      add(into.fetched, block.content.url);
     }
   }
+}
+
+/**
+ * Ne garde que les produits réellement rencontrés en ligne pendant la recherche,
+ * leur attache leur lien d'achat Hestia et recalcule le total.
+ */
+function verifyDupes(result: DupesResult, seen: SeenUrls) {
+  const dupes = result.dupes.flatMap((dupe) => {
+    const key = normalizeUrl(dupe.url);
+    if (!key) return [];
+    const verified = seen.fetched.has(key);
+    if (!verified && !seen.searched.has(key)) return [];
+    return [{ ...dupe, reference: dupe.reference.trim(), verified, buyUrl: hestiaBuyLink(dupe.url, dupe.retailer) }];
+  });
+  const totalPrice = Math.round(dupes.reduce((sum, dupe) => sum + dupe.price, 0) * 100) / 100;
+  return { result: { ...result, dupes, totalPrice }, discarded: result.dupes.length - dupes.length };
 }
 
 function statusFor(block: BetaContentBlock): string | null {
@@ -153,7 +218,7 @@ export async function findDupes(
 ): Promise<void> {
   const client = new Anthropic();
   const messages: BetaMessageParam[] = [{ role: "user", content: buildUserContent(request) }];
-  const seenUrls = new Set<string>();
+  const seenUrls: SeenUrls = { searched: new Set(), fetched: new Set() };
   let nudged = false;
 
   emit({ type: "status", message: "Analyse de votre inspiration…" });
@@ -174,7 +239,7 @@ export async function findDupes(
             max_uses: 15,
             user_location: { type: "approximate", country: "FR" },
           },
-          { type: "web_fetch_20260209", name: "web_fetch", max_uses: 8 },
+          { type: "web_fetch_20260209", name: "web_fetch", max_uses: 14 },
           SUBMIT_TOOL,
         ],
         tool_choice: { type: "auto" },
@@ -210,7 +275,15 @@ export async function findDupes(
         emit({ type: "error", message: "La réponse d'Hestia était incomplète. Merci de réessayer." });
         return;
       }
-      emit({ type: "result", result: parsed.data, verifiedUrls: [...seenUrls] });
+      const { result, discarded } = verifyDupes(parsed.data, seenUrls);
+      if (parsed.data.dupes.length > 0 && result.dupes.length === 0) {
+        emit({
+          type: "error",
+          message: "Hestia n'a pas pu confirmer de produits réellement en vente cette fois-ci. Merci de réessayer.",
+        });
+        return;
+      }
+      emit({ type: "result", result, discarded });
       return;
     }
 

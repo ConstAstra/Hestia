@@ -53,8 +53,23 @@ export const DupeSchema = z.object({
   retailer: z.string(),
   price: z.number().nonnegative(),
   url: z.string().url(),
+  /** Référence de l'enseigne (SKU, n° d'article), recopiée de la fiche ; vide si la fiche n'en affiche pas. */
+  reference: z.string(),
+  /** Informations de la fiche : dimensions, matière, coloris, entretien… */
+  details: z.string(),
+  material: z.string(),
+  color: z.string(),
+  /** Où le trouver : en ligne, en magasin, délai de livraison constaté. */
+  availability: z.string(),
   whyItMatches: z.string(),
   priority: z.enum(["essentiel", "bonus"]),
+});
+
+/** Dupe tel qu'envoyé au navigateur : vérifié côté serveur et doté de son lien d'achat Hestia. */
+export const VerifiedDupeSchema = DupeSchema.extend({
+  /** Page produit ouverte et lue pendant la recherche (et non seulement vue dans un résultat). */
+  verified: z.boolean(),
+  buyUrl: z.string(),
 });
 
 export const DupesResultSchema = z.object({
@@ -71,8 +86,8 @@ export type DupesStreamEvent =
   | { type: "status"; message: string }
   | {
       type: "result";
-      result: z.infer<typeof DupesResultSchema>;
-      /** URLs effectivement vues par l'IA pendant ses recherches. */
-      verifiedUrls: string[];
+      result: Omit<z.infer<typeof DupesResultSchema>, "dupes"> & { dupes: z.infer<typeof VerifiedDupeSchema>[] };
+      /** Produits écartés faute d'avoir été trouvés réellement en ligne. */
+      discarded: number;
     }
   | { type: "error"; message: string };
