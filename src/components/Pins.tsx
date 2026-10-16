@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { Masonry } from "@/components/Masonry";
 import { IconHeart } from "@/components/Ornaments";
+import { PaletteSwatches } from "@/components/PaletteSwatches";
 import { Visual } from "@/components/Visual";
 import { boardItemOf, rememberPhotoForDupes, toggleLike, useIsLiked } from "@/lib/actions";
 import { formatPrice, STYLE_LABELS } from "@/lib/catalog";
+import { usePhotoPalette } from "@/lib/palette";
 import { type FeedItem, itemRatio, useInfiniteScroll, usePhotoFeed } from "@/lib/feed";
 import type { NewBoardItem } from "@/lib/store";
 
@@ -205,6 +207,7 @@ function PinDetails({
   onRecreate: (photo: Extract<FeedItem, { kind: "photo" }>["photo"]) => void;
 }) {
   const liked = useIsLiked(item);
+  const palette = usePhotoPalette(item.kind === "photo" ? item.photo : null) ?? (item.kind === "photo" ? null : item.item.palette);
   return (
     <div className="flex flex-col gap-5 md:pt-16">
       <div className="flex flex-wrap items-center gap-2">
@@ -217,6 +220,12 @@ function PinDetails({
         </button>
       </div>
       <h2 className="font-display text-3xl first-letter:uppercase">{itemTitle(item)}</h2>
+      {palette && (
+        <div className="space-y-2">
+          <p className="text-sm text-muted">La palette de cette ambiance</p>
+          <PaletteSwatches colors={palette} />
+        </div>
+      )}
       {item.kind === "photo" ? (
         <>
           <div className="card space-y-3 p-5">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
 import { CategoryPickerDialog } from "@/components/CategoryPickerDialog";
+import { PersonalPalette } from "@/components/PaletteSwatches";
 import { Visual } from "@/components/Visual";
 import {
   CATEGORY_LABELS,
@@ -198,6 +199,8 @@ export function FavoritesClient() {
           </button>
         )}
       </header>
+
+      <PersonalPalette />
 
       {allEntries.length === 0 ? (
         <div className="card flex flex-col items-center gap-4 px-6 py-16 text-center">

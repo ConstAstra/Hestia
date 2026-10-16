@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
 import { IconClose, IconBoard, IconHeart } from "@/components/Ornaments";
+import { PersonalPalette, PhotoPaletteDots } from "@/components/PaletteSwatches";
+import { likePhotoWithPalette } from "@/lib/actions";
 import { Visual } from "@/components/Visual";
 import {
   CATEGORY_LABELS,
@@ -54,7 +56,6 @@ export function SwipeClient() {
   const swipe = useHestia((s) => s.swipe);
   const resetSeen = useHestia((s) => s.resetSeen);
   const likedPhotos = useHestia((s) => s.likedPhotos);
-  const likePhoto = useHestia((s) => s.likePhoto);
 
   // Mode « Ambiances » : de vraies photos quand la banque d'images est configurée.
   const photoFeed = usePhotoFeed(PHOTO_QUERIES);
@@ -89,13 +90,13 @@ export function SwipeClient() {
     (liked: boolean) => {
       if (!top) return;
       if (top.kind === "photo") {
-        if (liked) likePhoto(top.item);
+        if (liked) likePhotoWithPalette(top.item);
         setSeenPhotos((previous) => new Set(previous).add(top.item.id));
       } else {
         swipe(top.kind, top.item.id, liked);
       }
     },
-    [top, swipe, likePhoto],
+    [top, swipe],
   );
 
   const saveTop = () => {
@@ -295,7 +296,10 @@ function CardFace({ card }: { card: Card }) {
         <img src={photo.src.large} alt={photo.alt} draggable={false} className="h-full w-full object-cover" />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-5 pt-16 text-white">
           <p className="line-clamp-2 text-lg leading-snug first-letter:uppercase">{photo.alt}</p>
-          <p className="mt-1 text-xs opacity-80">Photo : {photo.photographer} · Pexels</p>
+          <div className="mt-2 flex items-center justify-between gap-3">
+            <p className="text-xs opacity-80">Photo : {photo.photographer} · Pexels</p>
+            <PhotoPaletteDots photo={photo} className="shrink-0" />
+          </div>
         </div>
       </div>
     );
@@ -370,6 +374,7 @@ function Favorites({ mode, onSave }: { mode: SwipeKind; onSave: (items: NewBoard
 
   return (
     <section className="space-y-6">
+      <PersonalPalette />
       {topStyles.length > 0 && (
         <div className="card space-y-3 p-5">
           <h2 className="font-heading text-xl font-semibold">Votre profil déco</h2>

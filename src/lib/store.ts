@@ -58,6 +58,7 @@ interface HestiaState {
   swipe: (kind: SwipeKind, id: string, liked: boolean) => void;
   unlike: (kind: FavoriteKind, id: string) => void;
   likePhoto: (photo: Photo) => void;
+  setPhotoPalette: (photoId: string, palette: string[]) => void;
   resetSeen: (kind: SwipeKind) => void;
 
   createFavoriteCategory: (name: string) => string;
@@ -210,6 +211,13 @@ export const useHestia = create<HestiaState>()(
             favoriteOrder: [fav, ...state.favoriteOrder.filter((k) => k !== fav)],
           };
         }),
+
+      setPhotoPalette: (photoId, palette) =>
+        set((state) =>
+          state.likedPhotos[photoId]
+            ? { likedPhotos: { ...state.likedPhotos, [photoId]: { ...state.likedPhotos[photoId], palette } } }
+            : {},
+        ),
 
       resetSeen: (kind) =>
         set((state) => ({ seen: { ...state.seen, [kind]: [] } })),

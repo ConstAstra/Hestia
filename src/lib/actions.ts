@@ -2,6 +2,7 @@
 
 import type { FeedItem } from "./feed";
 import { favoriteKey, type FavoriteKey, type NewBoardItem, useHestia } from "./store";
+import { cachedPalette, extractPalette } from "./palette";
 import type { Photo } from "./types";
 
 export const DUPES_PHOTO_KEY = "hestia:dupes-photo";
@@ -35,11 +36,19 @@ export function useIsLiked(item: FeedItem): boolean {
   );
 }
 
+/** Aime une photo en conservant sa palette (calculée maintenant si besoin). */
+export function likePhotoWithPalette(photo: Photo) {
+  const store = useHestia.getState();
+  const palette = photo.palette ?? cachedPalette(photo.id);
+  store.likePhoto(palette ? { ...photo, palette } : photo);
+  if (!palette) void extractPalette(photo).then((p) => useHestia.getState().setPhotoPalette(photo.id, p));
+}
+
 export function toggleLike(item: FeedItem, liked: boolean) {
   const store = useHestia.getState();
   if (item.kind === "photo") {
     if (liked) store.unlike("photo", item.photo.id);
-    else store.likePhoto(item.photo);
+    else likePhotoWithPalette(item.photo);
   } else if (liked) {
     store.unlike(item.kind, item.item.id);
   } else {

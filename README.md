@@ -17,7 +17,7 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
    - *Ambiances* : on swipe des inspirations par style et par pièce ;
    - *Produits* : on swipe des produits, avec une recherche plein texte et des filtres par catégorie.
 
-   Les coups de cœur alimentent un **profil déco**, qui indique les styles dominants.
+   Chaque carte affiche les **pastilles de sa palette** (extraite automatiquement des photos). Les coups de cœur alimentent un **profil déco** (styles dominants) et **« Vos couleurs »**, la palette personnelle qui se dégage de tout ce qui a été aimé, également visible dans l'onglet Coups de cœur.
 3. **Coups de cœur** (`/coups-de-coeur`) : tout ce qui a été aimé en swipant. L'utilisateur crée ses propres catégories (nom, couleur), y range chaque élément (plusieurs catégories possibles, y compris en sélection multiple), et classe le tout à sa guise : ordre manuel par glisser-déposer ou flèches, ou tri par date, prix, style ou nom.
 4. **Tableaux** (`/tableaux`) : des mood boards dans l'esprit de Pinterest, affichés en grille. On y épingle des photos personnelles, des notes de couleur, des coups de cœur et des dupes. Chaque tableau se renomme et se supprime.
 

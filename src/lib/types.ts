@@ -74,6 +74,8 @@ export interface Photo {
   photographerUrl: string;
   /** Page de la photo chez le fournisseur (crédit obligatoire). */
   pageUrl: string;
+  /** Teintes dominantes, extraites dans le navigateur puis conservées avec les coups de cœur. */
+  palette?: string[];
 }
 
 /** Un élément épinglé dans un tableau. */
