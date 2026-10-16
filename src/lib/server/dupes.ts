@@ -108,6 +108,9 @@ function buildUserContent(request: DupesRequest) {
     request.colors?.length
       ? `Couleurs que je souhaite pour ce projet : ${request.colors.map((c) => `${c.name} (${c.hex})`).join(", ")}. Oriente les dupes et la palette proposée vers ces teintes, tout en gardant l'esprit de l'inspiration.`
       : null,
+    request.materials?.length
+      ? `Matières que je souhaite mettre à l'honneur : ${request.materials.join(", ")}. Privilégie des pièces dans ces matières (ou des alternatives abordables qui en ont l'aspect).`
+      : null,
   ].filter(Boolean);
   content.push({
     type: "text",

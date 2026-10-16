@@ -13,10 +13,10 @@ export interface ChosenColor {
 
 const MAX_COLORS = 6;
 
-const named = (hex: string): ChosenColor => ({ hex, name: COLORS_BY_HEX[hex.toLowerCase()]?.name ?? colorName(hex) });
+export const named = (hex: string): ChosenColor => ({ hex, name: COLORS_BY_HEX[hex.toLowerCase()]?.name ?? colorName(hex) });
 
 /** Texte lisible (clair ou foncé) sur une couleur donnée. */
-function readableOn(hex: string) {
+export function readableOn(hex: string) {
   const n = parseInt(hex.slice(1), 16);
   const luminance = (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
   return luminance > 0.6 ? "#2b2420" : "#ffffff";

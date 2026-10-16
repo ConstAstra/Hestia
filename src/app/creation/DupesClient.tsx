@@ -5,8 +5,10 @@ import { AddToBoardDialog } from "@/components/AddToBoardDialog";
 import { type ChosenColor, ColorStudio } from "@/components/ColorStudio";
 import { DupeCard } from "@/components/DupeCard";
 import { ImageDrop } from "@/components/ImageDrop";
+import { MaterialStudio } from "@/components/MaterialStudio";
 import { formatPrice, ROOM_LABELS } from "@/lib/catalog";
 import type { DupesStreamEvent } from "@/lib/dupes-schema";
+import { MATERIALS_BY_ID } from "@/lib/materials";
 import { compressImage, type CompressedImage } from "@/lib/image";
 import { DUPES_PHOTO_KEY } from "@/lib/actions";
 import type { NewBoardItem } from "@/lib/store";
@@ -35,6 +37,7 @@ export function DupesClient() {
   const [roomType, setRoomType] = useState("salon");
   const [notes, setNotes] = useState("");
   const [colors, setColors] = useState<ChosenColor[]>([]);
+  const [materials, setMaterials] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [log, setLog] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -89,6 +92,7 @@ export function DupesClient() {
           roomType: ROOM_LABELS[roomType as keyof typeof ROOM_LABELS],
           notes: notes.trim() || undefined,
           colors: colors.length ? colors : undefined,
+          materials: materials.length ? materials.map((id) => MATERIALS_BY_ID[id]?.name ?? id) : undefined,
         }),
       });
 
@@ -230,6 +234,17 @@ export function DupesClient() {
             </p>
           </div>
           <ColorStudio value={colors} onChange={setColors} />
+        </div>
+
+        <div className="min-w-0 space-y-3 border-t border-border pt-6 md:col-span-2">
+          <div>
+            <p className="text-sm font-semibold">6. Vos matières (facultatif)</p>
+            <p className="text-sm text-muted">
+              Bois, fibres, pierre, métal… Choisissez les matières de votre projet : Hestia cherchera des pièces qui les mettent à
+              l&apos;honneur.
+            </p>
+          </div>
+          <MaterialStudio value={materials} onChange={setMaterials} colors={colors} onColorsChange={setColors} />
         </div>
 
         <div className="flex flex-col items-start gap-3 md:col-span-2 md:flex-row md:items-center">
