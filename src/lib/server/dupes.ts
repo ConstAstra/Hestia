@@ -204,7 +204,7 @@ export async function findDupes(
     if (submit) {
       const parsed = DupesResultSchema.safeParse(submit.input);
       if (!parsed.success) {
-        emit({ type: "error", message: "La réponse de l'IA était incomplète. Merci de réessayer." });
+        emit({ type: "error", message: "La réponse d'Hestia était incomplète. Merci de réessayer." });
         return;
       }
       emit({ type: "result", result: parsed.data, verifiedUrls: [...seenUrls] });

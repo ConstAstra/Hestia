@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s · Hestia",
   },
   description:
-    "Recréez vos inspirations dans votre budget grâce à l'IA, découvrez vos styles en swipant et organisez vos idées en tableaux.",
+    "Recréez vos inspirations dans votre budget grâce à Hestia, découvrez vos styles en swipant et organisez vos idées en tableaux.",
 };
 
 export const viewport: Viewport = {

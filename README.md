@@ -4,7 +4,7 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
 
 ## Fonctionnalités
 
-0. **Fil d'inspiration** (`/`) : mosaïque de photos réelles d'intérieurs de tous styles (Pexels), défilement infini, recherche libre et thèmes (pièces, styles, envies). Un clic ouvre la fiche de la photo, avec « Enregistrer », « J'aime », « Recréer ce look avec l'IA » (vers l'outil de création) et des idées similaires à l'infini. Le fil « Pour vous » s'oriente selon les styles aimés.
+0. **Fil d'inspiration** (`/`) : mosaïque de photos réelles d'intérieurs de tous styles (Pexels), défilement infini, recherche libre et thèmes (pièces, styles, envies). Un clic ouvre la fiche de la photo, avec « Enregistrer », « J'aime », « Recréer ce look avec Hestia » (vers l'outil de création) et des idées similaires à l'infini. Le fil « Pour vous » s'oriente selon les styles aimés.
 
 1. **Outil de création** (`/creation`, anciennement « Dupes IA ») : l'utilisateur dépose une inspiration (photo enregistrée ou capture d'écran), et s'il le souhaite une photo de sa pièce, puis fixe un budget. Claude analyse l'image, identifie chaque pièce qui fait l'ambiance, cherche sur le web des équivalents réellement en vente chez des enseignes qui livrent en France, puis renvoie :
    - une sélection qui tient dans le budget, en distinguant les pièces essentielles des pièces bonus ;
@@ -12,7 +12,7 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
    - des conseils d'agencement ;
    - des astuces pour réduire la facture.
 
-   Un **studio de couleurs** permet aussi de choisir ses teintes de façon ludique : un nuancier de 26 couleurs déco classées par familles. Au clic, chaque couleur affiche une fiche avec son code hexadécimal (à copier), une description, les pièces qui lui conviennent et des associations à adopter en un geste. On y trouve aussi les palettes des tendances et un tirage « Surprenez-moi ». La palette choisie (six couleurs au plus) est transmise à l'IA, qui oriente les dupes vers ces teintes.
+   Un **studio de couleurs** permet aussi de choisir ses teintes de façon ludique : un nuancier de 26 couleurs déco classées par familles. Au clic, chaque couleur affiche une fiche avec son code hexadécimal (à copier), une description, les pièces qui lui conviennent et des associations à adopter en un geste. On y trouve aussi les palettes des tendances et un tirage « Surprenez-moi ». La palette choisie (six couleurs au plus) est transmise à Hestia, qui oriente les dupes vers ces teintes.
 
    La progression des recherches s'affiche en direct. Chaque dupe, ou la sélection entière, peut être enregistré dans un tableau.
 1. **Tendances** (`/tendances`) : huit tendances déco éditoriales (bois foncé, une seule couleur partout, chiné, rayures et carreaux, courbes, cuisine de campagne, lumière douce, touche de rouge), chacune avec son texte, sa palette, trois conseils pour l'adopter et une galerie de photos ; « Voir plus d'idées » ouvre le fil filtré sur la tendance (`/?tendance=…`). Les tendances **s'actualisent depuis le web** : Claude mène une veille (magazines, salons, sites spécialisés) avec la recherche web et en tire une nouvelle sélection, datée et sourcée. La sélection éditoriale de `src/lib/trends.ts` sert de repli.

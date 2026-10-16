@@ -229,7 +229,7 @@ export function BoardClient() {
       {board.items.length === 0 ? (
         <div className="rounded-3xl border-2 border-dashed border-border px-6 py-16 text-center text-muted">
           Ce tableau est vide. Ajoutez des photos, des notes ou vos coups de cœur, ou enregistrez-y des dupes depuis
-          l&apos;outil IA.
+          l&apos;outil de création.
         </div>
       ) : (
         <div className="masonry">

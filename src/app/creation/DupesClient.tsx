@@ -142,7 +142,7 @@ export function DupesClient() {
         <h1 className="font-display text-4xl md:text-6xl leading-tight">Recréez une inspiration, dans votre budget</h1>
         <p className="text-muted">
           Ajoutez l&apos;inspiration qui vous plaît (une photo enregistrée ou une capture d&apos;écran), ajoutez
-          si vous le souhaitez une photo de votre pièce, et laissez l&apos;IA dénicher les équivalents.
+          si vous le souhaitez une photo de votre pièce, et laissez Hestia dénicher les équivalents.
         </p>
       </header>
 
@@ -226,7 +226,7 @@ export function DupesClient() {
           <div>
             <p className="text-sm font-semibold">5. Vos couleurs (facultatif)</p>
             <p className="text-sm text-muted">
-              Composez la palette de votre projet : l&apos;IA privilégiera des pièces dans ces teintes.
+              Composez la palette de votre projet : Hestia privilégiera des pièces dans ces teintes.
             </p>
           </div>
           <ColorStudio value={colors} onChange={setColors} />
@@ -255,7 +255,7 @@ export function DupesClient() {
         <section className="card space-y-3 p-6" aria-live="polite">
           <div className="flex items-center gap-3">
             <span className="h-3 w-3 animate-ping rounded-full bg-accent" aria-hidden />
-            <p className="font-medium">L&apos;IA chine pour vous… cela prend en général une à trois minutes.</p>
+            <p className="font-medium">Hestia chine pour vous… cela prend en général une à trois minutes.</p>
           </div>
           <ul className="space-y-1 text-sm text-muted">
             {log.slice(-6).map((line, index) => (

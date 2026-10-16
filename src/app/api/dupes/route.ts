@@ -11,7 +11,7 @@ const HOURLY_LIMIT = Number(process.env.DUPES_HOURLY_LIMIT ?? 5);
 export async function POST(request: Request) {
   if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
     return Response.json(
-      { error: "Le service IA n'est pas encore configuré sur ce serveur (ANTHROPIC_API_KEY manquante)." },
+      { error: "Hestia n'est pas encore configurée sur ce serveur (ANTHROPIC_API_KEY manquante)." },
       { status: 503 },
     );
   }
@@ -69,13 +69,13 @@ function errorMessage(error: unknown): string {
     return "Le service est très sollicité. Réessayez dans quelques instants.";
   }
   if (error instanceof Anthropic.AuthenticationError) {
-    return "Le service IA n'est pas configuré (clé API manquante ou invalide).";
+    return "Hestia n'est pas configurée (clé API manquante ou invalide).";
   }
   if (error instanceof Anthropic.BadRequestError) {
     return "L'image n'a pas pu être analysée. Essayez avec un autre fichier.";
   }
   if (error instanceof Anthropic.APIError) {
-    return "Le service IA est momentanément indisponible. Réessayez plus tard.";
+    return "Hestia est momentanément indisponible. Réessayez plus tard.";
   }
   return "Une erreur inattendue est survenue.";
 }

@@ -231,10 +231,10 @@ function PinDetails({
           <div className="card space-y-3 p-5">
             <p className="text-lg">Ce look vous plaît&nbsp;?</p>
             <p className="text-sm text-muted">
-              L&apos;IA repère chaque pièce de cette photo et vous trouve des équivalents abordables, dans votre budget.
+              Hestia repère chaque pièce de cette photo et vous trouve des équivalents abordables, dans votre budget.
             </p>
             <button onClick={() => onRecreate(item.photo)} className="btn-primary w-full">
-              ✦ Recréer ce look avec l&apos;IA
+              ✦ Recréer ce look avec Hestia
             </button>
           </div>
           <p className="text-sm text-muted">
