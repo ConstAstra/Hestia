@@ -113,12 +113,13 @@ export function SwipeClient() {
   return (
     <div className="space-y-8">
       <header className="space-y-4">
+        <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-2">
           <p className="kicker">Swipe</p>
-          <h1 className="font-display text-4xl md:text-6xl">Ça vous plaît ?</h1>
+          <h1 className="font-display text-4xl md:text-5xl">Ça vous plaît ?</h1>
           <p className="text-muted">Glissez à droite pour garder, à gauche pour passer. Au clavier : ← et →.</p>
         </div>
-        <div className="inline-flex rounded-full border border-border bg-surface p-1" role="tablist">
+        <div className="inline-flex rounded-full border border-border bg-surface-muted p-1" role="tablist">
           {(
             [
               ["inspiration", "Ambiances"],
@@ -130,11 +131,12 @@ export function SwipeClient() {
               role="tab"
               aria-selected={mode === value}
               onClick={() => setMode(value)}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition ${mode === value ? "bg-accent text-white" : "text-muted"}`}
+              className={`rounded-full px-5 py-2 text-sm font-medium transition ${mode === value ? "bg-accent text-white shadow-sm" : "text-muted hover:text-foreground"}`}
             >
               {label}
             </button>
           ))}
+        </div>
         </div>
         {mode === "product" && (
           <div className="space-y-3">
@@ -163,7 +165,7 @@ export function SwipeClient() {
       </header>
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,420px)_1fr]">
-        <section className="mx-auto w-full max-w-[420px]">
+        <section className="mx-auto w-full max-w-[420px] lg:max-w-[clamp(300px,calc((100svh-24rem)*0.75),420px)]">
           {!hydrated || (mode === "inspiration" && usePhotos && deck.length === 0 && !photosDone) ? (
             <div className="aspect-[3/4] animate-pulse rounded-[1.75rem] bg-surface-muted" />
           ) : top ? (
@@ -321,7 +323,7 @@ function CardFace({ card }: { card: Card }) {
           <>
             <div className="flex items-start justify-between gap-3">
               <h2 className="font-heading text-xl font-semibold leading-snug">{card.item.name}</h2>
-              <p className="font-heading text-xl font-semibold text-accent-strong">{formatPrice(card.item.price)}</p>
+              <p className="shrink-0 font-heading text-xl font-semibold text-accent-strong" title="Prix indicatif">≈ {formatPrice(card.item.price)}</p>
             </div>
             <p className="text-sm text-muted">{card.item.description}</p>
             <div className="flex flex-wrap gap-1.5 text-xs">
@@ -402,7 +404,16 @@ function Favorites({ mode, onSave }: { mode: SwipeKind; onSave: (items: NewBoard
           </Link>
         </div>
         {(mode === "inspiration" ? inspirations.length : products.length) === 0 ? (
-          <p className="text-sm text-muted">Swipez à droite pour retrouver ici ce qui vous plaît.</p>
+          <div className="space-y-4">
+            <div className="grid max-w-sm grid-cols-3 gap-3" aria-hidden>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="grid aspect-[4/5] place-items-center rounded-2xl border-2 border-dashed border-border bg-surface-muted/40">
+                  {i === 0 && <IconHeart className="h-8 w-8 text-like/60" />}
+                </div>
+              ))}
+            </div>
+            <p className="text-sm text-muted">Swipez à droite (ou touchez le cœur) : vos coups de cœur viendront se ranger ici.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {mode === "inspiration"

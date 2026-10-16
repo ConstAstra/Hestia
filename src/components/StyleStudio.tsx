@@ -72,7 +72,7 @@ export function StyleStudio({
                 </span>
                 <span className="flex flex-1 flex-col gap-0.5 p-3">
                   <span className="text-sm font-semibold">
-                    <span aria-hidden>{style.emoji}</span> {style.name}
+                    {style.name}
                   </span>
                   <span className="text-[11px] leading-snug text-muted">{style.tagline}</span>
                 </span>
@@ -98,7 +98,7 @@ export function StyleStudio({
             <div>
               <p className="text-xs uppercase tracking-[0.14em] text-muted">{active.tagline}</p>
               <h3 className="font-display text-3xl">
-                <span aria-hidden>{active.emoji}</span> {active.name}
+                {active.name}
               </h3>
             </div>
             <p className="text-sm leading-relaxed">{active.description}</p>

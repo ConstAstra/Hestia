@@ -234,7 +234,7 @@ export function DupesClient() {
           <div>
             <p className="text-sm font-semibold">5. Votre style (facultatif)</p>
             <p className="text-sm text-muted">
-              Méditerranéen, dopamine, japandi… Choisissez l&apos;esprit de votre projet, et adoptez si vous le souhaitez sa palette et
+              Moderne, bohème, kinfolk, méditerranéen… Choisissez l&apos;esprit de votre projet, et adoptez si vous le souhaitez sa palette et
               ses matières.
             </p>
           </div>

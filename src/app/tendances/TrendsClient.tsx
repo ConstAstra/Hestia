@@ -74,7 +74,7 @@ export function TrendsClient() {
 
       <nav aria-label="Tendances" className="-mx-4 flex gap-2 overflow-x-auto px-4 [scrollbar-width:none]">
         {trends.map((trend) => (
-          <a key={trend.id} href={`#${trend.id}`} className="shrink-0 rounded-full bg-surface px-4 py-2 text-sm hover:bg-surface-muted">
+          <a key={trend.id} href={`#${trend.id}`} className="shrink-0 rounded-full bg-surface-muted px-4 py-2 text-sm transition hover:bg-border">
             {trend.title}
           </a>
         ))}
@@ -107,10 +107,12 @@ function UpdateBadge({
     : null;
   return (
     <div className="space-y-2 text-sm">
-      <p className="inline-flex flex-wrap items-center gap-2 rounded-full bg-surface px-4 py-2">
-        <span className={`h-2 w-2 rounded-full ${live ? "bg-olive" : "bg-gold"} ${refreshing ? "animate-pulse" : ""}`} aria-hidden />
-        {live && date ? `Actualisé le ${date} grâce à une veille du web` : "Sélection de la rédaction"}
-        {refreshing && <span className="text-muted">· actualisation en cours…</span>}
+      <p className={`inline-flex items-start gap-2.5 rounded-2xl px-4 py-2 ${live ? "bg-olive-soft/60" : "bg-gold-soft/60"}`}>
+        <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${live ? "bg-olive" : "bg-gold"} ${refreshing ? "animate-pulse" : ""}`} aria-hidden />
+        <span>
+          {live && date ? `Actualisé le ${date} grâce à une veille du web` : "Sélection de la rédaction"}
+          {refreshing && <span className="text-muted"> · actualisation en cours…</span>}
+        </span>
       </p>
       {live && sources.length > 0 && (
         <details className="text-muted">
