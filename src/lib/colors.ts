@@ -3,7 +3,7 @@
  * avec son ambiance, les pièces où elle excelle et des associations qui lui vont bien.
  */
 
-export type ColorFamily = "neutres" | "terres" | "verts" | "bleus" | "roses" | "jaunes" | "profonds";
+export type ColorFamily = "neutres" | "terres" | "verts" | "bleus" | "roses" | "jaunes" | "violets" | "profonds";
 
 export const FAMILY_LABELS: Record<ColorFamily, string> = {
   neutres: "Neutres",
@@ -12,6 +12,7 @@ export const FAMILY_LABELS: Record<ColorFamily, string> = {
   bleus: "Bleus",
   roses: "Roses & rouges",
   jaunes: "Jaunes & ocres",
+  violets: "Violets & mauves",
   profonds: "Profonds",
 };
 
@@ -28,7 +29,7 @@ export interface DecorColor {
   pairings: { name: string; colors: string[] }[];
 }
 
-export const DECOR_COLORS: DecorColor[] = [
+const BASE_COLORS: DecorColor[] = [
   // Neutres
   {
     id: "blanc-casse", name: "Blanc cassé", hex: "#F4EFE6", family: "neutres", mood: "Lumineux et doux",
@@ -271,5 +272,194 @@ export const DECOR_COLORS: DecorColor[] = [
     ],
   },
 ];
+
+/** Teintes ajoutées au nuancier ; elles rejoignent leur famille à l'affichage. */
+const MORE_COLORS: DecorColor[] = [
+  {
+    id: "mastic", name: "Mastic", hex: "#B5A88F", family: "neutres", mood: "Chaud et rassurant",
+    description: "Un beige grisé, un peu plus profond que le lin, qui habille un salon d'une chaleur discrète. Il sert de liant entre les bois, les pierres et les tissus.",
+    rooms: ["Salon", "Entrée", "Chambre"],
+    pairings: [
+      { name: "Maison de famille", colors: ["#B5A88F", "#F4EFE6", "#2F5446"] },
+      { name: "Terre douce", colors: ["#B5A88F", "#C4927A", "#5A3A28"] },
+    ],
+  },
+  {
+    id: "gris-galet", name: "Gris galet", hex: "#9C978D", family: "neutres", mood: "Minéral et serein",
+    description: "Le gris chaud des galets polis par la mer. Plus doux qu'un gris ciment, il apaise une pièce et laisse les matières naturelles s'exprimer.",
+    rooms: ["Salle de bain", "Salon", "Bureau"],
+    pairings: [
+      { name: "Bord de rivière", colors: ["#9C978D", "#F4EFE6", "#7F9C8E"] },
+      { name: "Atelier", colors: ["#9C978D", "#3A3A3A", "#B98A5A"] },
+    ],
+  },
+  {
+    id: "argile", name: "Argile", hex: "#C4927A", family: "terres", mood: "Doux et terrien",
+    description: "Une terre rosée, entre le nude et la terracotta. Elle réchauffe un mur sans l'écraser et adore les lumières de fin de journée.",
+    rooms: ["Chambre", "Salon", "Salle de bain"],
+    pairings: [
+      { name: "Désert", colors: ["#C4927A", "#E2D3B8", "#6F7A3B"] },
+      { name: "Nude chic", colors: ["#C4927A", "#F4EFE6", "#3A3A3A"] },
+    ],
+  },
+  {
+    id: "rouille", name: "Rouille", hex: "#A5532A", family: "terres", mood: "Automnal et vibrant",
+    description: "Un orange brûlé aux accents cuivrés, qui évoque les feuilles d'automne. En velours ou en coussins, il apporte une énergie chaleureuse.",
+    rooms: ["Salon", "Bureau", "Salle à manger"],
+    pairings: [
+      { name: "Automne", colors: ["#A5532A", "#E2D3B8", "#2F5446"] },
+      { name: "Seventies", colors: ["#A5532A", "#C9A12E", "#5A3A28"] },
+    ],
+  },
+  {
+    id: "vert-pistache", name: "Vert pistache", hex: "#B5C27A", family: "verts", mood: "Frais et gourmand",
+    description: "Un vert tendre et acidulé qui donne un coup de fraîcheur immédiat. Idéal sur des chaises, une porte ou des façades de cuisine.",
+    rooms: ["Cuisine", "Chambre d'enfant", "Salle à manger"],
+    pairings: [
+      { name: "Glacier italien", colors: ["#B5C27A", "#F2D3CB", "#F4EFE6"] },
+      { name: "Potager", colors: ["#B5C27A", "#C0603D", "#E2D3B8"] },
+    ],
+  },
+  {
+    id: "vert-d-eau", name: "Vert d'eau", hex: "#B9D3C6", family: "verts", mood: "Léger et rafraîchissant",
+    description: "Une teinte entre bleu et vert, transparente comme une eau claire. Elle agrandit les petites pièces et apporte calme et fraîcheur.",
+    rooms: ["Salle de bain", "Chambre", "Petits espaces"],
+    pairings: [
+      { name: "Spa", colors: ["#B9D3C6", "#F4EFE6", "#CBBFAE"] },
+      { name: "Gustavien", colors: ["#B9D3C6", "#C9C9C4", "#C08A8A"] },
+    ],
+  },
+  {
+    id: "kaki", name: "Kaki", hex: "#7D7B52", family: "verts", mood: "Brut et élégant",
+    description: "Un vert-brun sourd, d'inspiration militaire, devenu un grand classique déco. Il s'associe à merveille avec le cuir, le bois et le lin.",
+    rooms: ["Salon", "Bureau", "Chambre"],
+    pairings: [
+      { name: "Safari", colors: ["#7D7B52", "#D8C09A", "#5A3A28"] },
+      { name: "Kaki moderne", colors: ["#7D7B52", "#F4EFE6", "#E07A5F"] },
+    ],
+  },
+  {
+    id: "bleu-klein", name: "Bleu Klein", hex: "#2E4BA8", family: "bleus", mood: "Audacieux et artistique",
+    description: "Un bleu outremer intense, hommage au peintre Yves Klein. En touche (une chaise, un vase, un cadre), il électrise un intérieur neutre.",
+    rooms: ["Salon", "Bureau", "Entrée"],
+    pairings: [
+      { name: "Galerie d'art", colors: ["#2E4BA8", "#F4EFE6", "#1C1C1C"] },
+      { name: "Méditerranée vive", colors: ["#2E4BA8", "#E8D25A", "#F4EFE6"] },
+    ],
+  },
+  {
+    id: "bleu-ciel", name: "Bleu ciel", hex: "#8FB8D8", family: "bleus", mood: "Aérien et joyeux",
+    description: "Le bleu d'un ciel d'été, un peu plus franc que le bleu poudré. Il ouvre l'espace et apporte une gaieté naturelle.",
+    rooms: ["Chambre d'enfant", "Salle de bain", "Chambre"],
+    pairings: [
+      { name: "Été", colors: ["#8FB8D8", "#F4EFE6", "#D9A55B"] },
+      { name: "Vichy", colors: ["#8FB8D8", "#F2D3CB", "#C9C9C4"] },
+    ],
+  },
+  {
+    id: "corail", name: "Corail", hex: "#E07A5F", family: "roses", mood: "Solaire et énergique",
+    description: "Entre le rose et l'orange, le corail respire la bonne humeur. Il réveille une pièce neutre et se marie aux verts comme aux bleus profonds.",
+    rooms: ["Salon", "Cuisine", "Salle à manger"],
+    pairings: [
+      { name: "Tropiques", colors: ["#E07A5F", "#2F5446", "#F4EFE6"] },
+      { name: "Riviera", colors: ["#E07A5F", "#1F2F45", "#E2D3B8"] },
+    ],
+  },
+  {
+    id: "framboise", name: "Framboise", hex: "#B4405F", family: "roses", mood: "Pétillant et affirmé",
+    description: "Un rose profond et fruité, qui ose sans en faire trop. En velours ou en accent, il donne du caractère à un salon ou une chambre.",
+    rooms: ["Salon", "Chambre", "Bureau"],
+    pairings: [
+      { name: "Maximaliste", colors: ["#B4405F", "#2C6470", "#CF9A3A"] },
+      { name: "Boudoir", colors: ["#B4405F", "#F2D3CB", "#5A3A28"] },
+    ],
+  },
+  {
+    id: "rose-blush", name: "Rose blush", hex: "#F2D3CB", family: "roses", mood: "Tendre et lumineux",
+    description: "Un rose à peine teinté, presque un blanc rosé. Il adoucit la lumière et donne une atmosphère enveloppante sans jamais être mièvre.",
+    rooms: ["Chambre", "Salle de bain", "Petits espaces"],
+    pairings: [
+      { name: "Douceur", colors: ["#F2D3CB", "#F4EFE6", "#9AAB8C"] },
+      { name: "Contraste tendre", colors: ["#F2D3CB", "#6E2532", "#CBBFAE"] },
+    ],
+  },
+  {
+    id: "jaune-citron", name: "Jaune citron", hex: "#E8D25A", family: "jaunes", mood: "Vitaminé et pop",
+    description: "Un jaune franc et lumineux qui apporte un rayon de soleil instantané. À doser par petites touches : une lampe, une chaise, un coussin.",
+    rooms: ["Cuisine", "Bureau", "Chambre d'enfant"],
+    pairings: [
+      { name: "Pop", colors: ["#E8D25A", "#2E4BA8", "#F4EFE6"] },
+      { name: "Citronnier", colors: ["#E8D25A", "#7F9C8E", "#F4EFE6"] },
+    ],
+  },
+  {
+    id: "miel", name: "Miel", hex: "#D9A55B", family: "jaunes", mood: "Doré et chaleureux",
+    description: "Un jaune ambré, doux comme le miel de lavande. Il réchauffe une pièce et sublime les bois clairs et les fibres naturelles.",
+    rooms: ["Salon", "Salle à manger", "Chambre"],
+    pairings: [
+      { name: "Ruche", colors: ["#D9A55B", "#F4EFE6", "#5A3A28"] },
+      { name: "Provence", colors: ["#D9A55B", "#B8A9C9", "#6F7A3B"] },
+    ],
+  },
+  {
+    id: "lavande", name: "Lavande", hex: "#B8A9C9", family: "violets", mood: "Rêveur et apaisant",
+    description: "Le mauve des champs de Provence, poudré et lumineux. Il apaise une chambre et apporte une touche de poésie inattendue.",
+    rooms: ["Chambre", "Salle de bain", "Chambre d'enfant"],
+    pairings: [
+      { name: "Champ de lavande", colors: ["#B8A9C9", "#F4EFE6", "#9AAB8C"] },
+      { name: "Pastel moderne", colors: ["#B8A9C9", "#F1DFA4", "#C9C9C4"] },
+    ],
+  },
+  {
+    id: "lilas", name: "Lilas", hex: "#CDB9D6", family: "violets", mood: "Frais et romantique",
+    description: "Un violet très clair au parfum printanier. Associé au blanc et au bois, il garde une fraîcheur délicate, loin de l'effet bonbon.",
+    rooms: ["Chambre", "Salle de bain", "Petits espaces"],
+    pairings: [
+      { name: "Printemps", colors: ["#CDB9D6", "#F4EFE6", "#B5C27A"] },
+      { name: "Néo-rétro", colors: ["#CDB9D6", "#A5532A", "#E2D3B8"] },
+    ],
+  },
+  {
+    id: "mauve", name: "Mauve", hex: "#9C7A97", family: "violets", mood: "Feutré et sophistiqué",
+    description: "Un violet grisé, élégant et un brin mélancolique. Il apporte de la profondeur sans assombrir, parfait pour un salon cosy.",
+    rooms: ["Salon", "Chambre", "Bureau"],
+    pairings: [
+      { name: "Crépuscule", colors: ["#9C7A97", "#E3B5A8", "#1F2F45"] },
+      { name: "Bruyère", colors: ["#9C7A97", "#7D7B52", "#F4EFE6"] },
+    ],
+  },
+  {
+    id: "prune", name: "Prune", hex: "#5E2F4A", family: "violets", mood: "Intense et luxueux",
+    description: "Un violet profond aux reflets de vin. Sur un mur sombre ou un canapé en velours, il crée une ambiance théâtrale et enveloppante.",
+    rooms: ["Salon", "Salle à manger", "Bureau"],
+    pairings: [
+      { name: "Cabinet de curiosités", colors: ["#5E2F4A", "#C9A12E", "#F4EFE6"] },
+      { name: "Velours du soir", colors: ["#5E2F4A", "#E3B5A8", "#2F5446"] },
+    ],
+  },
+  {
+    id: "noir", name: "Noir", hex: "#1C1C1C", family: "profonds", mood: "Chic et radical",
+    description: "Le noir structure, souligne et donne de l'élégance. En petites touches (cadres, luminaires, pieds de meubles), il ancre toute la décoration.",
+    rooms: ["Cuisine", "Entrée", "Salle de bain"],
+    pairings: [
+      { name: "Noir et blanc", colors: ["#1C1C1C", "#F4EFE6", "#CBBFAE"] },
+      { name: "Japandi sombre", colors: ["#1C1C1C", "#B98A5A", "#7D7B52"] },
+    ],
+  },
+  {
+    id: "bronze", name: "Bronze", hex: "#6B5532", family: "profonds", mood: "Ambré et patiné",
+    description: "Un brun doré, comme un métal ancien patiné. Il donne une richesse discrète et s'associe naturellement au laiton et au velours.",
+    rooms: ["Salon", "Bureau", "Salle à manger"],
+    pairings: [
+      { name: "Patine", colors: ["#6B5532", "#E2D3B8", "#2C6470"] },
+      { name: "Cuivré", colors: ["#6B5532", "#A5532A", "#F4EFE6"] },
+    ],
+  },
+];
+
+const FAMILY_ORDER = Object.keys(FAMILY_LABELS) as ColorFamily[];
+export const DECOR_COLORS: DecorColor[] = [...BASE_COLORS, ...MORE_COLORS].sort(
+  (a, b) => FAMILY_ORDER.indexOf(a.family) - FAMILY_ORDER.indexOf(b.family),
+);
 
 export const COLORS_BY_HEX: Record<string, DecorColor> = Object.fromEntries(DECOR_COLORS.map((c) => [c.hex.toLowerCase(), c]));
