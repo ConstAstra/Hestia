@@ -33,6 +33,8 @@ export const DupesRequestSchema = z
     budget: z.number().min(30).max(50_000),
     roomType: z.string().max(40).optional(),
     notes: z.string().max(600).optional(),
+    /** Styles choisis (deux au plus). */
+    styles: z.array(z.string().min(1).max(40)).max(2).optional(),
     /** Palette choisie dans le studio de couleurs. */
     colors: z
       .array(z.object({ name: z.string().min(1).max(40), hex: z.string().regex(/^#[0-9a-fA-F]{6}$/) }))

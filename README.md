@@ -12,6 +12,8 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
    - des conseils d'agencement ;
    - des astuces pour réduire la facture.
 
+   Un **choix de style** ouvre la personnalisation : quinze styles (méditerranéen, dopamine, japandi, bohème, scandinave, industriel, mid-century, art déco, wabi-sabi, minimaliste, classique chic, campagne chic, maximaliste, bord de mer, pastel doux). Chacun a sa fiche : son esprit, ses incontournables, sa palette et ses matières, que l'on peut adopter en un geste. Deux styles au plus sont transmis à Hestia.
+
    Un **studio de couleurs** permet aussi de choisir ses teintes de façon ludique : un nuancier de 62 couleurs déco classées par familles (dont violets et mauves, pastels et couleurs dopamine). Au clic, chaque couleur affiche une fiche avec son code hexadécimal (à copier), une description, les pièces qui lui conviennent et des associations à adopter en un geste. On y trouve aussi les palettes des tendances et un tirage « Surprenez-moi ». La palette choisie (six couleurs au plus) est transmise à Hestia, qui oriente les dupes vers ces teintes.
 
    Une **matériauthèque** fonctionne sur le même principe : 24 matières (bois, fibres naturelles, textiles, pierre, métaux, verre et céramique), chacune présentée par un échantillon dessiné. Sa fiche donne une description, les pièces qui lui conviennent, un conseil « Bon à savoir » et des associations (matières et couleurs). Adopter une association ou une « ambiance matières » (Japandi, Méditerranée, Art déco…) complète aussi la palette de couleurs. Les matières choisies (cinq au plus) sont transmises à Hestia.

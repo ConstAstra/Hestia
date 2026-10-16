@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { type ChosenColor, named } from "@/components/ColorStudio";
 import {
   DECOR_MATERIALS,
@@ -36,6 +36,12 @@ export function MaterialStudio({
 }) {
   const [family, setFamily] = useState<MaterialFamily | "all">("all");
   const [active, setActive] = useState<DecorMaterial | null>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+
+  // La fiche s'ouvre sous la grille : on l'amène à l'écran (indispensable sur mobile).
+  useEffect(() => {
+    if (active) sheetRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [active]);
   const [notice, setNotice] = useState<string | null>(null);
 
   const swatches = useMemo(
@@ -154,7 +160,7 @@ export function MaterialStudio({
 
       {/* Fiche de la matière */}
       {active && (
-        <div className="overflow-hidden rounded-3xl border border-border bg-surface shadow-sm">
+        <div ref={sheetRef} className="scroll-mt-24 scroll-mb-28 overflow-hidden rounded-3xl border border-border bg-surface shadow-sm">
           <div className="relative p-5" style={{ background: active.swatch }}>
             <div className="inline-block rounded-2xl bg-white/85 px-4 py-2 text-[#2b2420] shadow-sm backdrop-blur-sm">
               <p className="text-xs uppercase tracking-[0.14em] opacity-75">{active.mood}</p>

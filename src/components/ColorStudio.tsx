@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { COLORS_BY_HEX, type ColorFamily, DECOR_COLORS, type DecorColor, FAMILY_LABELS } from "@/lib/colors";
 import { colorName } from "@/lib/palette";
 import { TRENDS } from "@/lib/trends";
@@ -37,6 +37,12 @@ export function readableOn(hex: string) {
 export function ColorStudio({ value, onChange }: { value: ChosenColor[]; onChange: (colors: ChosenColor[]) => void }) {
   const [family, setFamily] = useState<ColorFamily | "all">("all");
   const [active, setActive] = useState<DecorColor | null>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+
+  // La fiche s'ouvre sous la grille : on l'amène à l'écran (indispensable sur mobile).
+  useEffect(() => {
+    if (active) sheetRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [active]);
   const [copied, setCopied] = useState(false);
   const [trendPalettes, setTrendPalettes] = useState(TRENDS.map((t) => ({ title: t.title, palette: t.palette })));
 
@@ -158,7 +164,7 @@ export function ColorStudio({ value, onChange }: { value: ChosenColor[]; onChang
 
       {/* Fiche de la couleur */}
       {active && (
-        <div className="overflow-hidden rounded-3xl border border-border bg-surface shadow-sm">
+        <div ref={sheetRef} className="scroll-mt-24 scroll-mb-28 overflow-hidden rounded-3xl border border-border bg-surface shadow-sm">
           <div className="flex flex-wrap items-end justify-between gap-3 p-5" style={{ background: active.hex, color: readableOn(active.hex) }}>
             <div>
               <p className="text-xs uppercase tracking-[0.14em] opacity-80">{active.mood}</p>

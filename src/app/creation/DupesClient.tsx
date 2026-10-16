@@ -6,9 +6,11 @@ import { type ChosenColor, ColorStudio } from "@/components/ColorStudio";
 import { DupeCard } from "@/components/DupeCard";
 import { ImageDrop } from "@/components/ImageDrop";
 import { MaterialStudio } from "@/components/MaterialStudio";
+import { StyleStudio } from "@/components/StyleStudio";
 import { formatPrice, ROOM_LABELS } from "@/lib/catalog";
 import type { DupesStreamEvent } from "@/lib/dupes-schema";
 import { MATERIALS_BY_ID } from "@/lib/materials";
+import { STYLES_BY_ID } from "@/lib/styles";
 import { compressImage, type CompressedImage } from "@/lib/image";
 import { DUPES_PHOTO_KEY } from "@/lib/actions";
 import type { NewBoardItem } from "@/lib/store";
@@ -38,6 +40,7 @@ export function DupesClient() {
   const [notes, setNotes] = useState("");
   const [colors, setColors] = useState<ChosenColor[]>([]);
   const [materials, setMaterials] = useState<string[]>([]);
+  const [styles, setStyles] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [log, setLog] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -91,6 +94,7 @@ export function DupesClient() {
           budget,
           roomType: ROOM_LABELS[roomType as keyof typeof ROOM_LABELS],
           notes: notes.trim() || undefined,
+          styles: styles.length ? styles.map((id) => STYLES_BY_ID[id]?.name ?? id) : undefined,
           colors: colors.length ? colors : undefined,
           materials: materials.length ? materials.map((id) => MATERIALS_BY_ID[id]?.name ?? id) : undefined,
         }),
@@ -228,7 +232,25 @@ export function DupesClient() {
 
         <div className="min-w-0 space-y-3 border-t border-border pt-6 md:col-span-2">
           <div>
-            <p className="text-sm font-semibold">5. Vos couleurs (facultatif)</p>
+            <p className="text-sm font-semibold">5. Votre style (facultatif)</p>
+            <p className="text-sm text-muted">
+              Méditerranéen, dopamine, japandi… Choisissez l&apos;esprit de votre projet, et adoptez si vous le souhaitez sa palette et
+              ses matières.
+            </p>
+          </div>
+          <StyleStudio
+            value={styles}
+            onChange={setStyles}
+            onAdoptPalette={(nextColors, nextMaterials) => {
+              setColors(nextColors.slice(0, 6));
+              setMaterials(nextMaterials.slice(0, 5));
+            }}
+          />
+        </div>
+
+        <div className="min-w-0 space-y-3 border-t border-border pt-6 md:col-span-2">
+          <div>
+            <p className="text-sm font-semibold">6. Vos couleurs (facultatif)</p>
             <p className="text-sm text-muted">
               Composez la palette de votre projet : Hestia privilégiera des pièces dans ces teintes.
             </p>
@@ -238,7 +260,7 @@ export function DupesClient() {
 
         <div className="min-w-0 space-y-3 border-t border-border pt-6 md:col-span-2">
           <div>
-            <p className="text-sm font-semibold">6. Vos matières (facultatif)</p>
+            <p className="text-sm font-semibold">7. Vos matières (facultatif)</p>
             <p className="text-sm text-muted">
               Bois, fibres, pierre, métal… Choisissez les matières de votre projet : Hestia cherchera des pièces qui les mettent à
               l&apos;honneur.

@@ -18,7 +18,7 @@ Méthode :
 2. Si une photo de la pièce de l'utilisateur est fournie, observe-la : volumes, lumière, sol, murs, meubles déjà présents à conserver. Ne propose pas ce que la personne possède déjà ; adapte les tailles à l'espace visible.
 3. Pour chaque pièce, cherche sur le web un équivalent actuellement disponible chez des enseignes livrant en France (par exemple IKEA, Maisons du Monde, La Redoute Intérieurs, AM.PM, H&M Home, Zara Home, Leroy Merlin, Castorama, Conforama, Made in Design, Westwing, Bocage, Fnac-Darty, Amazon, Etsy). Le dupe doit s'inspirer directement de l'objet de l'inspiration : même silhouette, même matière ou un rendu proche, même teinte.
 4. Respecte le budget total : la somme des prix des dupes ne doit pas le dépasser. Classe en « essentiel » ce qui porte l'ambiance et en « bonus » le reste ; si le budget est serré, privilégie les essentiels et explique les arbitrages.
-5. Si l'utilisateur a choisi des couleurs ou des matières, chaque produit doit les respecter (ou en avoir l'aspect fidèle) : vérifie-le sur la fiche.
+5. Si l'utilisateur a choisi un style, des couleurs ou des matières, chaque produit doit les respecter (ou en avoir l'aspect fidèle) : vérifie-le sur la fiche.
 6. ${REAL_PRODUCTS_RULES}
    Si tu ne trouves pas de dupe fiable pour une pièce, omets-la et mentionne-la dans les conseils.
 
@@ -100,6 +100,9 @@ function buildUserContent(request: DupesRequest) {
     `Budget total : ${request.budget} €.`,
     request.roomType ? `Type de pièce : ${request.roomType}.` : null,
     request.notes ? `Précisions de ma part : ${request.notes}` : null,
+    request.styles?.length
+      ? `Style souhaité : ${request.styles.join(" et ")}. Choisis des pièces fidèles à ce style, en l'accordant à l'inspiration.`
+      : null,
     request.colors?.length
       ? `Couleurs que je souhaite pour ce projet : ${request.colors.map((c) => `${c.name} (${c.hex})`).join(", ")}. Oriente les dupes et la palette proposée vers ces teintes, tout en gardant l'esprit de l'inspiration.`
       : null,
