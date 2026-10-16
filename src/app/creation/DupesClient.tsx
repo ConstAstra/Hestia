@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
 import { type ChosenColor, ColorStudio } from "@/components/ColorStudio";
@@ -11,10 +12,11 @@ import { formatPrice, ROOM_LABELS } from "@/lib/catalog";
 import type { DupesStreamEvent } from "@/lib/dupes-schema";
 import { MATERIALS_BY_ID } from "@/lib/materials";
 import { STYLES_BY_ID } from "@/lib/styles";
+import { creationTitle } from "@/lib/creation-title";
 import { compressImage, type CompressedImage } from "@/lib/image";
 import { DUPES_PHOTO_KEY } from "@/lib/actions";
-import type { NewBoardItem } from "@/lib/store";
-import type { Dupe, DupesResult, Photo } from "@/lib/types";
+import { type NewBoardItem, useHestia } from "@/lib/store";
+import type { CreationInfo, Dupe, DupesResult, Photo } from "@/lib/types";
 
 interface Picked {
   /** Image déposée par l'utilisateur, prête pour l'API. */
@@ -46,6 +48,8 @@ export function DupesClient() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<DupesResult | null>(null);
   const [discarded, setDiscarded] = useState(0);
+  const [savedBoard, setSavedBoard] = useState<{ id: string; name: string } | null>(null);
+  const createCreationBoard = useHestia((s) => s.createCreationBoard);
   const [saving, setSaving] = useState<NewBoardItem[] | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -80,6 +84,7 @@ export function DupesClient() {
     setLoading(true);
     setError(null);
     setResult(null);
+    setSavedBoard(null);
     setLog([]);
 
     try {
@@ -122,6 +127,7 @@ export function DupesClient() {
           if (event.type === "result") {
             setResult(event.result);
             setDiscarded(event.discarded);
+            setSavedBoard(autoSave(event.result));
           }
         }
       }
@@ -132,6 +138,27 @@ export function DupesClient() {
     } finally {
       setLoading(false);
     }
+  };
+
+  /** Enregistre automatiquement la création dans un tableau « Mes créations », titré d'après ses caractéristiques. */
+  const autoSave = (created: DupesResult) => {
+    const info: CreationInfo = {
+      styles: styles.map((id) => STYLES_BY_ID[id]?.name ?? id),
+      room: ROOM_LABELS[roomType as keyof typeof ROOM_LABELS],
+      colors: colors.length ? colors : created.palette.slice(0, 5),
+      materials: materials.map((id) => MATERIALS_BY_ID[id]?.name ?? id),
+      budget,
+      total: created.dupes.reduce((sum, dupe) => sum + dupe.price, 0),
+    };
+    const items: NewBoardItem[] = [];
+    if (inspiration?.photo) items.push({ kind: "photo", photo: inspiration.photo });
+    else if (inspiration) items.push({ kind: "image", src: inspiration.thumb, caption: "Inspiration" });
+    items.push({ kind: "note", text: created.ambianceSummary, color: "#f6e2d8" });
+    for (const dupe of created.dupes) items.push({ kind: "dupe", dupe });
+    const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+    const name = creationTitle(info);
+    const description = `Création du ${date} · ${created.dupes.length} produit${created.dupes.length > 1 ? "s" : ""} · ${formatPrice(info.total)} pour un budget de ${formatPrice(budget)}`;
+    return { id: createCreationBoard(name, description, info, items), name };
   };
 
   const saveAll = () => {
@@ -302,7 +329,7 @@ export function DupesClient() {
         </section>
       )}
 
-      {result && <Results result={result} budget={budget} discarded={discarded} onSave={setSaving} onSaveAll={saveAll} />}
+      {result && <Results result={result} budget={budget} discarded={discarded} savedBoard={savedBoard} onSave={setSaving} onSaveAll={saveAll} />}
 
       <AddToBoardDialog items={saving} onClose={() => setSaving(null)} />
     </div>
@@ -313,12 +340,14 @@ function Results({
   result,
   budget,
   discarded,
+  savedBoard,
   onSave,
   onSaveAll,
 }: {
   result: DupesResult;
   budget: number;
   discarded: number;
+  savedBoard: { id: string; name: string } | null;
   onSave: (items: NewBoardItem[]) => void;
   onSaveAll: () => void;
 }) {
@@ -337,10 +366,24 @@ function Results({
             <h2 className="font-display text-3xl">L&apos;ambiance décryptée</h2>
             <p className="text-muted">{result.ambianceSummary}</p>
           </div>
-          <button onClick={onSaveAll} className="btn-primary">
-            Tout enregistrer dans un tableau
-          </button>
         </div>
+        {savedBoard && (
+          <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-olive-soft/60 px-4 py-3 text-sm" role="status">
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-olive text-white" aria-hidden>
+              ✓
+            </span>
+            <p className="min-w-0 flex-1">
+              Enregistrée automatiquement dans <span className="font-semibold">Tableaux › Mes créations</span>
+              <span className="block truncate text-muted">« {savedBoard.name} »</span>
+            </p>
+            <Link href={`/tableaux/${savedBoard.id}`} className="btn-primary py-2">
+              Voir le tableau
+            </Link>
+            <button onClick={onSaveAll} className="btn-ghost py-2">
+              Ajouter à un autre tableau
+            </button>
+          </div>
+        )}
         <div className="flex flex-wrap gap-3">
           {result.palette.map((color) => (
             <div key={`${color.hex}-${color.name}`} className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3 text-sm">

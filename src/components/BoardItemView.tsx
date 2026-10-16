@@ -18,13 +18,18 @@ export function BoardItemThumb({ item }: { item: BoardItem }) {
       return inspiration ? <Visual palette={inspiration.palette} seed={inspiration.id} image={inspiration.image} alt="" /> : null;
     }
     case "note":
-      return <div className="h-full w-full p-2 text-[10px] leading-tight" style={{ background: item.color }}>{item.text}</div>;
+      return (
+        <div className="h-full w-full overflow-hidden p-2" style={{ background: item.color }}>
+          <p className="line-clamp-6 text-[10px] leading-snug">{item.text}</p>
+        </div>
+      );
     case "photo":
       return <img src={item.photo.src.medium} alt={item.photo.alt} className="h-full w-full object-cover" style={{ background: item.photo.color }} />;
     case "dupe":
       return (
-        <div className="flex h-full w-full items-center justify-center bg-accent-soft p-2 text-center text-[10px] font-medium text-accent-strong">
-          {item.dupe.productName}
+        <div className="flex h-full w-full flex-col justify-between overflow-hidden bg-accent-soft p-2 text-accent-strong">
+          <p className="line-clamp-3 text-[10px] font-medium leading-snug">{item.dupe.productName}</p>
+          <p className="text-xs font-semibold">{formatPrice(item.dupe.price)}</p>
         </div>
       );
   }

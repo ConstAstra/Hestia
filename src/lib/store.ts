@@ -4,7 +4,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { Offer } from "./offers-schema";
-import type { Board, BoardItem, Photo } from "./types";
+import type { Board, BoardItem, CreationInfo, Photo } from "./types";
 
 export type SwipeKind = "product" | "inspiration";
 
@@ -53,6 +53,8 @@ interface HestiaState {
   productOffers: Record<string, { offers: Offer[]; foundAt: number }>;
 
   createBoard: (name: string, description?: string) => string;
+  /** Tableau d'une création : rangé dans « Mes créations », avec ses éléments et ses caractéristiques. */
+  createCreationBoard: (name: string, description: string, creation: CreationInfo, items: NewBoardItem[]) => string;
   renameBoard: (id: string, name: string, description?: string) => void;
   deleteBoard: (id: string) => void;
   addToBoard: (boardId: string, item: NewBoardItem) => void;
@@ -130,6 +132,16 @@ export const useHestia = create<HestiaState>()(
             { id, name, description, createdAt: now, updatedAt: now, items: [] },
             ...state.boards,
           ],
+        }));
+        return id;
+      },
+
+      createCreationBoard: (name, description, creation, items) => {
+        const id = uid();
+        const now = Date.now();
+        const boardItems = items.map((item, index) => ({ ...item, id: uid(), addedAt: now - index }) as BoardItem);
+        set((state) => ({
+          boards: [{ id, name, description, createdAt: now, updatedAt: now, items: boardItems, creation }, ...state.boards],
         }));
         return id;
       },

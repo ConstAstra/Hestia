@@ -68,8 +68,24 @@ export function BoardClient() {
 
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="font-display text-4xl md:text-6xl">{board.name}</h1>
+          <h1 className={`font-display ${board.creation ? "text-3xl leading-tight md:text-4xl" : "text-4xl md:text-6xl"}`}>{board.name}</h1>
           {board.description && <p className="text-muted">{board.description}</p>}
+          {board.creation && (
+            <div className="flex flex-wrap items-center gap-2 pt-2 text-xs">
+              <span className="rounded-full bg-accent-soft px-2.5 py-1 font-semibold text-accent-strong">Création</span>
+              {[...board.creation.styles, board.creation.room, ...board.creation.materials].filter(Boolean).map((label) => (
+                <span key={label} className="rounded-full bg-surface-muted px-2.5 py-1">
+                  {label}
+                </span>
+              ))}
+              {board.creation.colors.map((c) => (
+                <span key={c.hex} className="flex items-center gap-1.5 rounded-full border border-border py-0.5 pl-0.5 pr-2.5">
+                  <span className="h-5 w-5 rounded-full border border-black/5" style={{ background: c.hex }} />
+                  {c.name}
+                </span>
+              ))}
+            </div>
+          )}
           <p className="text-sm text-muted">
             {board.items.length} idée{board.items.length > 1 ? "s" : ""}
           </p>

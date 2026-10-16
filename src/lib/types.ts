@@ -87,6 +87,16 @@ export type BoardItem =
   | { id: string; kind: "dupe"; dupe: Dupe; addedAt: number }
   | { id: string; kind: "photo"; photo: Photo; addedAt: number };
 
+/** Caractéristiques d'un projet de l'outil de création, gardées avec son tableau. */
+export interface CreationInfo {
+  styles: string[];
+  room?: string;
+  colors: { name: string; hex: string }[];
+  materials: string[];
+  budget: number;
+  total: number;
+}
+
 export interface Board {
   id: string;
   name: string;
@@ -94,6 +104,8 @@ export interface Board {
   createdAt: number;
   updatedAt: number;
   items: BoardItem[];
+  /** Présent quand le tableau a été créé automatiquement par l'outil de création. */
+  creation?: CreationInfo;
 }
 
 /** Une pièce repérée dans l'inspiration et son équivalent abordable. */
