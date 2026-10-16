@@ -2,7 +2,7 @@
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
-/** Nombre de colonnes selon la largeur disponible, comme sur Pinterest. */
+/** Nombre de colonnes selon la largeur disponible, comme sur les grandes applications d'inspiration. */
 function columnsFor(width: number) {
   if (width < 520) return 2;
   if (width < 860) return 3;

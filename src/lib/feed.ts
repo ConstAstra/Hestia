@@ -4,13 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { INSPIRATIONS, PRODUCTS } from "./catalog";
 import type { Inspiration, Photo, Product } from "./types";
 
-/** Une épingle du fil : une vraie photo, ou (mode démonstration) un élément du catalogue. */
+/** Une idée du fil : une vraie photo, ou (mode démonstration) un élément du catalogue. */
 export type FeedItem =
   | { kind: "photo"; key: string; photo: Photo }
   | { kind: "inspiration"; key: string; item: Inspiration; ratio: number }
   | { kind: "product"; key: string; item: Product; ratio: number };
 
-/** Rapport hauteur / largeur d'une épingle, pour répartir la mosaïque. */
+/** Rapport hauteur / largeur d'une idée, pour répartir la mosaïque. */
 export const itemRatio = (item: FeedItem) => (item.kind === "photo" ? item.photo.height / item.photo.width : item.ratio);
 
 interface ApiPage {
@@ -19,7 +19,7 @@ interface ApiPage {
   nextPage: number | null;
 }
 
-/** Épingles de démonstration, tirées du catalogue, quand aucune banque d'images n'est configurée. */
+/** Idées de démonstration, tirées du catalogue, quand aucune banque d'images n'est configurée. */
 function demoItems(seed: number): FeedItem[] {
   const ratios = [1.5, 1.25, 1.75, 1, 1.4, 1.2, 1.6];
   const all: FeedItem[] = [

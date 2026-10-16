@@ -22,7 +22,7 @@ function itemTitle(item: FeedItem) {
   return item.kind === "photo" ? item.photo.alt : item.kind === "product" ? item.item.name : item.item.title;
 }
 
-/** Image d'une épingle : vraie photo, ou visuel de démonstration. */
+/** Image d'une idée du fil : vraie photo, ou visuel de démonstration. */
 export function PinImage({ item, large = false }: { item: FeedItem; large?: boolean }) {
   if (item.kind === "photo") {
     const { photo } = item;
@@ -52,7 +52,7 @@ export function PinImage({ item, large = false }: { item: FeedItem; large?: bool
   );
 }
 
-/** Une épingle de la mosaïque, avec ses actions au survol (toujours visibles sur mobile). */
+/** Une idée de la mosaïque, avec ses actions au survol (toujours visibles sur mobile). */
 export function PinCard({ item, onOpen, onSave }: { item: FeedItem } & PinHandlers) {
   const liked = useIsLiked(item);
   const router = useRouter();
@@ -111,7 +111,7 @@ export function PinCard({ item, onOpen, onSave }: { item: FeedItem } & PinHandle
   );
 }
 
-/** Mosaïque infinie d'épingles pour une liste de requêtes. */
+/** Mosaïque infinie d'idées pour une liste de requêtes. */
 export function PinFeed({ queries, exclude, ...handlers }: { queries: string[]; exclude?: string } & PinHandlers) {
   const { items, configured, loading, done, loadMore } = usePhotoFeed(queries);
   const visible = useMemo(() => (exclude ? items.filter((i) => i.key !== exclude) : items), [items, exclude]);
@@ -141,7 +141,7 @@ export function PinFeed({ queries, exclude, ...handlers }: { queries: string[]; 
   );
 }
 
-/** Fiche d'une épingle : grande image, actions, crédit, puis idées similaires à l'infini. */
+/** Fiche d'une idée : grande image, actions, crédit, puis idées similaires à l'infini. */
 export function PinDialog({ item, onClose, ...handlers }: { item: FeedItem | null; onClose: () => void } & PinHandlers) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);

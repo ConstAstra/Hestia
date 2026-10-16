@@ -145,7 +145,7 @@ export function BoardClient() {
               ))}
             </div>
             <button className="btn-primary" disabled={!noteText.trim()}>
-              Épingler la note
+              Ajouter la note
             </button>
           </div>
         </form>
@@ -154,7 +154,7 @@ export function BoardClient() {
       {panel === "favorites" && (
         <div className="card space-y-3 p-5">
           <p className="text-sm text-muted">
-            Vos coups de cœur du swipe. Cliquez pour les épingler ici.{" "}
+            Vos coups de cœur du swipe. Cliquez pour les ajouter à ce tableau.{" "}
             <Link href="/swipe" className="text-accent underline">
               Swiper davantage
             </Link>
@@ -266,7 +266,7 @@ function PickTile({
     <button onClick={onPick} disabled={pinned} className="w-28 shrink-0 space-y-1 text-left disabled:opacity-50" title={label}>
       <div className="relative aspect-square overflow-hidden rounded-2xl">
         {children}
-        {pinned && <span className="absolute inset-0 grid place-items-center bg-black/40 text-sm font-medium text-white">Épinglé</span>}
+        {pinned && <span className="absolute inset-0 grid place-items-center bg-black/40 text-sm font-medium text-white">Ajouté</span>}
       </div>
       <p className="line-clamp-2 text-xs">{label}</p>
     </button>

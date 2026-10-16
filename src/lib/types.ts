@@ -78,7 +78,7 @@ export interface Photo {
   palette?: string[];
 }
 
-/** Un élément épinglé dans un tableau. */
+/** Un élément ajouté à un tableau. */
 export type BoardItem =
   | { id: string; kind: "product"; productId: string; addedAt: number }
   | { id: string; kind: "inspiration"; inspirationId: string; addedAt: number }

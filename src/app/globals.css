@@ -12,17 +12,8 @@
   font-display: swap;
 }
 
-/* Oranienbaum (Oleg Pospelov et Jovanny Lemonad, SIL OFL 1.1), servie telle quelle. */
-@font-face {
-  font-family: "Oranienbaum";
-  src: url("/fonts/oranienbaum/Oranienbaum.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 /*
- * Direction artistique « Hestia » : les photos d'abord, comme sur Pinterest.
+ * Direction artistique « Hestia » : les photos d'abord, en mosaïque d'inspiration.
  * Fond très clair légèrement rosé pour faire ressortir les images ; terracotta pour
  * les actions, olive, safran et rose poudré en touches.
  */
@@ -86,14 +77,9 @@
   --color-blush-soft: var(--blush-soft);
   --color-like: var(--like);
   --color-nope: var(--nope);
-  --font-sans: "Oranienbaum", Georgia, "Times New Roman", serif;
-  --font-serif: "Weekdays Roman Slant", "Oranienbaum", Georgia, serif;
+  --font-sans: "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Weekdays Roman Slant", Georgia, serif;
   --font-brand: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
-}
-
-/* Oranienbaum est une didone fine : un corps un peu plus grand garde le texte confortable. */
-html {
-  font-size: 106.25%;
 }
 
 body {
@@ -102,8 +88,7 @@ body {
   font-family: var(--font-sans);
   /* Chiffres alignés : plus lisibles pour les prix et les compteurs */
   font-variant-numeric: lining-nums;
-  /* Une seule graisse, pas d'italique : on interdit au navigateur d'en fabriquer de fausses. */
-  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
@@ -123,11 +108,11 @@ body {
   font-style: normal;
 }
 
-/* Titres secondaires, prix, intitulés : Oranienbaum, mis en valeur par la taille */
+/* Titres secondaires, prix, intitulés : Inter en demi-gras */
 .font-heading {
   font-family: var(--font-sans);
-  font-weight: 400;
-  letter-spacing: 0.005em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 /* Nom de marque, comme sur le logo : capitales classiques espacées */
@@ -150,9 +135,9 @@ body {
   align-items: center;
   gap: 0.6rem;
   color: var(--accent);
-  font-size: 0.82rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .kicker::before {
@@ -202,7 +187,7 @@ body {
   @apply w-full rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm outline-none transition focus:border-accent;
 }
 
-/* Grille façon Pinterest */
+/* Grille en mosaïque */
 .masonry {
   column-gap: 1rem;
   columns: 2 160px;

@@ -10,7 +10,7 @@ interface AddToBoardDialogProps {
   onClose: () => void;
 }
 
-/** Fenêtre « Enregistrer dans un tableau », façon épingle Pinterest. */
+/** Fenêtre « Enregistrer dans un tableau ». */
 export function AddToBoardDialog({ items, title = "Enregistrer dans un tableau", onClose }: AddToBoardDialogProps) {
   const boards = useHestia((s) => s.boards);
   const createBoard = useHestia((s) => s.createBoard);

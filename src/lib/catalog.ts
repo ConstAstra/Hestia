@@ -103,7 +103,7 @@ const RAW: [string, P][] = [
   p("mc-buffet", "Enfilade en noyer à portes cannées", "rangement", "mid-century", 549, ["#7a4a2a", "#a87b4f", "#d9c19c"], ["noyer", "cannage"], "Quatre portes, 180 cm."),
   p("mc-lampe", "Lampe champignon en opaline", "luminaire", "mid-century", 75, ["#f3eadb", "#d6a24a", "#7a5a2c"], ["verre", "laiton"], "Lumière chaude, variateur intégré."),
   p("mc-tapis", "Tapis géométrique vert sapin", "tapis", "mid-century", 199, ["#2f5446", "#d9b46b", "#f0e6d2"], ["laine"], "Arches imbriquées, 200 × 290 cm."),
-  p("mc-chaise", "Chaise coque en noyer", "chaise", "mid-century", 129, ["#8a5a35", "#c7a079", "#2b2b2b"], ["contreplaqué", "acier"], "Assise moulée, pieds épingle."),
+  p("mc-chaise", "Chaise coque en noyer", "chaise", "mid-century", 129, ["#8a5a35", "#c7a079", "#2b2b2b"], ["contreplaqué", "acier"], "Assise moulée, fins pieds en métal."),
   p("mc-horloge", "Horloge soleil laiton", "deco", "mid-century", 89, ["#c49a45", "#8c6a2b", "#2b2b2b"], ["laiton"], "Rayons rayonnants, mécanisme silencieux."),
 
   // Minimaliste

@@ -136,7 +136,7 @@ const NAMED: [string, string][] = [
   ["Ocre", "#cf9a3a"], ["Moutarde", "#c9a12e"], ["Terracotta", "#c0603d"], ["Brique", "#9e4a32"], ["Rouille", "#a5532a"],
   ["Rose poudré", "#e3b5a8"], ["Vieux rose", "#c08a8a"], ["Bordeaux", "#6e2532"], ["Chocolat", "#5a3a28"], ["Noyer", "#7a5236"],
   ["Olive", "#6f7a3b"], ["Vert olive clair", "#8d975b"], ["Kaki", "#7d7b52"], ["Sauge", "#9aab8c"], ["Vert amande", "#c5cfa6"], ["Vert sapin", "#2f5446"], ["Bleu canard", "#2c6470"], ["Bleu ardoise", "#5c7088"],
-  ["Bleu nuit", "#1f2f45"], ["Gris perle", "#c9c9c4"], ["Gris taupe", "#8b8178"], ["Anthracite", "#3a3a3a"], ["Noir", "#1c1c1c"],
+  ["Bleu nuit", "#1f2f45"], ["Beige", "#d6c4a8"], ["Taupe", "#a8927a"], ["Gris perle", "#c9c9c4"], ["Gris taupe", "#8b8178"], ["Anthracite", "#3a3a3a"], ["Noir", "#1c1c1c"],
 ];
 export function colorName(hex: string): string {
   const rgb = fromHex(hex);

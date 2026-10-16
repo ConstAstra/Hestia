@@ -138,7 +138,7 @@ export function DupesClient() {
         <p className="kicker">Outil de création</p>
         <h1 className="font-display text-4xl md:text-6xl leading-tight">Recréez une inspiration, dans votre budget</h1>
         <p className="text-muted">
-          Enregistrez l&apos;épingle Pinterest qui vous plaît (capture d&apos;écran ou « Télécharger l&apos;image »), ajoutez
+          Ajoutez l&apos;inspiration qui vous plaît (une photo enregistrée ou une capture d&apos;écran), ajoutez
           si vous le souhaitez une photo de votre pièce, et laissez l&apos;IA dénicher les équivalents.
         </p>
       </header>

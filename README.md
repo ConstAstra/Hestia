@@ -4,9 +4,9 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
 
 ## Fonctionnalités
 
-0. **Fil d'inspiration** (`/`), façon Pinterest : mosaïque de photos réelles d'intérieurs de tous styles (Pexels), défilement infini, recherche libre et thèmes (pièces, styles, envies). Un clic ouvre la fiche de la photo, avec « Enregistrer », « J'aime », « Recréer ce look avec l'IA » (vers l'outil de création) et des idées similaires à l'infini. Le fil « Pour vous » s'oriente selon les styles aimés.
+0. **Fil d'inspiration** (`/`) : mosaïque de photos réelles d'intérieurs de tous styles (Pexels), défilement infini, recherche libre et thèmes (pièces, styles, envies). Un clic ouvre la fiche de la photo, avec « Enregistrer », « J'aime », « Recréer ce look avec l'IA » (vers l'outil de création) et des idées similaires à l'infini. Le fil « Pour vous » s'oriente selon les styles aimés.
 
-1. **Outil de création** (`/creation`, anciennement « Dupes IA ») : l'utilisateur dépose une inspiration (épingle Pinterest enregistrée ou capture), et s'il le souhaite une photo de sa pièce, puis fixe un budget. Claude analyse l'image, identifie chaque pièce qui fait l'ambiance, cherche sur le web des équivalents réellement en vente chez des enseignes qui livrent en France, puis renvoie :
+1. **Outil de création** (`/creation`, anciennement « Dupes IA ») : l'utilisateur dépose une inspiration (photo enregistrée ou capture d'écran), et s'il le souhaite une photo de sa pièce, puis fixe un budget. Claude analyse l'image, identifie chaque pièce qui fait l'ambiance, cherche sur le web des équivalents réellement en vente chez des enseignes qui livrent en France, puis renvoie :
    - une sélection qui tient dans le budget, en distinguant les pièces essentielles des pièces bonus ;
    - la palette de couleurs ;
    - des conseils d'agencement ;
@@ -20,14 +20,14 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
 
    Chaque carte affiche les **pastilles de sa palette** (extraite automatiquement des photos). Les coups de cœur alimentent un **profil déco** (styles dominants) et **« Vos couleurs »**, la palette personnelle qui se dégage de tout ce qui a été aimé, également visible dans l'onglet Coups de cœur.
 3. **Coups de cœur** (`/coups-de-coeur`) : tout ce qui a été aimé en swipant. L'utilisateur crée ses propres catégories (nom, couleur), y range chaque élément (plusieurs catégories possibles, y compris en sélection multiple), et classe le tout à sa guise : ordre manuel par glisser-déposer ou flèches, ou tri par date, prix, style ou nom.
-4. **Tableaux** (`/tableaux`) : des mood boards dans l'esprit de Pinterest, affichés en grille. On y épingle des photos personnelles, des notes de couleur, des coups de cœur et des dupes. Chaque tableau se renomme et se supprime.
+4. **Tableaux** (`/tableaux`) : des mood boards affichés en grille. On y ajoute des photos personnelles, des notes de couleur, des coups de cœur et des dupes. Chaque tableau se renomme et se supprime.
 
 ## Direction artistique
 
 La direction artistique s'inspire de la mythologie grecque, revue dans un esprit moderne : chaleureuse et élégante.
 
 - **Palette :** fond terracotta clair, cartes crème, olive, avec des touches de safran et de rose poudré. Un mode sombre est prévu.
-- **Typographies, auto-hébergées :** Weekdays Roman Slant de Manfred Klein pour les titres (**licence à vérifier avant mise en ligne**, voir `public/fonts/weekdays-roman-slant/`), Oranienbaum pour le texte courant (SIL Open Font License, servie sans modification dans `public/fonts/oranienbaum/`), Cormorant Garamond pour le nom de marque.
+- **Typographies, auto-hébergées :** Weekdays Roman Slant de Manfred Klein pour les titres (**licence à vérifier avant mise en ligne**, voir `public/fonts/weekdays-roman-slant/`), Inter pour le texte courant (moderne et très lisible, proche des polices système utilisées par les réseaux sociaux ; SIL Open Font License), Cormorant Garamond pour le nom de marque.
 - **Logo :** H-maison olive, flamme du foyer, soleil terracotta et rameaux d'olivier, redessiné en vectoriel (`src/components/LogoEmblem.tsx`).
 - **Icônes :** dessinées à la main, trait d'encre sur tache de couleur organique (`src/components/Ornaments.tsx`).
 - **Mise en page :** les photos d'abord, en mosaïque à coins arrondis sur fond très clair ; le terracotta est réservé aux actions.
@@ -51,7 +51,7 @@ Vérifications : `npx tsc --noEmit`, `npm run lint`, `npm run build`.
 | Appel Claude : vision, recherche web, outil `submit_dupes` en mode strict | `src/lib/server/dupes.ts` |
 | Schémas Zod partagés client/serveur | `src/lib/dupes-schema.ts` |
 | État local (tableaux, likes), persisté dans `localStorage` | `src/lib/store.ts` |
-| Fil d'inspiration : API photos, thèmes, mosaïque, épingles | `src/app/api/photos`, `src/lib/server/pexels.ts`, `src/lib/topics.ts`, `src/components/Pins.tsx` |
+| Fil d'inspiration : API photos, thèmes, mosaïque, idées | `src/app/api/photos`, `src/lib/server/pexels.ts`, `src/lib/topics.ts`, `src/components/Pins.tsx` |
 | Catalogue de démonstration (48 produits, 16 ambiances) | `src/lib/catalog.ts` |
 | Visuels génératifs (en l'absence de photo produit) | `src/components/Visual.tsx` |
 

@@ -6,7 +6,7 @@ import { colorName, favoriteColors, usePhotoPalette } from "@/lib/palette";
 import { useHestia } from "@/lib/store";
 import type { Photo } from "@/lib/types";
 
-/** Pastilles d'une palette, en rang serré (cartes du swipe, épingles). */
+/** Pastilles d'une palette, en rang serré (cartes du swipe, idées du fil). */
 export function PaletteDots({ colors, className = "" }: { colors: string[]; className?: string }) {
   return (
     <div className={`flex -space-x-1.5 ${className}`} aria-label={`Palette : ${colors.map(colorName).join(", ")}`}>

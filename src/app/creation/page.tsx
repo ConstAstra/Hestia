@@ -3,7 +3,7 @@ import { DupesClient } from "./DupesClient";
 
 export const metadata: Metadata = {
   title: "Outil de création",
-  description: "Recréez une inspiration Pinterest avec des produits abordables, dans votre budget.",
+  description: "Recréez une inspiration avec des produits abordables, dans votre budget.",
 };
 
 export default function CreationPage() {
