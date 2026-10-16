@@ -5,7 +5,12 @@ import { formatPrice } from "@/lib/catalog";
 import type { Dupe } from "@/lib/types";
 
 /** Fiche produit réelle : un dupe de l'outil de création ou une offre « Où l'acheter ». */
-type ListedProduct = Omit<Dupe, "originalItem" | "category" | "priority"> & { originalItem?: string };
+type ListedProduct = Omit<Dupe, "originalItem" | "category" | "priority"> & {
+  originalItem?: string;
+  /** Annonces de seconde main : état et localisation. */
+  condition?: string;
+  location?: string;
+};
 
 /** Lien d'achat via Hestia ; repli pour les dupes enregistrés avant l'affiliation. */
 function buyLink(dupe: ListedProduct) {
@@ -24,10 +29,11 @@ export function DupeCard({ dupe, onSave }: { dupe: ListedProduct; onSave?: () =>
   } catch {}
   const buy = buyLink(dupe);
   const facts = [
+    dupe.condition && ["État", dupe.condition],
     dupe.dimensions && ["Dimensions", dupe.dimensions],
     dupe.material && ["Matière", dupe.material],
     dupe.color && ["Coloris", dupe.color],
-    ["Où le trouver", [dupe.retailer, dupe.availability].filter(Boolean).join(" · ")],
+    ["Où le trouver", [...new Set([dupe.retailer, dupe.location, dupe.availability].filter(Boolean))].join(" · ")],
   ].filter(Boolean) as [string, string][];
 
   const copyReference = async () => {

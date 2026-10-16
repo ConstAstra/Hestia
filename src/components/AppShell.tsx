@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, Suspense, useEffect, useState } from "react";
 import { LogoStacked } from "@/components/LogoEmblem";
-import { IconBoard, IconCards, IconHeart, IconHome, IconSpark, IconTrend, Logo } from "@/components/Ornaments";
+import { IconBoard, IconCards, IconHeart, IconHome, IconSpark, IconTrend, IconVintage, Logo } from "@/components/Ornaments";
 import { STORAGE_FULL_EVENT, useRehydrateOnMount } from "@/lib/store";
 
 // Chaque onglet a sa couleur ; `short` est le libellé de la barre mobile.
@@ -13,6 +13,7 @@ const LINKS = [
   { href: "/tendances", label: "Tendances", short: "Tendances", Icon: IconTrend, color: "var(--olive)", soft: "var(--olive-soft)" },
   { href: "/swipe", label: "Swipe", short: "Swipe", Icon: IconCards, color: "var(--gold)", soft: "var(--gold-soft)" },
   { href: "/creation", label: "Outil de création", short: "Création", Icon: IconSpark, color: "var(--accent)", soft: "var(--accent-soft)" },
+  { href: "/seconde-main", label: "Seconde main", short: "Chiner", Icon: IconVintage, color: "var(--olive)", soft: "var(--olive-soft)" },
   { href: "/coups-de-coeur", label: "Coups de cœur", short: "Favoris", Icon: IconHeart, color: "var(--like)", soft: "var(--accent-soft)" },
   { href: "/tableaux", label: "Tableaux", short: "Tableaux", Icon: IconBoard, color: "var(--blush)", soft: "var(--blush-soft)" },
 ];
@@ -68,7 +69,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur lg:hidden"
         aria-label="Navigation mobile"
       >
-        <div className="mx-auto grid max-w-xl grid-cols-6">
+        <div className="mx-auto grid max-w-xl grid-cols-7">
           <Suspense fallback={<NavLinks variant="mobile" pathname="" />}>
             <CurrentNavLinks variant="mobile" />
           </Suspense>
@@ -101,16 +102,17 @@ function NavLinks({ variant, pathname }: { variant: Variant; pathname: string })
         style={blobStyle}
       >
         <Icon className="h-9 w-9 text-foreground" />
-        {label}
+        <span className="hidden xl:inline">{label}</span>
+        <span className="xl:hidden">{short}</span>
       </Link>
     ) : (
       <Link
         key={href}
         href={href}
-        className={`hover-wiggle flex flex-col items-center gap-0.5 py-1.5 text-[11px] font-bold ${active ? "text-foreground" : "text-muted"}`}
+        className={`hover-wiggle flex min-w-0 flex-col items-center gap-0.5 py-1.5 text-[10px] font-bold ${active ? "text-foreground" : "text-muted"}`}
         style={blobStyle}
       >
-        <Icon className="h-9 w-9 text-foreground" />
+        <Icon className="h-8 w-8 text-foreground" />
         {short}
       </Link>
     );

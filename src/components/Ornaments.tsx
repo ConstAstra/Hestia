@@ -158,6 +158,18 @@ export function IconBoard({ className = "" }: IconProps) {
   );
 }
 
+export function IconVintage({ className = "" }: IconProps) {
+  return (
+    <svg aria-hidden viewBox="0 0 32 32" className={className}>
+      <path {...blob} d="M6.5 9c3-4 10-5 15-3s7.5 8 6 13-6 8.5-11.5 8S5 23.5 4.5 19 3.5 13 6.5 9z" />
+      <path {...ink} d="M10.2 17.2c-.3-3.3-.1-6.3 1.2-8.1 2.6-1.2 6.6-1.3 9.4-.1 1.1 1.9 1.3 5 .9 8.3" />
+      <path {...ink} d="M7.6 16.4c1.2-.6 2.4-.2 2.8 1 .2 1.2.1 2.4 0 3.6 3.9.2 7.7.1 11.6-.2-.1-1.1-.2-2.3 0-3.4.5-1.2 1.8-1.5 2.9-.9.1 2-.1 3.9-.6 5.7-5.4.6-10.9.6-16.2.1-.5-1.9-.7-3.9-.5-5.9z" />
+      <path {...ink} strokeWidth={1.6} d="M10.3 22.9c-.2 1.1-.4 2.1-.7 3.1M21.9 22.8c.2 1 .5 2.1.8 3.1" />
+      <path fill="var(--accent)" stroke="currentColor" strokeWidth="1.1" d="M23.6 5.2c1.3.1 2.3 1.2 2.2 2.5-.1 1.3-1.2 2.3-2.5 2.2-1.3-.1-2.3-1.2-2.2-2.5.1-1.3 1.2-2.3 2.5-2.2z" />
+    </svg>
+  );
+}
+
 export function IconClose({ className = "" }: IconProps) {
   return (
     <svg aria-hidden viewBox="0 0 32 32" className={className}>

@@ -15,7 +15,7 @@ const KNOWN_RETAILERS = [
   "ikea.com", "maisonsdumonde.com", "laredoute.fr", "ampm.fr", "hm.com", "zarahome.com", "leroymerlin.fr",
   "castorama.fr", "conforama.fr", "madeindesign.com", "westwing.fr", "bocage.fr", "fnac.com", "darty.com",
   "amazon.fr", "etsy.com", "but.fr", "alinea.com", "habitat.fr", "sostrenegrene.com", "flyingtiger.com",
-  "lamaisondevalerie.fr", "boulanger.com", "cdiscount.com", "manomano.fr", "selency.fr", "leboncoin.fr",
+  "lamaisondevalerie.fr", "boulanger.com", "cdiscount.com", "manomano.fr", "selency.fr", "leboncoin.fr", "vinted.fr", "ebay.fr", "label-emmaus.co", "brocantelab.com", "pamono.fr", "1stdibs.com",
   "kave-home.com", "kavehome.com", "maisonsdumonde.fr", "laredoute.com", "made.com", "bloomingville.com",
 ];
 
