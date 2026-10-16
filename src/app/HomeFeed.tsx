@@ -57,7 +57,7 @@ export function HomeFeed() {
 
   const chip = (active: boolean) =>
     `shrink-0 rounded-full px-4 py-2 text-sm transition ${
-      active ? "bg-foreground text-background" : "bg-surface text-foreground hover:bg-surface-muted"
+      active ? "bg-foreground text-background" : "bg-surface-muted text-foreground hover:bg-border"
     }`;
 
   return (

@@ -18,12 +18,12 @@
  * les actions, olive, safran et rose poudré en touches.
  */
 :root {
-  --background: #fff1f2;
+  --background: #ffffff;
   --surface: #ffffff;
-  --surface-muted: #fde3e2;
+  --surface-muted: #f4f2f1;
   --foreground: #3a2a22;
   --muted: #80604f;
-  --border: #f6d9d8;
+  --border: #ebe6e3;
   --accent: #d0583a;
   --accent-strong: #a8401f;
   --accent-soft: #fbdccf;
