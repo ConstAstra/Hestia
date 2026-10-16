@@ -92,6 +92,16 @@ export function IconHome({ className = "" }: IconProps) {
   );
 }
 
+export function IconTrend({ className = "" }: IconProps) {
+  return (
+    <svg aria-hidden viewBox="0 0 32 32" className={className}>
+      <path {...blob} d="M7.5 6.5c4-2.5 11-2 15 .5s5.5 9 3.5 13.5-7 7-12 6.5S6 23 5 18.5s-1.5-9.5 2.5-12z" />
+      <path {...ink} d="M6.8 21.6c2.2-2.5 4.4-5 6.7-7.4 1.6 1.4 3.2 2.9 4.8 4.3 2.3-2.9 4.6-5.8 7-8.6" />
+      <path {...ink} d="M20.4 9.7c1.6-.1 3.3-.2 4.9-.1.1 1.6.1 3.2 0 4.8" />
+    </svg>
+  );
+}
+
 export function IconSpark({ className = "" }: IconProps) {
   return (
     <svg aria-hidden viewBox="0 0 32 32" className={className}>

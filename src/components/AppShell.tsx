@@ -4,16 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, Suspense, useEffect, useState } from "react";
 import { LogoStacked } from "@/components/LogoEmblem";
-import { IconBoard, IconCards, IconHeart, IconHome, IconSpark, Logo } from "@/components/Ornaments";
+import { IconBoard, IconCards, IconHeart, IconHome, IconSpark, IconTrend, Logo } from "@/components/Ornaments";
 import { STORAGE_FULL_EVENT, useRehydrateOnMount } from "@/lib/store";
 
-// Chaque onglet a sa couleur : safran, rose poudré, terracotta, olive.
+// Chaque onglet a sa couleur ; `short` est le libellé de la barre mobile.
 const LINKS = [
-  { href: "/", label: "Accueil", Icon: IconHome, color: "var(--blush)", soft: "var(--blush-soft)" },
-  { href: "/swipe", label: "Swipe", Icon: IconCards, color: "var(--gold)", soft: "var(--gold-soft)" },
-  { href: "/dupes", label: "Dupes IA", Icon: IconSpark, color: "var(--accent)", soft: "var(--accent-soft)" },
-  { href: "/coups-de-coeur", label: "Coups de cœur", Icon: IconHeart, color: "var(--like)", soft: "var(--accent-soft)" },
-  { href: "/tableaux", label: "Tableaux", Icon: IconBoard, color: "var(--olive)", soft: "var(--olive-soft)" },
+  { href: "/", label: "Accueil", short: "Accueil", Icon: IconHome, color: "var(--blush)", soft: "var(--blush-soft)" },
+  { href: "/tendances", label: "Tendances", short: "Tendances", Icon: IconTrend, color: "var(--olive)", soft: "var(--olive-soft)" },
+  { href: "/swipe", label: "Swipe", short: "Swipe", Icon: IconCards, color: "var(--gold)", soft: "var(--gold-soft)" },
+  { href: "/dupes", label: "Dupes IA", short: "Dupes", Icon: IconSpark, color: "var(--accent)", soft: "var(--accent-soft)" },
+  { href: "/coups-de-coeur", label: "Coups de cœur", short: "Favoris", Icon: IconHeart, color: "var(--like)", soft: "var(--accent-soft)" },
+  { href: "/tableaux", label: "Tableaux", short: "Tableaux", Icon: IconBoard, color: "var(--blush)", soft: "var(--blush-soft)" },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -33,7 +34,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Link href="/" aria-label="Hestia, accueil">
             <Logo />
           </Link>
-          <nav className="hidden gap-1 md:flex" aria-label="Navigation principale">
+          <nav className="hidden gap-1 lg:flex" aria-label="Navigation principale">
             <Suspense fallback={<NavLinks variant="desktop" pathname="" />}>
               <CurrentNavLinks variant="desktop" />
             </Suspense>
@@ -43,7 +44,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="mx-auto w-full max-w-[1500px] flex-1 px-4 pb-12 pt-4">{children}</main>
 
-      <footer className="mx-auto w-full max-w-[1500px] px-4 pb-28 md:pb-10">
+      <footer className="mx-auto w-full max-w-[1500px] px-4 pb-28 lg:pb-10">
         <LogoStacked className="mx-auto mt-10 w-28 text-sm" />
         <p className="pt-3 text-center text-sm text-muted">
           Hestia, gardienne du foyer : la décoration qui vous ressemble.
@@ -64,10 +65,10 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Barre d'onglets mobile */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur lg:hidden"
         aria-label="Navigation mobile"
       >
-        <div className="mx-auto grid max-w-lg grid-cols-5">
+        <div className="mx-auto grid max-w-xl grid-cols-6">
           <Suspense fallback={<NavLinks variant="mobile" pathname="" />}>
             <CurrentNavLinks variant="mobile" />
           </Suspense>
@@ -86,7 +87,7 @@ function CurrentNavLinks({ variant }: { variant: Variant }) {
 
 function NavLinks({ variant, pathname }: { variant: Variant; pathname: string }) {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`));
-  return LINKS.map(({ href, label, Icon, color, soft }) => {
+  return LINKS.map(({ href, label, short, Icon, color, soft }) => {
     const active = isActive(href);
     // La tache de couleur derrière le trait : douce au repos, franche sur l'onglet actif.
     const blobStyle = { "--blob": active ? color : soft } as React.CSSProperties;
@@ -110,7 +111,7 @@ function NavLinks({ variant, pathname }: { variant: Variant; pathname: string })
         style={blobStyle}
       >
         <Icon className="h-9 w-9 text-foreground" />
-        {label}
+        {short}
       </Link>
     );
   });

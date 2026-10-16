@@ -13,6 +13,7 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
    - des astuces pour réduire la facture.
 
    La progression des recherches s'affiche en direct. Chaque dupe, ou la sélection entière, peut être enregistré dans un tableau.
+1. **Tendances** (`/tendances`) : huit tendances déco éditoriales (bois foncé, une seule couleur partout, chiné, rayures et carreaux, courbes, cuisine de campagne, lumière douce, touche de rouge), chacune avec son texte, sa palette, trois conseils pour l'adopter et une galerie de photos ; « Voir plus d'idées » ouvre le fil filtré sur la tendance (`/?tendance=…`). Contenu dans `src/lib/trends.ts`.
 2. **Swipe** (`/swipe`) : des cartes à la façon de Tinder. On glisse à droite pour garder, à gauche pour passer ; les boutons et les flèches du clavier fonctionnent aussi. Deux modes :
    - *Ambiances* : on swipe des inspirations par style et par pièce ;
    - *Produits* : on swipe des produits, avec une recherche plein texte et des filtres par catégorie.
