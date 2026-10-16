@@ -73,7 +73,7 @@ export function MaterialStudio({
     <div className="min-w-0 space-y-5">
       {/* Matières du projet */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex min-h-12 flex-1 flex-wrap items-center gap-2 rounded-2xl border border-dashed border-border bg-surface-muted/50 p-2">
+        <div className="flex min-h-12 min-w-[15rem] flex-1 flex-wrap items-center gap-2 rounded-2xl border border-dashed border-border bg-surface-muted/50 p-2">
           {value.length === 0 ? (
             <span className="px-2 text-sm text-muted">Touchez une matière pour la découvrir, puis ajoutez-la à votre sélection.</span>
           ) : (

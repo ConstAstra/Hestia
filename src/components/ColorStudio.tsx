@@ -13,6 +13,14 @@ export interface ChosenColor {
 
 const MAX_COLORS = 6;
 
+/** Filtres du nuancier : les collections Pastels et Dopamine en tête, puis les familles. */
+const FILTERS: (ColorFamily | "all")[] = [
+  "all",
+  "pastels",
+  "dopamine",
+  ...(Object.keys(FAMILY_LABELS) as ColorFamily[]).filter((f) => f !== "pastels" && f !== "dopamine"),
+];
+
 export const named = (hex: string): ChosenColor => ({ hex, name: COLORS_BY_HEX[hex.toLowerCase()]?.name ?? colorName(hex) });
 
 /** Texte lisible (clair ou foncé) sur une couleur donnée. */
@@ -44,7 +52,7 @@ export function ColorStudio({ value, onChange }: { value: ChosenColor[]; onChang
     };
   }, []);
 
-  const swatches = useMemo(() => (family === "all" ? DECOR_COLORS : DECOR_COLORS.filter((c) => c.family === family)), [family]);
+  const swatches = useMemo(() => (family === "all" ? DECOR_COLORS : DECOR_COLORS.filter((c) => c.family === family || c.also?.includes(family))), [family]);
   const isChosen = (hex: string) => value.some((c) => c.hex.toLowerCase() === hex.toLowerCase());
 
   const toggle = (hex: string) => {
@@ -72,7 +80,7 @@ export function ColorStudio({ value, onChange }: { value: ChosenColor[]; onChang
     <div className="min-w-0 space-y-5">
       {/* Palette du projet */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex min-h-12 flex-1 flex-wrap items-center gap-2 rounded-2xl border border-dashed border-border bg-surface-muted/50 p-2">
+        <div className="flex min-h-12 min-w-[15rem] flex-1 flex-wrap items-center gap-2 rounded-2xl border border-dashed border-border bg-surface-muted/50 p-2">
           {value.length === 0 ? (
             <span className="px-2 text-sm text-muted">Touchez une couleur pour la découvrir, puis ajoutez-la à votre palette.</span>
           ) : (
@@ -98,7 +106,7 @@ export function ColorStudio({ value, onChange }: { value: ChosenColor[]; onChang
 
       {/* Familles */}
       <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none]">
-        {(["all", ...Object.keys(FAMILY_LABELS)] as (ColorFamily | "all")[]).map((f) => (
+        {FILTERS.map((f) => (
           <button
             key={f}
             type="button"

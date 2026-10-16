@@ -3,7 +3,7 @@
  * avec son ambiance, les pièces où elle excelle et des associations qui lui vont bien.
  */
 
-export type ColorFamily = "neutres" | "terres" | "verts" | "bleus" | "roses" | "jaunes" | "violets" | "profonds";
+export type ColorFamily = "neutres" | "terres" | "verts" | "bleus" | "roses" | "jaunes" | "violets" | "pastels" | "dopamine" | "profonds";
 
 export const FAMILY_LABELS: Record<ColorFamily, string> = {
   neutres: "Neutres",
@@ -13,6 +13,8 @@ export const FAMILY_LABELS: Record<ColorFamily, string> = {
   roses: "Roses & rouges",
   jaunes: "Jaunes & ocres",
   violets: "Violets & mauves",
+  pastels: "Pastels",
+  dopamine: "Dopamine",
   profonds: "Profonds",
 };
 
@@ -21,6 +23,8 @@ export interface DecorColor {
   name: string;
   hex: string;
   family: ColorFamily;
+  /** Collections supplémentaires où la teinte apparaît aussi (ex. un bleu poudré parmi les pastels). */
+  also?: ColorFamily[];
   /** Ambiance en quelques mots, pour l'étiquette de la fiche. */
   mood: string;
   description: string;
@@ -142,7 +146,7 @@ const BASE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "vert-amande", name: "Vert amande", hex: "#C5CFA6", family: "verts", mood: "Léger et rétro",
+    id: "vert-amande", name: "Vert amande", hex: "#C5CFA6", family: "verts", also: ["pastels"], mood: "Léger et rétro",
     description: "Un vert pastel tendre au charme vintage. Il apporte de la fraîcheur sans écraser, idéal en cuisine ou dans une chambre d'enfant.",
     rooms: ["Cuisine", "Chambre d'enfant", "Salle de bain"],
     pairings: [
@@ -152,7 +156,7 @@ const BASE_COLORS: DecorColor[] = [
   },
   // Bleus
   {
-    id: "bleu-poudre", name: "Bleu poudré", hex: "#BFD0DC", family: "bleus", mood: "Aérien et paisible",
+    id: "bleu-poudre", name: "Bleu poudré", hex: "#BFD0DC", family: "bleus", also: ["pastels"], mood: "Aérien et paisible",
     description: "Un bleu ciel adouci de gris, qui ouvre l'espace et invite au calme. Une couleur douce pour bien dormir ou pour une salle de bain lumineuse.",
     rooms: ["Chambre", "Salle de bain", "Chambre d'enfant"],
     pairings: [
@@ -216,7 +220,7 @@ const BASE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "rouge-cerise", name: "Rouge cerise", hex: "#A32638", family: "roses", mood: "Joyeux et énergique",
+    id: "rouge-cerise", name: "Rouge cerise", hex: "#A32638", family: "roses", also: ["dopamine"], mood: "Joyeux et énergique",
     description: "Un rouge franc et gourmand qui réveille un intérieur neutre. À doser en accent, sur un objet ou un pied de lampe, pour un effet immédiat.",
     rooms: ["Cuisine", "Salon", "Entrée"],
     pairings: [
@@ -244,7 +248,7 @@ const BASE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "jaune-beurre", name: "Jaune beurre", hex: "#F1DFA4", family: "jaunes", mood: "Doux et accueillant",
+    id: "jaune-beurre", name: "Jaune beurre", hex: "#F1DFA4", family: "jaunes", also: ["pastels"], mood: "Doux et accueillant",
     description: "Un jaune pâle et crémeux, comme une lumière de fin de journée. Il égaye sans éblouir, parfait dans une cuisine ou une pièce peu lumineuse.",
     rooms: ["Cuisine", "Salle à manger", "Petits espaces"],
     pairings: [
@@ -321,7 +325,7 @@ const MORE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "vert-d-eau", name: "Vert d'eau", hex: "#B9D3C6", family: "verts", mood: "Léger et rafraîchissant",
+    id: "vert-d-eau", name: "Vert d'eau", hex: "#B9D3C6", family: "verts", also: ["pastels"], mood: "Léger et rafraîchissant",
     description: "Une teinte entre bleu et vert, transparente comme une eau claire. Elle agrandit les petites pièces et apporte calme et fraîcheur.",
     rooms: ["Salle de bain", "Chambre", "Petits espaces"],
     pairings: [
@@ -339,7 +343,7 @@ const MORE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "bleu-klein", name: "Bleu Klein", hex: "#2E4BA8", family: "bleus", mood: "Audacieux et artistique",
+    id: "bleu-klein", name: "Bleu Klein", hex: "#2E4BA8", family: "bleus", also: ["dopamine"], mood: "Audacieux et artistique",
     description: "Un bleu outremer intense, hommage au peintre Yves Klein. En touche (une chaise, un vase, un cadre), il électrise un intérieur neutre.",
     rooms: ["Salon", "Bureau", "Entrée"],
     pairings: [
@@ -357,7 +361,7 @@ const MORE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "corail", name: "Corail", hex: "#E07A5F", family: "roses", mood: "Solaire et énergique",
+    id: "corail", name: "Corail", hex: "#E07A5F", family: "roses", also: ["dopamine"], mood: "Solaire et énergique",
     description: "Entre le rose et l'orange, le corail respire la bonne humeur. Il réveille une pièce neutre et se marie aux verts comme aux bleus profonds.",
     rooms: ["Salon", "Cuisine", "Salle à manger"],
     pairings: [
@@ -366,7 +370,7 @@ const MORE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "framboise", name: "Framboise", hex: "#B4405F", family: "roses", mood: "Pétillant et affirmé",
+    id: "framboise", name: "Framboise", hex: "#B4405F", family: "roses", also: ["dopamine"], mood: "Pétillant et affirmé",
     description: "Un rose profond et fruité, qui ose sans en faire trop. En velours ou en accent, il donne du caractère à un salon ou une chambre.",
     rooms: ["Salon", "Chambre", "Bureau"],
     pairings: [
@@ -375,7 +379,7 @@ const MORE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "rose-blush", name: "Rose blush", hex: "#F2D3CB", family: "roses", mood: "Tendre et lumineux",
+    id: "rose-blush", name: "Rose blush", hex: "#F2D3CB", family: "roses", also: ["pastels"], mood: "Tendre et lumineux",
     description: "Un rose à peine teinté, presque un blanc rosé. Il adoucit la lumière et donne une atmosphère enveloppante sans jamais être mièvre.",
     rooms: ["Chambre", "Salle de bain", "Petits espaces"],
     pairings: [
@@ -384,7 +388,7 @@ const MORE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "jaune-citron", name: "Jaune citron", hex: "#E8D25A", family: "jaunes", mood: "Vitaminé et pop",
+    id: "jaune-citron", name: "Jaune citron", hex: "#E8D25A", family: "jaunes", also: ["dopamine"], mood: "Vitaminé et pop",
     description: "Un jaune franc et lumineux qui apporte un rayon de soleil instantané. À doser par petites touches : une lampe, une chaise, un coussin.",
     rooms: ["Cuisine", "Bureau", "Chambre d'enfant"],
     pairings: [
@@ -402,7 +406,7 @@ const MORE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "lavande", name: "Lavande", hex: "#B8A9C9", family: "violets", mood: "Rêveur et apaisant",
+    id: "lavande", name: "Lavande", hex: "#B8A9C9", family: "violets", also: ["pastels"], mood: "Rêveur et apaisant",
     description: "Le mauve des champs de Provence, poudré et lumineux. Il apaise une chambre et apporte une touche de poésie inattendue.",
     rooms: ["Chambre", "Salle de bain", "Chambre d'enfant"],
     pairings: [
@@ -411,7 +415,7 @@ const MORE_COLORS: DecorColor[] = [
     ],
   },
   {
-    id: "lilas", name: "Lilas", hex: "#CDB9D6", family: "violets", mood: "Frais et romantique",
+    id: "lilas", name: "Lilas", hex: "#CDB9D6", family: "violets", also: ["pastels"], mood: "Frais et romantique",
     description: "Un violet très clair au parfum printanier. Associé au blanc et au bois, il garde une fraîcheur délicate, loin de l'effet bonbon.",
     rooms: ["Chambre", "Salle de bain", "Petits espaces"],
     pairings: [
@@ -453,6 +457,152 @@ const MORE_COLORS: DecorColor[] = [
     pairings: [
       { name: "Patine", colors: ["#6B5532", "#E2D3B8", "#2C6470"] },
       { name: "Cuivré", colors: ["#6B5532", "#A5532A", "#F4EFE6"] },
+    ],
+  },
+  // Pastels
+  {
+    id: "peche", name: "Pêche", hex: "#F5C9A8", family: "pastels", mood: "Velouté et solaire",
+    description: "Un orangé tout en douceur, comme la peau d'une pêche mûre. Il réchauffe une pièce avec tendresse et flatte toutes les carnations.",
+    rooms: ["Chambre", "Salon", "Salle de bain"],
+    pairings: [
+      { name: "Sorbet", colors: ["#F5C9A8", "#C3E6D2", "#F4EFE6"] },
+      { name: "Pêche & sauge", colors: ["#F5C9A8", "#9AAB8C", "#E2D3B8"] },
+    ],
+  },
+  {
+    id: "menthe", name: "Menthe", hex: "#C3E6D2", family: "pastels", mood: "Frais et pétillant",
+    description: "Un vert menthe glacée, plus vif que le vert d'eau. Il rafraîchit instantanément une cuisine ou une salle de bain et adore les touches de rose.",
+    rooms: ["Cuisine", "Salle de bain", "Chambre d'enfant"],
+    pairings: [
+      { name: "Glace menthe-fraise", colors: ["#C3E6D2", "#F6C6D4", "#F4EFE6"] },
+      { name: "Diner rétro", colors: ["#C3E6D2", "#F0412A", "#F4EFE6"] },
+    ],
+  },
+  {
+    id: "bleu-pastel", name: "Bleu pastel", hex: "#CFE3F3", family: "pastels", mood: "Doux et cotonneux",
+    description: "Un bleu laiteux, léger comme un nuage. Il apaise et agrandit l'espace, idéal pour une chambre ou une salle de bain lumineuse.",
+    rooms: ["Chambre", "Chambre d'enfant", "Salle de bain"],
+    pairings: [
+      { name: "Nuage", colors: ["#CFE3F3", "#F4EFE6", "#F6EE9E"] },
+      { name: "Pastel graphique", colors: ["#CFE3F3", "#D9C6E8", "#1C1C1C"] },
+    ],
+  },
+  {
+    id: "rose-dragee", name: "Rose dragée", hex: "#F6C6D4", family: "pastels", mood: "Gourmand et joyeux",
+    description: "Le rose des confiseries d'antan, frais et assumé. Associé à du vert ou du rouge, il devient résolument moderne.",
+    rooms: ["Chambre", "Chambre d'enfant", "Salle de bain"],
+    pairings: [
+      { name: "Pâtisserie", colors: ["#F6C6D4", "#DCE9B5", "#F4EFE6"] },
+      { name: "Rose & rouge", colors: ["#F6C6D4", "#A32638", "#F4EFE6"] },
+    ],
+  },
+  {
+    id: "citron-pastel", name: "Citron pastel", hex: "#F6EE9E", family: "pastels", mood: "Lumineux et tendre",
+    description: "Un jaune acidulé adouci, comme un sorbet citron. Il apporte de la lumière aux pièces orientées au nord sans jamais agresser.",
+    rooms: ["Cuisine", "Entrée", "Petits espaces"],
+    pairings: [
+      { name: "Limonade", colors: ["#F6EE9E", "#CFE3F3", "#F4EFE6"] },
+      { name: "Jardin d'été", colors: ["#F6EE9E", "#7F9C8E", "#F2D3CB"] },
+    ],
+  },
+  {
+    id: "parme", name: "Parme", hex: "#D9C6E8", family: "pastels", mood: "Poétique et délicat",
+    description: "Un violet pâle aux reflets bleutés, nommé d'après la violette de Parme. Il donne une touche rêveuse, très jolie avec le jaune et le vert.",
+    rooms: ["Chambre", "Salle de bain", "Bureau"],
+    pairings: [
+      { name: "Violette", colors: ["#D9C6E8", "#DCE9B5", "#F4EFE6"] },
+      { name: "Parme & ocre", colors: ["#D9C6E8", "#CF9A3A", "#CBBFAE"] },
+    ],
+  },
+  {
+    id: "pistache-pastel", name: "Pistache pastel", hex: "#DCE9B5", family: "pastels", mood: "Tendre et printanier",
+    description: "Un vert anis très doux, qui évoque les jeunes pousses. Il égaye sans dominer et s'entend avec tous les autres pastels.",
+    rooms: ["Cuisine", "Chambre d'enfant", "Salle à manger"],
+    pairings: [
+      { name: "Macaron", colors: ["#DCE9B5", "#F6C6D4", "#F5C9A8"] },
+      { name: "Printemps doux", colors: ["#DCE9B5", "#F4EFE6", "#B98A5A"] },
+    ],
+  },
+  // Dopamine
+  {
+    id: "fuchsia", name: "Rose fuchsia", hex: "#E0218A", family: "dopamine", mood: "Électrisant et audacieux",
+    description: "Le rose qui ose tout : vibrant, joyeux, impossible à ignorer. En fauteuil, en vase ou en pan de mur, c'est la signature du décor dopamine.",
+    rooms: ["Salon", "Bureau", "Entrée"],
+    pairings: [
+      { name: "Fuchsia & orange", colors: ["#E0218A", "#FF7A1A", "#F4EFE6"] },
+      { name: "Électrique", colors: ["#E0218A", "#1E90FF", "#FFC72C"] },
+    ],
+  },
+  {
+    id: "orange-vitamine", name: "Orange vitaminé", hex: "#FF7A1A", family: "dopamine", mood: "Énergique et solaire",
+    description: "Un orange franc qui fait l'effet d'un jus pressé au réveil. Il stimule, réchauffe et met de bonne humeur dès qu'on entre dans la pièce.",
+    rooms: ["Cuisine", "Salle à manger", "Bureau"],
+    pairings: [
+      { name: "Agrumes", colors: ["#FF7A1A", "#FFC72C", "#F4EFE6"] },
+      { name: "Contraste vitaminé", colors: ["#FF7A1A", "#1FB5AC", "#F6C6D4"] },
+    ],
+  },
+  {
+    id: "jaune-soleil", name: "Jaune soleil", hex: "#FFC72C", family: "dopamine", mood: "Rayonnant et optimiste",
+    description: "Un jaune éclatant, comme un soleil de midi. Il illumine une entrée ou une cuisine et appelle les associations les plus joyeuses.",
+    rooms: ["Cuisine", "Entrée", "Chambre d'enfant"],
+    pairings: [
+      { name: "Bauhaus", colors: ["#FFC72C", "#1E90FF", "#F0412A"] },
+      { name: "Tournesol", colors: ["#FFC72C", "#6CC24A", "#F4EFE6"] },
+    ],
+  },
+  {
+    id: "vert-pomme", name: "Vert pomme", hex: "#6CC24A", family: "dopamine", mood: "Pétillant et naturel",
+    description: "Un vert acidulé et plein de vitalité, qui fait entrer le printemps toute l'année. Il dynamise une cuisine ou un coin bureau.",
+    rooms: ["Cuisine", "Bureau", "Chambre d'enfant"],
+    pairings: [
+      { name: "Fraise-pomme", colors: ["#6CC24A", "#FF8FC7", "#F4EFE6"] },
+      { name: "Jungle pop", colors: ["#6CC24A", "#FFC72C", "#2F5446"] },
+    ],
+  },
+  {
+    id: "turquoise", name: "Turquoise", hex: "#1FB5AC", family: "dopamine", mood: "Lagon et évasion",
+    description: "Le bleu-vert des lagons, éclatant et rafraîchissant. Il évoque les vacances et se marie divinement à l'orange et au rose.",
+    rooms: ["Salle de bain", "Salon", "Cuisine"],
+    pairings: [
+      { name: "Lagon", colors: ["#1FB5AC", "#F4EFE6", "#D9A55B"] },
+      { name: "Miami", colors: ["#1FB5AC", "#FF8FC7", "#FFC72C"] },
+    ],
+  },
+  {
+    id: "bleu-electrique", name: "Bleu électrique", hex: "#1E90FF", family: "dopamine", mood: "Vif et graphique",
+    description: "Un bleu lumineux, presque fluo, qui donne un coup de jeune immédiat. Parfait sur un meuble laqué ou une étagère, avec du blanc franc.",
+    rooms: ["Bureau", "Chambre d'enfant", "Salon"],
+    pairings: [
+      { name: "Bleu & rouge", colors: ["#1E90FF", "#F0412A", "#F4EFE6"] },
+      { name: "Néon doux", colors: ["#1E90FF", "#FF8FC7", "#F6EE9E"] },
+    ],
+  },
+  {
+    id: "violet-electrique", name: "Violet électrique", hex: "#8A3FFC", family: "dopamine", mood: "Créatif et futuriste",
+    description: "Un violet intense et lumineux, entre rêve et science-fiction. En touche, il donne une énergie créative unique à un bureau ou une chambre d'ado.",
+    rooms: ["Bureau", "Chambre", "Salon"],
+    pairings: [
+      { name: "Néon", colors: ["#8A3FFC", "#FF7A1A", "#F4EFE6"] },
+      { name: "Galaxie", colors: ["#8A3FFC", "#1FB5AC", "#1C1C1C"] },
+    ],
+  },
+  {
+    id: "rose-bonbon", name: "Rose bonbon", hex: "#FF8FC7", family: "dopamine", mood: "Ludique et pop",
+    description: "Un rose sucré et lumineux, régressif dans le meilleur sens du terme. Il apporte une légèreté joyeuse, surtout en contraste avec le vert ou le rouge.",
+    rooms: ["Chambre", "Chambre d'enfant", "Salle de bain"],
+    pairings: [
+      { name: "Barbiecore", colors: ["#FF8FC7", "#E0218A", "#F4EFE6"] },
+      { name: "Bonbon acidulé", colors: ["#FF8FC7", "#6CC24A", "#FFC72C"] },
+    ],
+  },
+  {
+    id: "rouge-tomate", name: "Rouge tomate", hex: "#F0412A", family: "dopamine", mood: "Vif et gourmand",
+    description: "Un rouge orangé éclatant, plus pop que le rouge cerise. Une lampe, une chaise ou un buffet de cette couleur suffisent à donner du peps.",
+    rooms: ["Cuisine", "Salle à manger", "Entrée"],
+    pairings: [
+      { name: "Trattoria", colors: ["#F0412A", "#F4EFE6", "#2F5446"] },
+      { name: "Rouge & rose", colors: ["#F0412A", "#F6C6D4", "#FFC72C"] },
     ],
   },
 ];

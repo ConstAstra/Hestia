@@ -142,7 +142,9 @@ export const DECOR_MATERIALS: DecorMaterial[] = [
     swatch: "radial-gradient(circle, #fbf8f2 0 2px, #e9e2d6 2.5px, transparent 3.5px) 0 0/7px 7px, radial-gradient(circle, #f6f1e8 0 2px, transparent 3px) 3.5px 3.5px/7px 7px, #ece5d9",
     pairings: [
       { name: "Nuage", materials: ["travertin", "chene-clair"], colors: ["#F4EFE6", "#CBBFAE", "#D8C09A"] },
-      { name: "Néo-seventies", materials: ["liege", "chrome"], colors: ["#B98A5A", "#F1DFA4", "#5A3A28"] },
+      { name: "Dopamine", materials: ["terrazzo", "velours", "chrome", "bouclette"], colors: ["#E0218A", "#FF7A1A", "#FFC72C", "#1FB5AC"] },
+  { name: "Douceur pastel", materials: ["bouclette", "cannage", "chene-clair", "verre-cannele"], colors: ["#F6C6D4", "#C3E6D2", "#CFE3F3", "#F5C9A8"] },
+  { name: "Néo-seventies", materials: ["liege", "chrome"], colors: ["#B98A5A", "#F1DFA4", "#5A3A28"] },
     ],
   },
   {
