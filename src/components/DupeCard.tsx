@@ -4,13 +4,16 @@ import { useState } from "react";
 import { formatPrice } from "@/lib/catalog";
 import type { Dupe } from "@/lib/types";
 
+/** Fiche produit réelle : un dupe de l'outil de création ou une offre « Où l'acheter ». */
+type ListedProduct = Omit<Dupe, "originalItem" | "category" | "priority"> & { originalItem?: string };
+
 /** Lien d'achat via Hestia ; repli pour les dupes enregistrés avant l'affiliation. */
-function buyLink(dupe: Dupe) {
+function buyLink(dupe: ListedProduct) {
   if (dupe.buyUrl) return dupe.buyUrl;
   return `/acheter?${new URLSearchParams({ u: dupe.url, r: dupe.retailer })}`;
 }
 
-export function DupeCard({ dupe, onSave }: { dupe: Dupe; onSave?: () => void }) {
+export function DupeCard({ dupe, onSave }: { dupe: ListedProduct; onSave?: () => void }) {
   const [copied, setCopied] = useState(false);
   let host = dupe.retailer;
   let shortUrl = dupe.url;
@@ -21,6 +24,7 @@ export function DupeCard({ dupe, onSave }: { dupe: Dupe; onSave?: () => void }) 
   } catch {}
   const buy = buyLink(dupe);
   const facts = [
+    dupe.dimensions && ["Dimensions", dupe.dimensions],
     dupe.material && ["Matière", dupe.material],
     dupe.color && ["Coloris", dupe.color],
     ["Où le trouver", [dupe.retailer, dupe.availability].filter(Boolean).join(" · ")],
@@ -38,9 +42,11 @@ export function DupeCard({ dupe, onSave }: { dupe: Dupe; onSave?: () => void }) 
   return (
     <article className="card flex min-w-0 flex-col gap-3 p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-xs uppercase tracking-wider text-muted">
-          Inspiré de : <span className="normal-case tracking-normal text-foreground">{dupe.originalItem}</span>
-        </p>
+        {dupe.originalItem && (
+          <p className="text-xs uppercase tracking-wider text-muted">
+            Inspiré de : <span className="normal-case tracking-normal text-foreground">{dupe.originalItem}</span>
+          </p>
+        )}
         {dupe.verified && (
           <span className="rounded-full bg-olive-soft px-2.5 py-0.5 text-[11px] font-semibold text-olive" title="Hestia a ouvert et lu la fiche produit">
             ✓ Fiche vérifiée

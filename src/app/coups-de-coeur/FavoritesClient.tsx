@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
 import { CategoryPickerDialog } from "@/components/CategoryPickerDialog";
 import { PersonalPalette } from "@/components/PaletteSwatches";
+import { ProductDetailDialog } from "@/components/ProductDetailDialog";
 import { Visual } from "@/components/Visual";
 import {
   CATEGORY_LABELS,
@@ -66,6 +67,7 @@ export function FavoritesClient() {
   const tags = useHestia((s) => s.favoriteTags);
   const order = useHestia((s) => s.favoriteOrder);
   const likedAt = useHestia((s) => s.likedAt);
+  const productOffers = useHestia((s) => s.productOffers);
   const { unlike, setFavoriteOrder, createFavoriteCategory, renameFavoriteCategory, recolorFavoriteCategory, deleteFavoriteCategory, setFavoriteCategory } =
     useHestia.getState();
 
@@ -80,6 +82,7 @@ export function FavoritesClient() {
   const [newCategory, setNewCategory] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [dragKey, setDragKey] = useState<FavoriteKey | null>(null);
+  const [detail, setDetail] = useState<string | null>(null);
 
   // Tous les coups de cœur, dans l'ordre choisi par l'utilisateur.
   const allEntries: Entry[] = useMemo(() => {
@@ -375,7 +378,10 @@ export function FavoritesClient() {
                     } ${isSelected ? "ring-2 ring-accent" : ""} ${selecting ? "cursor-pointer" : ""}`}
                   >
                     <div className="relative">
-                      <div className="aspect-[4/5] overflow-hidden rounded-2xl">
+                      <div
+                        className={`aspect-[4/5] overflow-hidden rounded-2xl ${entry.kind === "product" && !selecting ? "cursor-pointer" : ""}`}
+                        onClick={() => entry.kind === "product" && !selecting && setDetail(entry.id)}
+                      >
                         {entry.photo ? (
                           // eslint-disable-next-line @next/next/no-img-element -- photo du CDN Pexels
                           <img src={entry.photo.src.medium} alt={entry.title} loading="lazy" className="h-full w-full object-cover" style={{ background: entry.photo.color }} />
@@ -401,8 +407,23 @@ export function FavoritesClient() {
                       <div>
                         <p className="line-clamp-2 text-sm font-medium leading-snug">{entry.title}</p>
                         <p className="text-xs text-muted">
-                          {[styleLabel(entry), entry.price !== undefined ? formatPrice(entry.price) : entry.subtitle].filter(Boolean).join(" · ")}
+                          {[styleLabel(entry), entry.price !== undefined ? `≈ ${formatPrice(entry.price)}` : entry.subtitle].filter(Boolean).join(" · ")}
                         </p>
+                        {entry.kind === "product" && (() => {
+                          const offers = productOffers[entry.id]?.offers ?? [];
+                          const cheapest = offers.reduce<(typeof offers)[number] | null>((best, o) => (!best || o.price < best.price ? o : best), null);
+                          return (
+                            <button
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                if (!selecting) setDetail(entry.id);
+                              }}
+                              className="mt-1 text-left text-xs font-semibold text-accent hover:underline"
+                            >
+                              {cheapest ? `Dès ${formatPrice(cheapest.price)} chez ${cheapest.retailer} →` : "Où l'acheter ? →"}
+                            </button>
+                          );
+                        })()}
                       </div>
                       <div className="flex flex-wrap gap-1">
                         {entryCategories.map((c) => (
@@ -458,6 +479,8 @@ export function FavoritesClient() {
           )}
         </>
       )}
+
+      <ProductDetailDialog productId={detail} onClose={() => setDetail(null)} />
 
       {/* Barre d'actions de la sélection multiple */}
       {selecting && (

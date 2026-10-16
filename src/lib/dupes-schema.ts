@@ -55,7 +55,8 @@ export const DupeSchema = z.object({
   url: z.string().url(),
   /** Référence de l'enseigne (SKU, n° d'article), recopiée de la fiche ; vide si la fiche n'en affiche pas. */
   reference: z.string(),
-  /** Informations de la fiche : dimensions, matière, coloris, entretien… */
+  dimensions: z.string(),
+  /** Autres informations de la fiche : composition, finition, entretien… */
   details: z.string(),
   material: z.string(),
   color: z.string(),

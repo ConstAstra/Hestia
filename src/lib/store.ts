@@ -3,6 +3,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import type { Offer } from "./offers-schema";
 import type { Board, BoardItem, Photo } from "./types";
 
 export type SwipeKind = "product" | "inspiration";
@@ -48,6 +49,8 @@ interface HestiaState {
   /** Ordre choisi à la main par l'utilisateur. */
   favoriteOrder: FavoriteKey[];
   likedAt: Record<FavoriteKey, number>;
+  /** Offres réelles trouvées par « Où l'acheter » pour les produits aimés, par produit. */
+  productOffers: Record<string, { offers: Offer[]; foundAt: number }>;
 
   createBoard: (name: string, description?: string) => string;
   renameBoard: (id: string, name: string, description?: string) => void;
@@ -68,6 +71,7 @@ interface HestiaState {
   /** Ajoute (on = true) ou retire une catégorie sur un ou plusieurs coups de cœur. */
   setFavoriteCategory: (keys: FavoriteKey[], categoryId: string, on: boolean) => void;
   setFavoriteOrder: (keys: FavoriteKey[]) => void;
+  setProductOffers: (productId: string, offers: Offer[]) => void;
 }
 
 const uid = () =>
@@ -113,6 +117,10 @@ export const useHestia = create<HestiaState>()(
       favoriteTags: {},
       favoriteOrder: [],
       likedAt: {},
+      productOffers: {},
+
+      setProductOffers: (productId, offers) =>
+        set((state) => ({ productOffers: { ...state.productOffers, [productId]: { offers, foundAt: Date.now() } } })),
 
       createBoard: (name, description) => {
         const id = uid();

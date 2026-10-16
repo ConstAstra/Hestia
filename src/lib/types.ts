@@ -107,7 +107,8 @@ export interface Dupe {
   url: string;
   /** Référence de l'enseigne, recopiée de la fiche produit. */
   reference?: string;
-  /** Dimensions, matière, coloris… tels qu'indiqués sur la fiche. */
+  dimensions?: string;
+  /** Composition, finition, entretien… tels qu'indiqués sur la fiche. */
   details?: string;
   material?: string;
   color?: string;
