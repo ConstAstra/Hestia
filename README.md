@@ -4,16 +4,16 @@ Application web de décoration d'intérieur, en français, pensée pour le grand
 
 ## Fonctionnalités
 
-0. **Fil d'inspiration** (`/`), façon Pinterest : mosaïque de photos réelles d'intérieurs de tous styles (Pexels), défilement infini, recherche libre et thèmes (pièces, styles, envies). Un clic ouvre la fiche de la photo, avec « Enregistrer », « J'aime », « Recréer ce look avec l'IA » et des idées similaires à l'infini. Le fil « Pour vous » s'oriente selon les styles aimés.
+0. **Fil d'inspiration** (`/`), façon Pinterest : mosaïque de photos réelles d'intérieurs de tous styles (Pexels), défilement infini, recherche libre et thèmes (pièces, styles, envies). Un clic ouvre la fiche de la photo, avec « Enregistrer », « J'aime », « Recréer ce look avec l'IA » (vers l'outil de création) et des idées similaires à l'infini. Le fil « Pour vous » s'oriente selon les styles aimés.
 
-1. **Dupes IA** (`/dupes`) : l'utilisateur dépose une inspiration (épingle Pinterest enregistrée ou capture), et s'il le souhaite une photo de sa pièce, puis fixe un budget. Claude analyse l'image, identifie chaque pièce qui fait l'ambiance, cherche sur le web des équivalents réellement en vente chez des enseignes qui livrent en France, puis renvoie :
+1. **Outil de création** (`/creation`, anciennement « Dupes IA ») : l'utilisateur dépose une inspiration (épingle Pinterest enregistrée ou capture), et s'il le souhaite une photo de sa pièce, puis fixe un budget. Claude analyse l'image, identifie chaque pièce qui fait l'ambiance, cherche sur le web des équivalents réellement en vente chez des enseignes qui livrent en France, puis renvoie :
    - une sélection qui tient dans le budget, en distinguant les pièces essentielles des pièces bonus ;
    - la palette de couleurs ;
    - des conseils d'agencement ;
    - des astuces pour réduire la facture.
 
    La progression des recherches s'affiche en direct. Chaque dupe, ou la sélection entière, peut être enregistré dans un tableau.
-1. **Tendances** (`/tendances`) : huit tendances déco éditoriales (bois foncé, une seule couleur partout, chiné, rayures et carreaux, courbes, cuisine de campagne, lumière douce, touche de rouge), chacune avec son texte, sa palette, trois conseils pour l'adopter et une galerie de photos ; « Voir plus d'idées » ouvre le fil filtré sur la tendance (`/?tendance=…`). Contenu dans `src/lib/trends.ts`.
+1. **Tendances** (`/tendances`) : huit tendances déco éditoriales (bois foncé, une seule couleur partout, chiné, rayures et carreaux, courbes, cuisine de campagne, lumière douce, touche de rouge), chacune avec son texte, sa palette, trois conseils pour l'adopter et une galerie de photos ; « Voir plus d'idées » ouvre le fil filtré sur la tendance (`/?tendance=…`). Les tendances **s'actualisent depuis le web** : Claude mène une veille (magazines, salons, sites spécialisés) avec la recherche web et en tire une nouvelle sélection, datée et sourcée. La sélection éditoriale de `src/lib/trends.ts` sert de repli.
 2. **Swipe** (`/swipe`) : des cartes à la façon de Tinder. On glisse à droite pour garder, à gauche pour passer ; les boutons et les flèches du clavier fonctionnent aussi. Deux modes :
    - *Ambiances* : on swipe des inspirations par style et par pièce ;
    - *Produits* : on swipe des produits, avec une recherche plein texte et des filtres par catégorie.
@@ -58,6 +58,14 @@ Vérifications : `npx tsc --noEmit`, `npm run lint`, `npm run build`.
 Côté IA, le modèle `claude-opus-5-5` travaille en réflexion adaptative, avec un effort `medium`. Ses outils sont `web_search` et `web_fetch`, et le repli serveur (`fallbacks: "default"`) prend le relais en cas de refus. Le modèle n'a pas le droit d'inventer d'URL. Les liens qu'il n'a pas vus pendant ses recherches portent la mention « Lien à vérifier ».
 
 Côté navigateur, les images sont redimensionnées (1568 px au plus) avant l'envoi. La route valide toutes les entrées et limite le nombre de recherches par IP (`DUPES_HOURLY_LIMIT`, 5 par heure par défaut).
+
+## Actualisation des tendances
+
+- **Automatique** : quand la dernière veille a plus de 7 jours, la visite suivante de la page Tendances en lance une nouvelle en arrière-plan (sans faire attendre le visiteur ; 6 h d'attente avant de réessayer en cas d'échec).
+- **Planifiée** : `vercel.json` appelle `/api/trends/refresh` chaque lundi à 6 h (UTC) avec `CRON_SECRET`.
+- **Manuelle** : `curl -X POST -H "Authorization: Bearer $TRENDS_REFRESH_SECRET" https://<votre-site>/api/trends/refresh`.
+- **Stockage** : fichier `.data/trends.json` (ou `TRENDS_STORE_PATH`). Sur un hébergement serverless, où le disque est éphémère, brancher un stockage clé-valeur dans `src/lib/server/trends-store.ts`.
+- Seules les sources réellement consultées pendant la recherche sont affichées.
 
 ## Avant une mise en ligne publique
 

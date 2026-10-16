@@ -12,7 +12,7 @@ const LINKS = [
   { href: "/", label: "Accueil", short: "Accueil", Icon: IconHome, color: "var(--blush)", soft: "var(--blush-soft)" },
   { href: "/tendances", label: "Tendances", short: "Tendances", Icon: IconTrend, color: "var(--olive)", soft: "var(--olive-soft)" },
   { href: "/swipe", label: "Swipe", short: "Swipe", Icon: IconCards, color: "var(--gold)", soft: "var(--gold-soft)" },
-  { href: "/dupes", label: "Dupes IA", short: "Dupes", Icon: IconSpark, color: "var(--accent)", soft: "var(--accent-soft)" },
+  { href: "/creation", label: "Outil de création", short: "Création", Icon: IconSpark, color: "var(--accent)", soft: "var(--accent-soft)" },
   { href: "/coups-de-coeur", label: "Coups de cœur", short: "Favoris", Icon: IconHeart, color: "var(--like)", soft: "var(--accent-soft)" },
   { href: "/tableaux", label: "Tableaux", short: "Tableaux", Icon: IconBoard, color: "var(--blush)", soft: "var(--blush-soft)" },
 ];

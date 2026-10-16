@@ -77,7 +77,7 @@ export function PinCard({ item, onOpen, onSave }: { item: FeedItem } & PinHandle
             <button
               onClick={() => {
                 rememberPhotoForDupes(item.photo);
-                router.push("/dupes");
+                router.push("/creation");
               }}
               className="truncate rounded-full bg-white/90 px-3 py-1.5 text-xs text-foreground opacity-0 shadow transition hover:bg-white focus:opacity-100 group-hover:opacity-100 max-md:hidden"
             >
@@ -184,7 +184,7 @@ export function PinDialog({ item, onClose, ...handlers }: { item: FeedItem | nul
             <PinDetails item={item} onSave={handlers.onSave} onRecreate={(photo) => {
               rememberPhotoForDupes(photo);
               onClose();
-              router.push("/dupes");
+              router.push("/creation");
             }} />
           </div>
           <section className="space-y-4 px-4 pb-10 md:px-8">

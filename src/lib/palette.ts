@@ -135,7 +135,7 @@ const NAMED: [string, string][] = [
   ["Blanc cassé", "#f4efe6"], ["Crème", "#efe2c8"], ["Lin", "#e2d3b8"], ["Sable", "#d8c09a"], ["Camel", "#b98a5a"],
   ["Ocre", "#cf9a3a"], ["Moutarde", "#c9a12e"], ["Terracotta", "#c0603d"], ["Brique", "#9e4a32"], ["Rouille", "#a5532a"],
   ["Rose poudré", "#e3b5a8"], ["Vieux rose", "#c08a8a"], ["Bordeaux", "#6e2532"], ["Chocolat", "#5a3a28"], ["Noyer", "#7a5236"],
-  ["Olive", "#6f7a3b"], ["Sauge", "#9aab8c"], ["Vert sapin", "#2f5446"], ["Bleu canard", "#2c6470"], ["Bleu ardoise", "#5c7088"],
+  ["Olive", "#6f7a3b"], ["Vert olive clair", "#8d975b"], ["Kaki", "#7d7b52"], ["Sauge", "#9aab8c"], ["Vert amande", "#c5cfa6"], ["Vert sapin", "#2f5446"], ["Bleu canard", "#2c6470"], ["Bleu ardoise", "#5c7088"],
   ["Bleu nuit", "#1f2f45"], ["Gris perle", "#c9c9c4"], ["Gris taupe", "#8b8178"], ["Anthracite", "#3a3a3a"], ["Noir", "#1c1c1c"],
 ];
 export function colorName(hex: string): string {

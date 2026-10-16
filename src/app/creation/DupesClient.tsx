@@ -135,7 +135,7 @@ export function DupesClient() {
   return (
     <div className="space-y-10">
       <header className="max-w-2xl space-y-3">
-        <p className="kicker">Dupes IA</p>
+        <p className="kicker">Outil de création</p>
         <h1 className="font-display text-4xl md:text-6xl leading-tight">Recréez une inspiration, dans votre budget</h1>
         <p className="text-muted">
           Enregistrez l&apos;épingle Pinterest qui vous plaît (capture d&apos;écran ou « Télécharger l&apos;image »), ajoutez

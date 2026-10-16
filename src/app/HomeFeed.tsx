@@ -14,15 +14,20 @@ import type { DecorStyle } from "@/lib/types";
 type Selection =
   | { type: "for-you" }
   | { type: "topic"; id: string }
-  | { type: "trend"; id: string }
+  | { type: "trend"; title: string; queries: string[] }
   | { type: "search"; text: string };
 
 export function HomeFeed() {
-  // Arrivée depuis la page Tendances : /?tendance=bois-fonce
-  const trendParam = useSearchParams().get("tendance");
-  const [selection, setSelection] = useState<Selection>(() =>
-    trendParam && TRENDS_BY_ID[trendParam] ? { type: "trend", id: trendParam } : { type: "for-you" },
-  );
+  // Arrivée depuis la page Tendances : /?tendance=<titre>&q=<requêtes séparées par |>
+  // (ou, ancien format, /?tendance=<identifiant d'une tendance éditoriale>).
+  const params = useSearchParams();
+  const [selection, setSelection] = useState<Selection>(() => {
+    const tendance = params.get("tendance");
+    const queries = (params.get("q") ?? "").split("|").map((q) => q.trim()).filter(Boolean).slice(0, 4);
+    if (tendance && queries.length) return { type: "trend", title: tendance.slice(0, 80), queries };
+    const known = tendance ? TRENDS_BY_ID[tendance] : undefined;
+    return known ? { type: "trend", title: known.title, queries: known.queries } : { type: "for-you" };
+  });
   const [search, setSearch] = useState("");
   const [opened, setOpened] = useState<FeedItem | null>(null);
   const [saving, setSaving] = useState<NewBoardItem[] | null>(null);
@@ -46,7 +51,7 @@ export function HomeFeed() {
   const queries = useMemo(() => {
     if (selection.type === "search") return [selection.text];
     if (selection.type === "topic") return TOPICS.find((t) => t.id === selection.id)?.queries ?? [];
-    if (selection.type === "trend") return TRENDS_BY_ID[selection.id]?.queries ?? [];
+    if (selection.type === "trend") return selection.queries;
     return forYouQueries(favoriteStyles);
   }, [selection, favoriteStyles]);
 
@@ -84,7 +89,7 @@ export function HomeFeed() {
             Pour vous
           </button>
           {selection.type === "search" && <span className={chip(true)}>« {selection.text} »</span>}
-          {selection.type === "trend" && <span className={chip(true)}>Tendance : {TRENDS_BY_ID[selection.id]?.title}</span>}
+          {selection.type === "trend" && <span className={chip(true)}>Tendance : {selection.title}</span>}
           {TOPICS.map((topic) => (
             <button
               key={topic.id}

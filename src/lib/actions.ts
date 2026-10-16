@@ -7,7 +7,7 @@ import type { Photo } from "./types";
 
 export const DUPES_PHOTO_KEY = "hestia:dupes-photo";
 
-/** Prépare l'outil Dupes avec cette photo comme inspiration. */
+/** Prépare l'outil de création avec cette photo comme inspiration. */
 export function rememberPhotoForDupes(photo: Photo) {
   try {
     sessionStorage.setItem(DUPES_PHOTO_KEY, JSON.stringify(photo));
