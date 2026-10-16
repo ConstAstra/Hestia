@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
+import { type ChosenColor, ColorStudio } from "@/components/ColorStudio";
 import { DupeCard } from "@/components/DupeCard";
 import { ImageDrop } from "@/components/ImageDrop";
 import { formatPrice, ROOM_LABELS } from "@/lib/catalog";
@@ -33,6 +34,7 @@ export function DupesClient() {
   const [budget, setBudget] = useState(500);
   const [roomType, setRoomType] = useState("salon");
   const [notes, setNotes] = useState("");
+  const [colors, setColors] = useState<ChosenColor[]>([]);
   const [loading, setLoading] = useState(false);
   const [log, setLog] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -86,6 +88,7 @@ export function DupesClient() {
           budget,
           roomType: ROOM_LABELS[roomType as keyof typeof ROOM_LABELS],
           notes: notes.trim() || undefined,
+          colors: colors.length ? colors : undefined,
         }),
       });
 
@@ -217,6 +220,16 @@ export function DupesClient() {
             placeholder="Ex. : je garde mon canapé gris, j'ai un chat, je préfère la seconde main…"
             className="input resize-none"
           />
+        </div>
+
+        <div className="min-w-0 space-y-3 border-t border-border pt-6 md:col-span-2">
+          <div>
+            <p className="text-sm font-semibold">5. Vos couleurs (facultatif)</p>
+            <p className="text-sm text-muted">
+              Composez la palette de votre projet : l&apos;IA privilégiera des pièces dans ces teintes.
+            </p>
+          </div>
+          <ColorStudio value={colors} onChange={setColors} />
         </div>
 
         <div className="flex flex-col items-start gap-3 md:col-span-2 md:flex-row md:items-center">

@@ -105,6 +105,9 @@ function buildUserContent(request: DupesRequest) {
     `Budget total : ${request.budget} €.`,
     request.roomType ? `Type de pièce : ${request.roomType}.` : null,
     request.notes ? `Précisions de ma part : ${request.notes}` : null,
+    request.colors?.length
+      ? `Couleurs que je souhaite pour ce projet : ${request.colors.map((c) => `${c.name} (${c.hex})`).join(", ")}. Oriente les dupes et la palette proposée vers ces teintes, tout en gardant l'esprit de l'inspiration.`
+      : null,
   ].filter(Boolean);
   content.push({
     type: "text",
