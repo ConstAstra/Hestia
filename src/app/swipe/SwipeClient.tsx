@@ -399,9 +399,14 @@ function Favorites({ mode, onSave }: { mode: SwipeKind; onSave: (items: NewBoard
           <h2 className="font-display text-2xl">
             Vos coups de cœur {mode === "inspiration" ? "· ambiances" : "· produits"}
           </h2>
-          <Link href="/coups-de-coeur" className="text-sm font-semibold text-accent hover:underline">
-            Tout voir et classer →
-          </Link>
+          <span className="flex flex-wrap gap-x-4 gap-y-1">
+            <Link href="/mon-style" className="text-sm font-semibold text-olive hover:underline">
+              Mon style →
+            </Link>
+            <Link href="/coups-de-coeur" className="text-sm font-semibold text-accent hover:underline">
+              Tout voir et classer →
+            </Link>
+          </span>
         </div>
         {(mode === "inspiration" ? inspirations.length : products.length) === 0 ? (
           <div className="space-y-4">

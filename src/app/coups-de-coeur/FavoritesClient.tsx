@@ -191,6 +191,10 @@ export function FavoritesClient() {
           </p>
         </div>
         {allEntries.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+          <Link href="/mon-style" className="btn-primary">
+            Mon style · statistiques
+          </Link>
           <button
             className={selecting ? "btn-primary" : "btn-ghost"}
             onClick={() => {
@@ -200,6 +204,7 @@ export function FavoritesClient() {
           >
             {selecting ? "Terminer la sélection" : "Sélectionner"}
           </button>
+          </div>
         )}
       </header>
 
