@@ -3,6 +3,7 @@
 import type { QuizResult } from "./quiz";
 import { COLORS_BY_HEX } from "./colors";
 import { MATERIALS_BY_ID } from "./materials";
+import { PERSONALITIES } from "./personalities";
 import { STYLES_BY_ID } from "./styles";
 
 /*
@@ -36,7 +37,7 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 
 export async function renderStory(result: QuizResult): Promise<Blob> {
   // Poppins doit être chargée avant de dessiner, sinon le canvas prend une police par défaut.
-  await Promise.all(["800 120px Poppins", "700 48px Poppins", "600 40px Poppins", "500 34px Poppins", "800 52px Poppins"].map((f) => document.fonts.load(f)));
+  await Promise.all(["800 120px Poppins", "700 48px Poppins", "600 40px Poppins", "500 34px Poppins", "800 52px Poppins", "italic 600 44px Poppins"].map((f) => document.fonts.load(f)));
   const style = STYLES_BY_ID[result.styleId];
   const canvas = document.createElement("canvas");
   canvas.width = W;
@@ -45,12 +46,13 @@ export async function renderStory(result: QuizResult): Promise<Blob> {
 
   // Fond : dégradé de marque, voile clair en bas pour la lisibilité.
   const bg = ctx.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, "#e0503a");
-  bg.addColorStop(0.5, "#ee5d78");
-  bg.addColorStop(1, "#f6a33c");
+  // Terracotta vers ocre : chaleureux, sans rose.
+  bg.addColorStop(0, "#a8442a");
+  bg.addColorStop(0.55, "#c9643a");
+  bg.addColorStop(1, "#e0a04a");
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
-  ctx.globalAlpha = 0.16;
+  ctx.globalAlpha = 0.1;
   ctx.fillStyle = "#ffffff";
   for (const [x, y, r] of [[930, 220, 260], [120, 1500, 340], [980, 1300, 140]]) {
     ctx.beginPath();
@@ -64,7 +66,7 @@ export async function renderStory(result: QuizResult): Promise<Blob> {
   ctx.font = "700 40px Poppins";
   ctx.fillText("HESTIA", 90, 150);
   ctx.font = "500 34px Poppins";
-  ctx.fillText("Mon projet déco", 90, 270);
+  ctx.fillText("Mon style de déco", 90, 270);
 
   // Style dominant
   ctx.font = "800 128px Poppins";
@@ -73,6 +75,12 @@ export async function renderStory(result: QuizResult): Promise<Blob> {
   for (const line of nameLines) {
     ctx.fillText(line, 90, y);
     y += 132;
+  }
+  const personality = PERSONALITIES[result.styleId];
+  if (personality) {
+    ctx.font = "italic 600 44px Poppins";
+    ctx.fillText(`« ${personality.title} »`, 90, y);
+    y += 70;
   }
   ctx.font = "700 42px Poppins";
   ctx.fillText(`${Math.round(result.match * 100)} % de compatibilité`, 90, y + 6);
@@ -99,7 +107,7 @@ export async function renderStory(result: QuizResult): Promise<Blob> {
   ctx.font = "500 34px Poppins";
   const pieceLines = result.pieces.slice(0, 4).map((piece) => wrap(ctx, piece, W - 300).slice(0, 2));
   const piecesHeight = pieceLines.reduce((sum, lines) => sum + lines.length * 46 + 14, 0);
-  const contentH = 100 + 34 + swatch + 140 + 34 + piecesHeight + 30 + 34 + 64 + 70;
+  const contentH = 100 + 34 + swatch + 160 + 34 + piecesHeight + 30 + 34 + 64 + 70;
   const cardY = y + 40;
   const cardH = Math.min(contentH, H - cardY - 200);
   ctx.fillStyle = "#ffffff";
@@ -108,7 +116,7 @@ export async function renderStory(result: QuizResult): Promise<Blob> {
 
   let cy = cardY + 100;
   const section = (title: string) => {
-    ctx.fillStyle = "#e0503a";
+    ctx.fillStyle = "#a8442a";
     ctx.font = "700 30px Poppins";
     ctx.fillText(title.toUpperCase(), 120, cy);
     cy += 34;
@@ -127,16 +135,17 @@ export async function renderStory(result: QuizResult): Promise<Blob> {
     ctx.fillStyle = INK;
     ctx.font = "500 24px Poppins";
     const name = COLORS_BY_HEX[hex.toLowerCase()]?.name ?? hex.toUpperCase();
-    const label = wrap(ctx, name, swatch + 40)[0];
-    ctx.fillText(label, x + swatch / 2 - ctx.measureText(label).width / 2, cy + swatch + 60);
+    wrap(ctx, name, swatch + 44)
+      .slice(0, 2)
+      .forEach((label, line) => ctx.fillText(label, x + swatch / 2 - ctx.measureText(label).width / 2, cy + swatch + 56 + line * 28));
   });
-  cy += swatch + 140;
+  cy += swatch + 160;
 
   section("Mes incontournables");
   ctx.fillStyle = INK;
   ctx.font = "500 34px Poppins";
   for (const lines of pieceLines) {
-    ctx.fillStyle = "#ee5d78";
+    ctx.fillStyle = "#c9643a";
     ctx.beginPath();
     ctx.arc(136, cy + 14, 9, 0, Math.PI * 2);
     ctx.fill();

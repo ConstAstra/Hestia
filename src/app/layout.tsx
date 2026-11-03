@@ -12,6 +12,8 @@ import "@fontsource/poppins/latin-700.css";
 import "@fontsource/poppins/latin-800.css";
 import "@fontsource/poppins/latin-ext-600.css";
 import "@fontsource/poppins/latin-ext-700.css";
+import "@fontsource/poppins/latin-500-italic.css";
+import "@fontsource/poppins/latin-600-italic.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

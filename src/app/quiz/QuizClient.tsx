@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { PersonalityCard } from "@/components/PersonalityCard";
 import { Visual } from "@/components/Visual";
 import { COLORS_BY_HEX } from "@/lib/colors";
 import { MATERIALS_BY_ID } from "@/lib/materials";
@@ -162,10 +163,15 @@ export function QuizClient() {
         <span className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-white/10" aria-hidden />
         <div className="relative space-y-5">
           <p className="font-heading text-sm uppercase tracking-[0.18em] opacity-90">Le test · 2 minutes</p>
-          <h1 className="font-display text-4xl md:text-6xl">Découvrez votre projet déco</h1>
+          <h1 className="font-display text-4xl md:text-6xl">
+            Découvrez votre style de déco
+            <span className="mt-2 block font-heading text-xl font-medium italic tracking-normal opacity-90 md:text-2xl">
+              et ce qu&apos;il veut dire de vous
+            </span>
+          </h1>
           <p className="max-w-xl text-lg opacity-95">
-            Huit questions sur vos envies, un canapé, une lumière, une palette… et Hestia vous révèle votre style, vos couleurs et
-            les pièces qui vous ressemblent.
+            Huit questions sur vos envies, un canapé, une lumière, une palette… et Hestia vous révèle votre style, vos couleurs, les
+            pièces qui vous ressemblent, et ce que tout cela dit de votre personnalité.
           </p>
           <button onClick={start} className="btn bg-white px-7 py-3 text-base text-[#e0503a] shadow-xl hover:-translate-y-0.5">
             Commencer le test →
@@ -214,7 +220,7 @@ function Result({ result, onRestart }: { result: QuizResult; onRestart: () => vo
       <section className="rise relative overflow-hidden rounded-[2rem] bg-gradient-hestia p-6 text-white md:p-10">
         <span className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/15" aria-hidden />
         <div className="relative space-y-3">
-          <p className="font-heading text-sm uppercase tracking-[0.18em] opacity-90">Votre projet déco</p>
+          <p className="font-heading text-sm uppercase tracking-[0.18em] opacity-90">Votre style de déco</p>
           <h1 className="font-display text-5xl md:text-7xl">{style.name}</h1>
           <p className="font-heading text-lg">
             {Math.round(result.match * 100)} % de compatibilité · {style.tagline}
@@ -231,6 +237,8 @@ function Result({ result, onRestart }: { result: QuizResult; onRestart: () => vo
           </div>
         </div>
       </section>
+
+      <PersonalityCard styleId={result.styleId} />
 
       <div className="grid gap-4 md:grid-cols-2">
         <section className="card space-y-4 p-6">

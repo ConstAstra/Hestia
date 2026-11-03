@@ -94,7 +94,9 @@ export function LogoEmblem({ className = "", title = "Hestia" }: { className?: s
       {/* Coins intérieurs arrondis en bas de la maison */}
       <path d="M72.8 151 V146 C 72.8 150, 75 151, 78 151 Z M128.4 151 V146 C 128.4 150, 126.2 151, 123.2 151 Z" fill={OLIVE} />
 
-      {/* La flamme dans sa coupe */}
+      {/* La flamme dans sa coupe : elle vacille en permanence (voir .hestia-flame dans globals.css) */}
+      <ellipse className="hestia-glow" cx="101.5" cy="118" rx="26" ry="30" fill="#f6a33c" opacity="0.25" />
+      <g className="hestia-flame">
       <path
         d="M101.5 78 C 104 86, 111 92, 116.5 100 C 122 108, 124 116, 121.5 124 C 119 132, 111 138, 101 138 C 90 138, 82 132, 80 123 C 78.5 115, 82 108, 87.5 101 C 87 107, 88.5 111, 91.5 114 C 90.5 104, 95 96, 98.5 90 C 100.5 86, 101.5 82, 101.5 78 Z"
         fill={`url(#${id}-flame)`}
@@ -103,6 +105,7 @@ export function LogoEmblem({ className = "", title = "Hestia" }: { className?: s
         d="M104 96 C 110 104, 116 111, 114.5 120 C 113.5 128, 108 133, 101.5 133 C 94.5 133, 89.5 128.5, 89 122 C 88.5 116.5, 92 112, 95 108.5 C 95 113, 96.5 116, 99 118 C 98.5 111, 101.5 104, 104 96 Z"
         fill="#eea875"
         opacity="0.9"
+        className="hestia-flame-core"
       />
       <path
         d="M93 130 C 90.5 122, 95 114, 99.5 108 M106 131 C 109.5 124, 108.5 116, 104.5 110 M100.5 133 C 99 127, 101 121, 103.5 117"
@@ -112,6 +115,7 @@ export function LogoEmblem({ className = "", title = "Hestia" }: { className?: s
         strokeLinecap="round"
         opacity="0.85"
       />
+      </g>
       <path d="M78.5 136.6 H126 C 124.6 145.4, 114.6 149.8, 102.2 149.8 C 89.8 149.8, 80 145.4, 78.5 136.6 Z" fill={`url(#${id}-bowl)`} />
       <path d="M78.5 136.6 H126" stroke="#b7744a" strokeWidth="0.9" />
     </svg>

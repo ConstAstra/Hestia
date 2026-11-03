@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { formatPrice } from "@/lib/catalog";
+import { PersonalityCard } from "@/components/PersonalityCard";
 import { computeInsights, portrait, type Share } from "@/lib/insights";
+import { styleIdFromLabel } from "@/lib/personalities";
 import { DECOR_MATERIALS } from "@/lib/materials";
 import { useHestia, useHydrated } from "@/lib/store";
 
@@ -108,7 +110,7 @@ export function StyleProfileClient() {
       </p>
       <Link href="/quiz" className="group inline-flex items-center gap-3 rounded-full bg-gradient-hestia py-2 pl-2 pr-5 text-sm text-white shadow-lg transition hover:-translate-y-0.5">
         <span className="grid h-9 w-9 place-items-center rounded-full bg-white/25 font-heading">?</span>
-        <span className="font-heading">Découvrez votre projet déco : le test en 2 minutes →</span>
+        <span className="font-heading">Découvrez votre style de déco, et ce qu&apos;il veut dire de vous →</span>
       </Link>
     </header>
   );
@@ -146,6 +148,7 @@ export function StyleProfileClient() {
   }
 
   const top = insights.styles[0];
+  const topStyleId = top ? styleIdFromLabel(top.label) : undefined;
   const maxWeek = Math.max(...insights.weeks.map((w) => w.count), 1);
 
   return (
@@ -180,6 +183,8 @@ export function StyleProfileClient() {
           </div>
         </div>
       </section>
+
+      {topStyleId && <PersonalityCard styleId={topStyleId} intro="D'après ce que vous avez aimé, voici ce que ça dit de vous" />}
 
       {/* Chiffres clés */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">

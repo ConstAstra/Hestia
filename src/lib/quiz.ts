@@ -2,7 +2,7 @@ import type { ProductCategory } from "./types";
 import { DECOR_STYLES, STYLES_BY_ID } from "./styles";
 
 /*
- * Questionnaire « Découvrez votre projet déco » : huit questions visuelles. Chaque
+ * Questionnaire « Découvrez votre style de déco » : huit questions visuelles. Chaque
  * réponse donne des points à des styles (src/lib/styles.ts) et peut apporter une
  * pièce, une palette, une matière, la pièce à transformer ou le budget.
  */

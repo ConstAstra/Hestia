@@ -52,7 +52,7 @@ interface HestiaState {
   likedAt: Record<FavoriteKey, number>;
   /** Offres réelles trouvées par « Où l'acheter » pour les produits aimés, par produit. */
   productOffers: Record<string, { offers: Offer[]; foundAt: number }>;
-  /** Dernier résultat du questionnaire « Découvrez votre projet déco ». */
+  /** Dernier résultat du questionnaire « Découvrez votre style de déco ». */
   quizResult: QuizResult | null;
 
   createBoard: (name: string, description?: string) => string;
