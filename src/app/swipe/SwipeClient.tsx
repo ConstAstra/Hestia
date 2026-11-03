@@ -22,6 +22,7 @@ import { type NewBoardItem, type SwipeKind, useHestia, useHydrated } from "@/lib
 import { forYouQueries } from "@/lib/topics";
 import type { Inspiration, Photo, Product, ProductCategory } from "@/lib/types";
 import { viaHestia } from "@/lib/image-proxy";
+import { burstHearts, haptic } from "@/lib/celebrate";
 
 const SWIPE_THRESHOLD = 110;
 
@@ -87,9 +88,14 @@ export function SwipeClient() {
   }, [mode, usePhotos, deck.length, photosLoading, photosDone, loadMore]);
 
   const top = deck[0];
+  const likeRef = useRef<HTMLButtonElement>(null);
   const decide = useCallback(
     (liked: boolean) => {
       if (!top) return;
+      if (liked) {
+        burstHearts(likeRef.current, 18);
+        haptic();
+      }
       if (top.kind === "photo") {
         if (liked) likePhotoWithPalette(top.item);
         setSeenPhotos((previous) => new Set(previous).add(top.item.id));
@@ -180,13 +186,13 @@ export function SwipeClient() {
                 <SwipeCard key={`${top.kind}-${top.item.id}`} card={top} onDecide={decide} />
               </div>
               <div className="mt-6 flex items-center justify-center gap-5">
-                <button onClick={() => decide(false)} aria-label="Passer" className="hover-wiggle grid h-16 w-16 place-items-center rounded-full bg-olive-soft text-olive shadow-sm transition hover:scale-110 active:scale-90">
+                <button onClick={() => decide(false)} aria-label="Passer" className="squish hover-wiggle grid h-16 w-16 place-items-center rounded-full bg-olive-soft text-olive shadow-sm transition hover:scale-110 active:scale-90">
                   <IconClose className="h-8 w-8" />
                 </button>
                 <button onClick={saveTop} aria-label="Enregistrer dans un tableau" className="hover-wiggle grid h-12 w-12 place-items-center rounded-full bg-gold-soft text-gold shadow-sm transition hover:scale-110 active:scale-90">
                   <IconBoard className="h-8 w-8 text-foreground" />
                 </button>
-                <button onClick={() => decide(true)} aria-label="J'aime" className="hover-wiggle grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-gradient-hestia text-white shadow-[0_10px_24px_-8px_var(--like)] transition hover:scale-110 active:scale-90">
+                <button ref={likeRef} onClick={() => decide(true)} aria-label="J'aime" className="squish hover-wiggle grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-gradient-hestia text-white shadow-[0_10px_24px_-8px_var(--like)] transition hover:scale-110 active:scale-90">
                   <IconHeart filled className="h-9 w-9" />
                 </button>
               </div>

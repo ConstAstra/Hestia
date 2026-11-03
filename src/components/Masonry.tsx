@@ -52,8 +52,11 @@ export function Masonry<T>({
     <div ref={ref} className="flex items-start" style={{ gap }}>
       {buckets.map((bucket, index) => (
         <div key={index} className="flex min-w-0 flex-1 flex-col" style={{ gap }}>
-          {bucket.map((item) => (
-            <div key={getKey(item)}>{render(item)}</div>
+          {bucket.map((item, row) => (
+            // Les cartes arrivent en cascade, colonne après colonne.
+            <div key={getKey(item)} className="card-in" style={{ animationDelay: `${Math.min(row % 6, 5) * 60 + index * 40}ms` }}>
+              {render(item)}
+            </div>
           ))}
         </div>
       ))}

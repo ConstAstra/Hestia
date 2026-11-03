@@ -13,6 +13,7 @@ import { usePhotoPalette } from "@/lib/palette";
 import { type FeedItem, itemRatio, useInfiniteScroll, usePhotoFeed } from "@/lib/feed";
 import type { NewBoardItem } from "@/lib/store";
 import { viaHestia } from "@/lib/image-proxy";
+import { burstHearts, haptic } from "@/lib/celebrate";
 
 export interface PinHandlers {
   onOpen: (item: FeedItem) => void;
@@ -88,7 +89,13 @@ export function PinCard({ item, onOpen, onSave }: { item: FeedItem } & PinHandle
             <span />
           )}
           <button
-            onClick={() => toggleLike(item, liked)}
+            onClick={(event) => {
+              if (!liked) {
+                burstHearts(event.currentTarget);
+                haptic();
+              }
+              toggleLike(item, liked);
+            }}
             aria-pressed={liked}
             aria-label={liked ? "Retirer des coups de cœur" : "Ajouter aux coups de cœur"}
             className={`grid h-9 w-9 shrink-0 place-items-center rounded-full shadow transition active:scale-90 ${
@@ -215,7 +222,17 @@ function PinDetails({
         <button onClick={() => onSave([boardItemOf(item)])} className="btn-primary">
           Enregistrer
         </button>
-        <button onClick={() => toggleLike(item, liked)} aria-pressed={liked} className={liked ? "btn bg-like text-white" : "btn-ghost"}>
+        <button
+          onClick={(event) => {
+            if (!liked) {
+              burstHearts(event.currentTarget, 18);
+              haptic();
+            }
+            toggleLike(item, liked);
+          }}
+          aria-pressed={liked}
+          className={`squish ${liked ? "btn bg-like text-white" : "btn-ghost"}`}
+        >
           <IconHeart filled className="h-5 w-5" />
           {liked ? "Aimé" : "J'aime"}
         </button>

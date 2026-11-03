@@ -12,6 +12,7 @@ import { formatPrice, ROOM_LABELS } from "@/lib/catalog";
 import type { DupesStreamEvent } from "@/lib/dupes-schema";
 import { MATERIALS_BY_ID } from "@/lib/materials";
 import { STYLES_BY_ID } from "@/lib/styles";
+import { confetti } from "@/lib/celebrate";
 import { creationTitle } from "@/lib/creation-title";
 import { compressImage, type CompressedImage } from "@/lib/image";
 import { DUPES_PHOTO_KEY } from "@/lib/actions";
@@ -149,6 +150,7 @@ export function DupesClient() {
             setResult(event.result);
             setDiscarded(event.discarded);
             setSavedBoard(autoSave(event.result));
+            confetti();
           }
         }
       }

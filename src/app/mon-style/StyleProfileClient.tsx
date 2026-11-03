@@ -27,7 +27,7 @@ function Bars({ items, swatch }: { items: Share[]; swatch?: (label: string) => s
             </span>
             <span className="h-2.5 overflow-hidden rounded-full bg-surface-muted" aria-hidden>
               <span
-                className="block h-full rounded-full bg-accent transition-[width] duration-700 group-hover:bg-accent-strong"
+                className="grow-x block h-full rounded-full bg-gradient-warm transition group-hover:brightness-110"
                 style={{ width: `${(item.share / max) * 100}%` }}
               />
             </span>
@@ -277,7 +277,7 @@ export function StyleProfileClient() {
                     {week.count}
                   </span>
                   <span
-                    className="block rounded-t-[4px] bg-olive transition group-hover:bg-foreground"
+                    className="grow-y block rounded-t-[4px] bg-olive transition group-hover:bg-foreground"
                     style={{ height: `${Math.max((week.count / maxWeek) * 100, week.count ? 6 : 2)}%`, opacity: week.count ? 1 : 0.25 }}
                   />
                 </div>

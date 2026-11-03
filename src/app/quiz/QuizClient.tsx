@@ -6,6 +6,7 @@ import { PersonalityCard } from "@/components/PersonalityCard";
 import { Visual } from "@/components/Visual";
 import { COLORS_BY_HEX } from "@/lib/colors";
 import { MATERIALS_BY_ID } from "@/lib/materials";
+import { burstHearts, confetti, haptic } from "@/lib/celebrate";
 import { computeQuizResult, QUIZ, type QuizResult } from "@/lib/quiz";
 import { useHestia, useHydrated } from "@/lib/store";
 import { renderStory, shareStory } from "@/lib/story";
@@ -24,8 +25,10 @@ export function QuizClient() {
     setStep(0);
   };
 
-  const choose = (optionId: string) => {
+  const choose = (optionId: string, tile?: Element) => {
     if (step === null || picked) return;
+    burstHearts(tile, 10);
+    haptic(8);
     const question = QUIZ[step];
     const next = { ...answers, [question.id]: optionId };
     setAnswers(next);
@@ -37,6 +40,11 @@ export function QuizClient() {
       else {
         setQuizResult(computeQuizResult(next));
         setStep(null);
+        // Le grand moment : pluie de confettis à la révélation du style.
+        setTimeout(() => {
+          confetti(120);
+          haptic([20, 40, 20]);
+        }, 150);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }, 320);
@@ -74,7 +82,7 @@ export function QuizClient() {
               {question.options.map((option) => (
                 <li key={option.id}>
                   <button
-                    onClick={() => choose(option.id)}
+                    onClick={(event) => choose(option.id, event.currentTarget)}
                     className={`group w-full overflow-hidden rounded-3xl border-2 bg-surface text-left transition hover:-translate-y-1 hover:shadow-lg active:scale-95 ${
                       picked === option.id ? "border-transparent ring-4 ring-[#ee5d78]" : "border-border"
                     }`}
@@ -94,7 +102,7 @@ export function QuizClient() {
               {question.options.map((option) => (
                 <li key={option.id}>
                   <button
-                    onClick={() => choose(option.id)}
+                    onClick={(event) => choose(option.id, event.currentTarget)}
                     className={`w-full overflow-hidden rounded-3xl border-2 bg-surface text-left transition hover:-translate-y-1 hover:shadow-lg active:scale-95 ${
                       picked === option.id ? "border-transparent ring-4 ring-[#ee5d78]" : "border-border"
                     }`}
@@ -116,7 +124,7 @@ export function QuizClient() {
               {question.options.map((option) => (
                 <li key={option.id}>
                   <button
-                    onClick={() => choose(option.id)}
+                    onClick={(event) => choose(option.id, event.currentTarget)}
                     className={`w-full overflow-hidden rounded-3xl border-2 bg-surface text-left transition hover:-translate-y-1 hover:shadow-lg active:scale-95 ${
                       picked === option.id ? "border-transparent ring-4 ring-[#ee5d78]" : "border-border"
                     }`}
@@ -134,7 +142,7 @@ export function QuizClient() {
               {question.options.map((option) => (
                 <li key={option.id}>
                   <button
-                    onClick={() => choose(option.id)}
+                    onClick={(event) => choose(option.id, event.currentTarget)}
                     className={`flex w-full items-center gap-4 rounded-3xl border-2 bg-surface p-4 text-left transition hover:-translate-y-0.5 hover:shadow-md active:scale-95 ${
                       picked === option.id ? "border-transparent ring-4 ring-[#ee5d78]" : "border-border"
                     }`}

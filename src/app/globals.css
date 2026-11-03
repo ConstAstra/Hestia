@@ -253,12 +253,121 @@ body {
   animation: nav-pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1.4);
 }
 
+/* ——— Effets « dopamine » (src/lib/celebrate.ts) ——— */
+.fx-particle {
+  position: fixed;
+  z-index: 100;
+  pointer-events: none;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  display: grid;
+  place-items: center;
+  font-size: var(--size);
+  line-height: 1;
+  border-radius: 999px;
+  animation: fx-burst 0.8s cubic-bezier(0.15, 0.85, 0.3, 1) forwards;
+}
+@keyframes fx-burst {
+  0% { transform: translate(0, 0) scale(0.3) rotate(0deg); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--rot)); opacity: 0; }
+}
+.fx-confetti {
+  position: fixed;
+  top: -24px;
+  z-index: 100;
+  pointer-events: none;
+  animation: fx-fall linear forwards;
+}
+@keyframes fx-fall {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translate(var(--sway), 105vh) rotate(var(--spin)); opacity: 0; }
+}
+
+/* Anneau des stories : dégradé qui tourne, comme une story pas encore vue. */
+@property --ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.story-ring:not(.story-ring-seen) {
+  background: conic-gradient(from var(--ring-angle), #ff8fc7, #ffc72c, #ff7a1a, #e0503a, #8a3ffc, #1fb5ac, #ff8fc7);
+  animation: ring-spin 3.5s linear infinite;
+}
+@keyframes ring-spin {
+  to { --ring-angle: 360deg; }
+}
+
+/* Reflet qui balaie les boutons principaux au survol. */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+.btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
+/* Apparition en cascade des cartes du fil. */
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.card-in {
+  animation: card-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Barres qui poussent (statistiques). */
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes grow-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.grow-y {
+  transform-origin: bottom center;
+  animation: grow-y 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.grow-x {
+  transform-origin: left center;
+  animation: grow-x 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Pression « élastique » sur les boutons d'action. */
+@keyframes squish {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.86, 0.92); }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.squish:active {
+  animation: squish 0.35s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hover-wiggle:hover > svg,
   .pop,
   .rise,
   .shimmer,
-  .nav-pop {
+  .nav-pop,
+  .card-in,
+  .grow-x,
+  .grow-y,
+  .squish:active,
+  .story-ring:not(.story-ring-seen) {
     animation: none;
   }
   /* Mouvement réduit demandé : la flamme vacille encore, mais très doucement. */
