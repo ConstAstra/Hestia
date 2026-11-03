@@ -135,7 +135,7 @@ export function StyleProfileClient() {
             couleurs et matières vous ressemblent.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
-            <Link href="/swipe" className="btn-primary">
+            <Link href="/swipe" className="btn bg-[#6a6b2f] text-white shadow-[0_10px_24px_-10px_#6a6b2f] hover:-translate-y-0.5 hover:bg-[#5a5b26]">
               Swiper quelques idées
             </Link>
             <Link href="/creation" className="btn-ghost">
