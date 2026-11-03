@@ -131,7 +131,7 @@ export function SwipeClient() {
               role="tab"
               aria-selected={mode === value}
               onClick={() => setMode(value)}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition ${mode === value ? "bg-accent text-white shadow-sm" : "text-muted hover:text-foreground"}`}
+              className={`rounded-full px-5 py-2 text-sm font-medium transition ${mode === value ? "bg-gradient-hestia text-white shadow-sm" : "text-muted hover:text-foreground"}`}
             >
               {label}
             </button>
@@ -185,7 +185,7 @@ export function SwipeClient() {
                 <button onClick={saveTop} aria-label="Enregistrer dans un tableau" className="hover-wiggle grid h-12 w-12 place-items-center rounded-full bg-gold-soft text-gold shadow-sm transition hover:scale-110 active:scale-90">
                   <IconBoard className="h-8 w-8 text-foreground" />
                 </button>
-                <button onClick={() => decide(true)} aria-label="J'aime" className="hover-wiggle grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-like text-white shadow-[0_10px_24px_-8px_var(--like)] transition hover:scale-110 active:scale-90">
+                <button onClick={() => decide(true)} aria-label="J'aime" className="hover-wiggle grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-gradient-hestia text-white shadow-[0_10px_24px_-8px_var(--like)] transition hover:scale-110 active:scale-90">
                   <IconHeart filled className="h-9 w-9" />
                 </button>
               </div>

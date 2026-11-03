@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
-import { type ChosenColor, ColorStudio } from "@/components/ColorStudio";
+import { type ChosenColor, ColorStudio, named } from "@/components/ColorStudio";
 import { DupeCard } from "@/components/DupeCard";
 import { ImageDrop } from "@/components/ImageDrop";
 import { MaterialStudio } from "@/components/MaterialStudio";
@@ -15,7 +15,7 @@ import { STYLES_BY_ID } from "@/lib/styles";
 import { creationTitle } from "@/lib/creation-title";
 import { compressImage, type CompressedImage } from "@/lib/image";
 import { DUPES_PHOTO_KEY } from "@/lib/actions";
-import { type NewBoardItem, useHestia } from "@/lib/store";
+import { type NewBoardItem, useHestia, useHydrated } from "@/lib/store";
 import type { CreationInfo, Dupe, DupesResult, Photo } from "@/lib/types";
 
 interface Picked {
@@ -66,6 +66,26 @@ export function DupesClient() {
       /* stockage indisponible : l'utilisateur déposera l'image lui-même */
     }
   }, []);
+
+  // Arrivée depuis le questionnaire (« Créer ce projet ») : on reprend style, palette, matières, pièce et budget.
+  const quizResult = useHestia((s) => s.quizResult);
+  const hydratedStore = useHydrated();
+  const quizApplied = useRef(false);
+  const [fromQuiz, setFromQuiz] = useState(false);
+  useEffect(() => {
+    if (!hydratedStore || quizApplied.current || !quizResult) return;
+    if (new URLSearchParams(window.location.search).get("quiz") !== "1") return;
+    quizApplied.current = true;
+    /* eslint-disable react-hooks/set-state-in-effect -- pré-remplissage unique depuis le questionnaire */
+    setStyles([quizResult.styleId]);
+    setColors(quizResult.palette.slice(0, 6).map(named));
+    setMaterials(quizResult.materials.slice(0, 5));
+    if (quizResult.budget) setBudget(quizResult.budget);
+    const room = Object.entries(ROOM_LABELS).find(([, label]) => label === quizResult.room)?.[0];
+    if (room) setRoomType(room);
+    setFromQuiz(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, [hydratedStore, quizResult]);
 
   const handleFile = (setter: (picked: Picked) => void) => async (file: File) => {
     setError(null);
@@ -180,6 +200,13 @@ export function DupesClient() {
           si vous le souhaitez une photo de votre pièce, et laissez Hestia dénicher les équivalents.
         </p>
       </header>
+
+      {fromQuiz && quizResult && (
+        <p className="rise flex flex-wrap items-center gap-2 rounded-2xl bg-gradient-hestia px-4 py-3 text-sm text-white">
+          <span className="font-heading">Votre projet {STYLES_BY_ID[quizResult.styleId]?.name ?? ""} est pré-rempli.</span>
+          <span className="opacity-90">Style, palette, matières, pièce et budget viennent de votre test : ajoutez une inspiration et c&apos;est parti.</span>
+        </p>
+      )}
 
       <section className="card grid gap-6 p-5 md:grid-cols-2 md:p-8">
         <ImageDrop

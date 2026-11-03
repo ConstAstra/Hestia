@@ -1,23 +1,13 @@
 @import "tailwindcss";
 
 /*
- * Weekdays Roman Slant (Manfred Klein, 2004), servie telle quelle — licence à vérifier,
- * voir public/fonts/weekdays-roman-slant/LICENCE-A-VERIFIER.txt.
- */
-@font-face {
-  font-family: "Weekdays Roman Slant";
-  src: url("/fonts/weekdays-roman-slant/WeekdaysRomanSlant.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/*
  * Direction artistique « Hestia » : les photos d'abord, en mosaïque d'inspiration.
  * Fond très clair légèrement rosé pour faire ressortir les images ; terracotta pour
  * les actions, olive, safran et rose poudré en touches.
  */
 :root {
+  /* Dégradé de marque, pour les actions et les accents qui doivent attirer l'œil */
+  --gradient: linear-gradient(115deg, #e0503a 0%, #ee5d78 52%, #f6a33c 100%);
   --background: #ffffff;
   --surface: #ffffff;
   --surface-muted: #f4f2f1;
@@ -39,6 +29,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --gradient: linear-gradient(115deg, #f06a4f 0%, #f27591 52%, #f8b350 100%);
     --background: #1c1512;
     --surface: #261d18;
     --surface-muted: #352920;
@@ -78,7 +69,7 @@
   --color-like: var(--like);
   --color-nope: var(--nope);
   --font-sans: "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Weekdays Roman Slant", Georgia, serif;
+  --font-display: "Poppins", "Inter Variable", -apple-system, sans-serif;
   --font-brand: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
 }
 
@@ -96,23 +87,66 @@ body {
   color: var(--accent-strong);
 }
 
-/* Titres : Weekdays Roman Slant, capitales romaines légèrement penchées */
+/* Titres : Poppins très gras et serré, les codes des applis sociales */
 .font-display {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.08;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
 }
-/* La police est déjà penchée : pas d'italique, la mise en valeur passe par la couleur. */
 .font-display em {
   font-style: normal;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-/* Titres secondaires, prix, intitulés : Inter en demi-gras */
+/* Titres secondaires, prix, intitulés : Poppins demi-gras */
 .font-heading {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+}
+
+/* Dégradé de marque : terracotta, corail, safran */
+.text-gradient {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bg-gradient-hestia {
+  background: var(--gradient);
+}
+/* Anneau dégradé façon « story » autour d'une pastille */
+.story-ring {
+  padding: 3px;
+  border-radius: 9999px;
+  background: var(--gradient);
+}
+.story-ring > * {
+  border-radius: 9999px;
+  border: 3px solid var(--background);
+}
+.story-ring-seen {
+  background: var(--border);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite;
 }
 
 /* Nom de marque, comme sur le logo : capitales classiques espacées */
@@ -129,23 +163,27 @@ body {
   }
 }
 
-/* Sur-titre : petites capitales terracotta précédées d'un filet */
+/* Sur-titre : pastille dégradée, petites capitales */
 .kicker {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  color: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .kicker::before {
   content: "";
-  width: 1.75rem;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.6;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 9999px;
+  background: var(--gradient);
 }
 
 @keyframes wiggle {
@@ -166,22 +204,27 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .hover-wiggle:hover > svg,
-  .pop {
+  .pop,
+  .rise,
+  .shimmer {
     animation: none;
   }
 }
 
 @utility btn {
   @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-50;
+  font-family: var(--font-display);
+  font-weight: 600;
 }
 @utility btn-primary {
-  @apply btn bg-accent text-white shadow-[0_8px_20px_-8px_var(--accent)] hover:-translate-y-0.5 hover:bg-accent-strong;
+  @apply btn text-white shadow-[0_10px_24px_-10px_var(--accent)] hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-10px_var(--accent)];
+  background: var(--gradient);
 }
 @utility btn-ghost {
   @apply btn border border-border bg-surface hover:border-olive hover:bg-olive-soft;
 }
 @utility card {
-  @apply rounded-[1.75rem] border border-border bg-surface shadow-[0_1px_0_0_var(--border)];
+  @apply rounded-[1.75rem] border border-border bg-surface shadow-[0_1px_2px_0_rgb(0_0_0/0.04),0_8px_24px_-16px_rgb(0_0_0/0.12)];
 }
 @utility input {
   @apply w-full rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm outline-none transition focus:border-accent;

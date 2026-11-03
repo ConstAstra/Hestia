@@ -4,6 +4,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { Offer } from "./offers-schema";
+import type { QuizResult } from "./quiz";
 import type { Board, BoardItem, CreationInfo, Photo } from "./types";
 
 export type SwipeKind = "product" | "inspiration";
@@ -51,6 +52,8 @@ interface HestiaState {
   likedAt: Record<FavoriteKey, number>;
   /** Offres réelles trouvées par « Où l'acheter » pour les produits aimés, par produit. */
   productOffers: Record<string, { offers: Offer[]; foundAt: number }>;
+  /** Dernier résultat du questionnaire « Découvrez votre projet déco ». */
+  quizResult: QuizResult | null;
 
   createBoard: (name: string, description?: string) => string;
   /** Tableau d'une création : rangé dans « Mes créations », avec ses éléments et ses caractéristiques. */
@@ -74,6 +77,7 @@ interface HestiaState {
   setFavoriteCategory: (keys: FavoriteKey[], categoryId: string, on: boolean) => void;
   setFavoriteOrder: (keys: FavoriteKey[]) => void;
   setProductOffers: (productId: string, offers: Offer[]) => void;
+  setQuizResult: (result: QuizResult | null) => void;
 }
 
 const uid = () =>
@@ -120,6 +124,8 @@ export const useHestia = create<HestiaState>()(
       favoriteOrder: [],
       likedAt: {},
       productOffers: {},
+      quizResult: null,
+      setQuizResult: (quizResult) => set({ quizResult }),
 
       setProductOffers: (productId, offers) =>
         set((state) => ({ productOffers: { ...state.productOffers, [productId]: { offers, foundAt: Date.now() } } })),

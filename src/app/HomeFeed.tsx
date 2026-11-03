@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
 import { PinDialog, PinFeed } from "@/components/Pins";
+import { StoriesRow } from "@/components/StoriesRow";
 import { INSPIRATIONS_BY_ID, PRODUCTS_BY_ID } from "@/lib/catalog";
 import type { FeedItem } from "@/lib/feed";
 import { type NewBoardItem, useHestia } from "@/lib/store";
@@ -62,6 +63,7 @@ export function HomeFeed() {
 
   return (
     <div className="space-y-5">
+      <StoriesRow />
       <div className="sticky top-16 z-20 -mx-4 space-y-3 bg-background/95 px-4 pb-3 pt-2 backdrop-blur">
         <form
           onSubmit={(event) => {
