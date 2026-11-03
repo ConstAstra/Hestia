@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AddToBoardDialog } from "@/components/AddToBoardDialog";
 import { DupeCard } from "@/components/DupeCard";
@@ -195,7 +196,7 @@ export function SecondHandClient() {
             )}
             <p className="text-xs text-muted">
               Les annonces de seconde main partent vite : vérifiez la disponibilité, l&apos;état et les conditions de retrait avant
-              d&apos;acheter. Les liens « Acheter via Hestia » peuvent être des liens affiliés, sans surcoût pour vous.
+              d&apos;acheter. Les liens « Acheter via Hestia » peuvent être des liens affiliés, sans surcoût pour vous. <Link href="/mentions-legales#affiliation" className="underline hover:text-foreground">En savoir plus</Link>.
             </p>
           </>
         )}

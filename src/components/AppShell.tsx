@@ -51,6 +51,19 @@ export function AppShell({ children }: { children: ReactNode }) {
         <p className="pt-3 text-center text-sm text-muted">
           Hestia, gardienne du foyer : la décoration qui vous ressemble.
         </p>
+        <p className="pt-2 text-center text-xs text-muted">
+          <Link href="/mentions-legales" className="underline-offset-2 hover:text-foreground hover:underline">
+            Mentions légales
+          </Link>
+          {" · "}
+          <Link href="/mentions-legales#affiliation" className="underline-offset-2 hover:text-foreground hover:underline">
+            Liens d&apos;affiliation
+          </Link>
+          {" · "}
+          <Link href="/mentions-legales#donnees" className="underline-offset-2 hover:text-foreground hover:underline">
+            Données personnelles
+          </Link>
+        </p>
       </footer>
 
       {storageFull && (

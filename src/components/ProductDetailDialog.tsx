@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { DupeCard } from "@/components/DupeCard";
 import { Visual } from "@/components/Visual";
@@ -153,7 +154,7 @@ export function ProductDetailDialog({ productId, onClose }: { productId: string 
                   </div>
                   <p className="text-[11px] text-muted">
                     Les liens « Acheter via Hestia » peuvent être des liens affiliés : Hestia perçoit alors une petite commission, sans aucun
-                    surcoût pour vous.
+                    surcoût pour vous. <Link href="/mentions-legales#affiliation" className="underline hover:text-foreground">En savoir plus</Link>.
                   </p>
                 </>
               ) : (

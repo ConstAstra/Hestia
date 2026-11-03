@@ -473,7 +473,7 @@ function Results({
       <p className="text-xs text-muted">
         Les prix et disponibilités proviennent de recherches web au moment de la demande et peuvent avoir changé. Vérifiez
         toujours la fiche produit avant d&apos;acheter. Les liens « Acheter via Hestia » peuvent être des liens affiliés : Hestia
-        perçoit alors une petite commission, sans aucun surcoût pour vous.
+        perçoit alors une petite commission, sans aucun surcoût pour vous. <Link href="/mentions-legales#affiliation" className="underline hover:text-foreground">En savoir plus</Link>.
       </p>
     </section>
   );
