@@ -31,7 +31,7 @@ export function StoriesRow() {
   const done = hydrated && !!quiz;
   return (
     <ul className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 pt-1 [scrollbar-width:none]" aria-label="À découvrir">
-      <Bubble href="/quiz" label={done ? "Mon test" : "Le test"} background="var(--gradient)">
+      <Bubble href="/quiz" label={done ? "Mon test" : "Le test"} background="var(--gradient-warm)">
         <span className="whitespace-pre-line font-heading text-xs leading-tight">{done ? "Mon\nstyle" : "Quel\nstyle ?"}</span>
       </Bubble>
       <Bubble href="/mon-style" label="Mes stats" background={stripes(done ? quiz!.palette : ["#F4EFE6", "#C0603D", "#6F7A3B"])}>

@@ -158,7 +158,7 @@ export function QuizClient() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-hestia px-6 py-14 text-white md:px-12 md:py-20">
+      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-warm px-6 py-14 text-white md:px-12 md:py-20">
         <span className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/15" aria-hidden />
         <span className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-white/10" aria-hidden />
         <div className="relative space-y-5">
@@ -173,7 +173,7 @@ export function QuizClient() {
             Huit questions sur vos envies, un canapé, une lumière, une palette… et Hestia vous révèle votre style, vos couleurs, les
             pièces qui vous ressemblent, et ce que tout cela dit de votre personnalité.
           </p>
-          <button onClick={start} className="btn bg-white px-7 py-3 text-base text-[#e0503a] shadow-xl hover:-translate-y-0.5">
+          <button onClick={start} className="btn bg-white px-7 py-3 text-base text-[#a8442a] shadow-xl hover:-translate-y-0.5">
             Commencer le test →
           </button>
         </div>
@@ -217,7 +217,7 @@ function Result({ result, onRestart }: { result: QuizResult; onRestart: () => vo
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <section className="rise relative overflow-hidden rounded-[2rem] bg-gradient-hestia p-6 text-white md:p-10">
+      <section className="rise relative overflow-hidden rounded-[2rem] bg-gradient-warm p-6 text-white md:p-10">
         <span className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/15" aria-hidden />
         <div className="relative space-y-3">
           <p className="font-heading text-sm uppercase tracking-[0.18em] opacity-90">Votre style de déco</p>
@@ -228,7 +228,7 @@ function Result({ result, onRestart }: { result: QuizResult; onRestart: () => vo
           <p className="max-w-2xl opacity-95">{style.description}</p>
           {second && <p className="text-sm opacity-90">Avec une touche de {second.name.toLowerCase()}.</p>}
           <div className="flex flex-wrap gap-2 pt-3">
-            <button onClick={openShare} disabled={busy} className="btn bg-white px-6 py-3 text-[#e0503a] shadow-xl hover:-translate-y-0.5">
+            <button onClick={openShare} disabled={busy} className="btn bg-white px-6 py-3 text-[#a8442a] shadow-xl hover:-translate-y-0.5">
               {busy ? "Préparation…" : "Partager mes résultats ↗"}
             </button>
             <Link href="/creation?quiz=1" className="btn border-2 border-white/70 px-6 py-3 text-white hover:bg-white/15">

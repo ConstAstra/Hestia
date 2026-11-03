@@ -8,6 +8,8 @@
 :root {
   /* Dégradé de marque, pour les actions et les accents qui doivent attirer l'œil */
   --gradient: linear-gradient(115deg, #e0503a 0%, #ee5d78 52%, #f6a33c 100%);
+  /* Dégradé chaud terracotta vers orangé, sans rose : le test et sa story */
+  --gradient-warm: linear-gradient(115deg, #a8442a 0%, #c9643a 45%, #e98a35 100%);
   --background: #ffffff;
   --surface: #ffffff;
   --surface-muted: #f4f2f1;
@@ -30,6 +32,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --gradient: linear-gradient(115deg, #f06a4f 0%, #f27591 52%, #f8b350 100%);
+    --gradient-warm: linear-gradient(115deg, #c2563a 0%, #d97446 45%, #f09a45 100%);
     --background: #1c1512;
     --surface: #261d18;
     --surface-muted: #352920;
@@ -118,6 +121,9 @@ body {
 }
 .bg-gradient-hestia {
   background: var(--gradient);
+}
+.bg-gradient-warm {
+  background: var(--gradient-warm);
 }
 /* Anneau dégradé façon « story » autour d'une pastille */
 .story-ring {

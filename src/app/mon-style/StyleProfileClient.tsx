@@ -108,7 +108,7 @@ export function StyleProfileClient() {
         Ce que vos coups de cœur, vos swipes et vos créations disent de vos goûts. Tout est calculé sur votre appareil, et
         s&apos;affine à chaque cœur.
       </p>
-      <Link href="/quiz" className="group inline-flex items-center gap-3 rounded-full bg-gradient-hestia py-2 pl-2 pr-5 text-sm text-white shadow-lg transition hover:-translate-y-0.5">
+      <Link href="/quiz" className="group inline-flex items-center gap-3 rounded-full bg-gradient-warm py-2 pl-2 pr-5 text-sm text-white shadow-lg transition hover:-translate-y-0.5">
         <span className="grid h-9 w-9 place-items-center rounded-full bg-white/25 font-heading">?</span>
         <span className="font-heading">Découvrez votre style de déco, et ce qu&apos;il veut dire de vous →</span>
       </Link>
