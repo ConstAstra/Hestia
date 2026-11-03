@@ -36,6 +36,8 @@ export interface SeenUrls {
 
 /** Statut d'une page produit : lue, seulement vue dans une recherche, ou jamais rencontrée. */
 export function pageStatus(url: string, seen: SeenUrls): "fetched" | "searched" | null {
+  // Seules les pages chiffrées (https) sont proposées : pas de lien en clair vers une boutique.
+  if (!url.startsWith("https://")) return null;
   const key = normalizeUrl(url);
   if (!key) return null;
   if (seen.fetched.has(key)) return "fetched";

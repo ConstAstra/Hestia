@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { DupesRequestSchema, type DupesStreamEvent } from "@/lib/dupes-schema";
 import { findDupes } from "@/lib/server/dupes";
-import { checkRateLimit, clientIp } from "@/lib/server/rate-limit";
+import { guardAiRoute, readJson } from "@/lib/server/guard";
 
 // Les recherches web peuvent prendre plusieurs minutes.
 export const maxDuration = 300;
@@ -16,20 +16,13 @@ export async function POST(request: Request) {
     );
   }
 
-  const limit = checkRateLimit(clientIp(request), HOURLY_LIMIT);
-  if (!limit.ok) {
-    return Response.json(
-      { error: "Vous avez atteint la limite de recherches pour cette heure. Revenez un peu plus tard !" },
-      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } },
-    );
-  }
+  const blocked = guardAiRoute(request, "dupes", HOURLY_LIMIT);
+  if (blocked) return blocked;
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Requête invalide." }, { status: 400 });
-  }
+  // Deux images d'au plus ~6 Mo en base64, plus le texte : 13 Mo suffisent largement.
+  const read = await readJson(request, 13_000_000);
+  if (!read.ok) return Response.json({ error: read.error }, { status: read.status });
+  const body = read.body;
   const parsed = DupesRequestSchema.safeParse(body);
   if (!parsed.success) {
     return Response.json(

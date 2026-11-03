@@ -1,29 +1,24 @@
 /*
- * Limiteur en mémoire, par adresse IP. Suffisant pour un seul serveur ; en
- * déploiement multi-instances (serverless), remplacer par un store partagé
- * (Redis / Upstash) — voir README.
+ * Limiteur en mémoire. Suffisant pour un seul serveur ; en déploiement multi-instances
+ * (serverless), remplacer par un store partagé (Redis / Upstash) — voir README.
  */
-const WINDOW_MS = 60 * 60 * 1000;
-const hits = new Map<string, number[]>();
+const HOUR_MS = 60 * 60 * 1000;
+const hits = new Map<string, { windowMs: number; times: number[] }>();
 
-export function checkRateLimit(key: string, limit: number): { ok: boolean; retryAfterSec: number } {
+export function checkRateLimit(key: string, limit: number, windowMs = HOUR_MS): { ok: boolean; retryAfterSec: number } {
   const now = Date.now();
-  const recent = (hits.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
+  const recent = (hits.get(key)?.times ?? []).filter((t) => now - t < windowMs);
   if (recent.length >= limit) {
-    hits.set(key, recent);
-    return { ok: false, retryAfterSec: Math.ceil((recent[0] + WINDOW_MS - now) / 1000) };
+    hits.set(key, { windowMs, times: recent });
+    return { ok: false, retryAfterSec: Math.ceil((recent[0] + windowMs - now) / 1000) };
   }
   recent.push(now);
-  hits.set(key, recent);
+  hits.set(key, { windowMs, times: recent });
+  // Ménage : chaque clé garde sa propre fenêtre (une heure, un jour…).
   if (hits.size > 10_000) {
-    for (const [k, times] of hits) {
-      if (times.every((t) => now - t >= WINDOW_MS)) hits.delete(k);
+    for (const [k, entry] of hits) {
+      if (entry.times.every((t) => now - t >= entry.windowMs)) hits.delete(k);
     }
   }
   return { ok: true, retryAfterSec: 0 };
-}
-
-export function clientIp(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  return forwarded?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "local";
 }

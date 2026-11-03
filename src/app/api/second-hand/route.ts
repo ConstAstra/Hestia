@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { SecondHandRequestSchema, type SecondHandStreamEvent } from "@/lib/second-hand-schema";
-import { checkRateLimit, clientIp } from "@/lib/server/rate-limit";
+import { guardAiRoute, readJson } from "@/lib/server/guard";
 import { findSecondHand } from "@/lib/server/second-hand";
 
 // Une recherche de seconde main prend en général une à deux minutes.
@@ -12,22 +12,15 @@ export async function POST(request: Request) {
   if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
     return Response.json({ error: "Hestia n'est pas encore configurée sur ce serveur (ANTHROPIC_API_KEY manquante)." }, { status: 503 });
   }
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Requête invalide." }, { status: 400 });
-  }
+  const blocked = guardAiRoute(request, "second-hand", HOURLY_LIMIT);
+  if (blocked) return blocked;
+
+  const read = await readJson(request, 4000);
+  if (!read.ok) return Response.json({ error: read.error }, { status: read.status });
+  const body = read.body;
   const parsed = SecondHandRequestSchema.safeParse(body);
   if (!parsed.success) {
     return Response.json({ error: parsed.error.issues[0]?.message ?? "Requête invalide." }, { status: 400 });
-  }
-  const limit = checkRateLimit(`second-hand:${clientIp(request)}`, HOURLY_LIMIT);
-  if (!limit.ok) {
-    return Response.json(
-      { error: "Vous avez atteint la limite de recherches pour cette heure. Revenez un peu plus tard !" },
-      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } },
-    );
   }
 
   const encoder = new TextEncoder();

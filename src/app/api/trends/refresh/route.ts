@@ -1,4 +1,5 @@
 import { connection } from "next/server";
+import { safeEqual } from "@/lib/server/guard";
 import { isTrendsResearchConfigured, refreshTrends } from "@/lib/server/trends-research";
 
 export const maxDuration = 300;
@@ -12,7 +13,7 @@ async function handle(request: Request) {
   await connection();
   const secrets = [process.env.TRENDS_REFRESH_SECRET, process.env.CRON_SECRET].filter(Boolean);
   const auth = request.headers.get("authorization") ?? "";
-  if (secrets.length === 0 || !secrets.some((secret) => auth === `Bearer ${secret}`)) {
+  if (secrets.length === 0 || !secrets.some((secret) => safeEqual(auth, `Bearer ${secret}`))) {
     return Response.json({ error: "Non autorisé" }, { status: 401 });
   }
   if (!isTrendsResearchConfigured()) {

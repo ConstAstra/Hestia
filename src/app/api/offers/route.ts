@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { PRODUCTS_BY_ID } from "@/lib/catalog";
 import { OffersRequestSchema, type OffersStreamEvent } from "@/lib/offers-schema";
 import { findOffers } from "@/lib/server/offers";
-import { checkRateLimit, clientIp } from "@/lib/server/rate-limit";
+import { guardAiRoute, readJson } from "@/lib/server/guard";
 
 // Une recherche d'offres prend en général une à deux minutes.
 export const maxDuration = 300;
@@ -13,23 +13,15 @@ export async function POST(request: Request) {
   if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
     return Response.json({ error: "Hestia n'est pas encore configurée sur ce serveur (ANTHROPIC_API_KEY manquante)." }, { status: 503 });
   }
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Requête invalide." }, { status: 400 });
-  }
+  const blocked = guardAiRoute(request, "offers", HOURLY_LIMIT);
+  if (blocked) return blocked;
+
+  const read = await readJson(request, 2000);
+  if (!read.ok) return Response.json({ error: read.error }, { status: read.status });
+  const body = read.body;
   const parsed = OffersRequestSchema.safeParse(body);
   const product = parsed.success ? PRODUCTS_BY_ID[parsed.data.productId] : undefined;
   if (!product) return Response.json({ error: "Produit inconnu." }, { status: 404 });
-
-  const limit = checkRateLimit(`offers:${clientIp(request)}`, HOURLY_LIMIT);
-  if (!limit.ok) {
-    return Response.json(
-      { error: "Vous avez atteint la limite de recherches pour cette heure. Revenez un peu plus tard !" },
-      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } },
-    );
-  }
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
