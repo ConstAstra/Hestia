@@ -91,7 +91,7 @@ export function DupeCard({ dupe, onSave }: { dupe: ListedProduct; onSave?: () =>
         <div className="flex gap-2">
           <dt className="shrink-0 text-muted">Lien produit :</dt>
           <dd className="min-w-0 truncate">
-            <a href={buy} target="_blank" rel="sponsored nofollow noopener" className="underline decoration-border underline-offset-2 hover:text-accent">
+            <a href={buy} target="_blank" rel="sponsored nofollow noopener noreferrer" className="underline decoration-border underline-offset-2 hover:text-accent">
               {shortUrl}
             </a>
           </dd>
@@ -101,7 +101,7 @@ export function DupeCard({ dupe, onSave }: { dupe: ListedProduct; onSave?: () =>
       <p className="flex-1 text-sm text-muted">{dupe.whyItMatches}</p>
 
       <div className="flex flex-wrap items-center gap-2">
-        <a href={buy} target="_blank" rel="sponsored nofollow noopener" className="btn-primary py-2">
+        <a href={buy} target="_blank" rel="sponsored nofollow noopener noreferrer" className="btn-primary py-2">
           Acheter sur {host} via Hestia ↗
         </a>
         {onSave && (

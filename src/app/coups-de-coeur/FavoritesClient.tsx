@@ -26,6 +26,7 @@ import {
   useHydrated,
 } from "@/lib/store";
 import type { DecorStyle, Photo, ProductCategory } from "@/lib/types";
+import { viaHestia } from "@/lib/image-proxy";
 
 interface Entry {
   key: FavoriteKey;
@@ -389,7 +390,7 @@ export function FavoritesClient() {
                       >
                         {entry.photo ? (
                           // eslint-disable-next-line @next/next/no-img-element -- photo du CDN Pexels
-                          <img src={entry.photo.src.medium} alt={entry.title} loading="lazy" className="h-full w-full object-cover" style={{ background: entry.photo.color }} />
+                          <img src={viaHestia(entry.photo.src.medium)} alt={entry.title} loading="lazy" className="h-full w-full object-cover" style={{ background: entry.photo.color }} />
                         ) : (
                           <Visual palette={entry.palette} seed={entry.id} category={entry.category} image={entry.image} alt={entry.title} />
                         )}

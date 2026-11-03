@@ -3,6 +3,7 @@ import { DupeCard } from "@/components/DupeCard";
 import { Visual } from "@/components/Visual";
 import { formatPrice, INSPIRATIONS_BY_ID, PRODUCTS_BY_ID, STYLE_LABELS } from "@/lib/catalog";
 import type { BoardItem } from "@/lib/types";
+import { viaHestia } from "@/lib/image-proxy";
 
 /** Aperçu compact d'un élément, pour les couvertures de tableaux. */
 export function BoardItemThumb({ item }: { item: BoardItem }) {
@@ -24,7 +25,7 @@ export function BoardItemThumb({ item }: { item: BoardItem }) {
         </div>
       );
     case "photo":
-      return <img src={item.photo.src.medium} alt={item.photo.alt} className="h-full w-full object-cover" style={{ background: item.photo.color }} />;
+      return <img src={viaHestia(item.photo.src.medium)} alt={item.photo.alt} className="h-full w-full object-cover" style={{ background: item.photo.color }} />;
     case "dupe":
       return (
         <div className="flex h-full w-full flex-col justify-between overflow-hidden bg-accent-soft p-2 text-accent-strong">
@@ -89,7 +90,7 @@ export function BoardItemCard({ item }: { item: BoardItem }) {
       return (
         <figure className="overflow-hidden rounded-2xl bg-surface-muted">
           <img
-            src={item.photo.src.medium}
+            src={viaHestia(item.photo.src.medium)}
             alt={item.photo.alt}
             loading="lazy"
             className="w-full"

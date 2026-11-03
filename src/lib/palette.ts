@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Photo } from "./types";
+import { viaHestia } from "@/lib/image-proxy";
 
 /*
  * Palettes de couleurs : extraction des teintes dominantes d'une photo (dans le
@@ -95,7 +96,7 @@ export function extractPalette(photo: Photo): Promise<string[]> {
       }
     };
     image.onerror = () => resolve([photo.color]);
-    image.src = photo.src.medium;
+    image.src = viaHestia(photo.src.medium);
   }).finally(() => pending.delete(photo.id));
   pending.set(photo.id, promise);
   return promise;

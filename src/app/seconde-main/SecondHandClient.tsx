@@ -226,7 +226,7 @@ export function SecondHandClient() {
                     Chiner avec Hestia
                   </button>
                   {platformSearchLinks(find.query).map((link) => (
-                    <a key={link.name} href={link.href} target="_blank" rel="sponsored nofollow noopener" className="text-xs text-muted underline hover:text-foreground">
+                    <a key={link.name} href={link.href} target="_blank" rel="sponsored nofollow noopener noreferrer" className="text-xs text-muted underline hover:text-foreground">
                       {link.name}
                     </a>
                   ))}
@@ -245,7 +245,7 @@ export function SecondHandClient() {
               <a
                 href={platform.url}
                 target="_blank"
-                rel="noopener nofollow"
+                rel="noopener noreferrer nofollow"
                 className="flex h-full flex-col rounded-2xl border border-border p-4 transition hover:border-olive hover:bg-olive-soft/40"
               >
                 <span className="font-semibold">{platform.name} ↗</span>

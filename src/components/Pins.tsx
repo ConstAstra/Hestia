@@ -12,6 +12,7 @@ import { formatPrice, STYLE_LABELS } from "@/lib/catalog";
 import { usePhotoPalette } from "@/lib/palette";
 import { type FeedItem, itemRatio, useInfiniteScroll, usePhotoFeed } from "@/lib/feed";
 import type { NewBoardItem } from "@/lib/store";
+import { viaHestia } from "@/lib/image-proxy";
 
 export interface PinHandlers {
   onOpen: (item: FeedItem) => void;
@@ -28,7 +29,7 @@ export function PinImage({ item, large = false }: { item: FeedItem; large?: bool
     const { photo } = item;
     return (
       <img
-        src={large ? photo.src.large : photo.src.medium}
+        src={viaHestia(large ? photo.src.large : photo.src.medium)}
         alt={photo.alt}
         loading="lazy"
         decoding="async"

@@ -13,12 +13,12 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL("/creation?lien=invalide", origin), 302);
   }
   const { url, affiliated } = affiliateUrl(productUrl);
-  // Journal des clics (à brancher sur un outil d'analyse) : enseigne, produit, affiliation.
-  console.info(
-    JSON.stringify({ event: "buy_click", retailer: searchParams.get("r"), host: new URL(productUrl).hostname, affiliated, at: new Date().toISOString() }),
-  );
+  // Comptage anonyme des clics : l'enseigne et le jour, rien sur la personne
+  // (ni adresse IP, ni identifiant, ni page d'origine, ni heure précise).
+  console.info(JSON.stringify({ event: "buy_click", host: new URL(productUrl).hostname, affiliated, day: new Date().toISOString().slice(0, 10) }));
   const response = NextResponse.redirect(url, 302);
   response.headers.set("Cache-Control", "no-store");
-  response.headers.set("Referrer-Policy", "no-referrer-when-downgrade");
+  // L'enseigne ne voit pas de quelle page d'Hestia vient la visite.
+  response.headers.set("Referrer-Policy", "no-referrer");
   return response;
 }

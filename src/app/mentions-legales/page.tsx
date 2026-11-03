@@ -106,11 +106,20 @@ export default function LegalPage() {
         <p>
           <strong>Lors d&apos;une recherche.</strong> Quand vous lancez l&apos;outil de création, « Où l&apos;acheter » ou une recherche de
           seconde main, votre demande (et, pour l&apos;outil de création, les images que vous déposez) est transmise à notre
-          prestataire d&apos;intelligence artificielle, Anthropic, pour trouver les produits. Les recherches de photos passent par
-          Pexels. <ToFill>durées de conservation et garanties des prestataires</ToFill>
+          prestataire d&apos;intelligence artificielle, Anthropic, par le serveur d&apos;Hestia : Anthropic ne reçoit ni votre adresse
+          IP ni aucun identifiant vous concernant. <ToFill>durées de conservation et garanties des prestataires</ToFill>
         </p>
         <p>
-          <strong>Mesure des clics.</strong> Les clics sur « Acheter via Hestia » sont comptés de façon anonyme (enseigne et date).
+          <strong>Aucun traçage.</strong> Hestia n&apos;utilise ni cookie, ni outil de mesure d&apos;audience, ni publicité ciblée, ni
+          traceur d&apos;aucune sorte. Votre navigateur ne contacte aucun autre site que celui d&apos;Hestia : les photos du fil
+          (Pexels) et les polices de caractères sont servies par Hestia elle-même. Votre adresse IP n&apos;est jamais enregistrée :
+          pour limiter les abus, le serveur n&apos;en garde qu&apos;une empreinte anonyme, renouvelée chaque jour et effacée au
+          redémarrage, dont on ne peut pas retrouver l&apos;adresse.
+        </p>
+        <p>
+          <strong>Mesure des clics.</strong> Les clics sur « Acheter via Hestia » sont comptés sans rien sur vous : seulement
+          l&apos;enseigne et le jour. Quand vous partez vers une enseigne, elle ne voit pas de quelle page d&apos;Hestia vous venez ;
+          une fois sur son site, ce sont ses propres règles de confidentialité qui s&apos;appliquent.
         </p>
         <p>
           Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de rectification et d&apos;effacement de vos données : écrivez à

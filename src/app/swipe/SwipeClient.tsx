@@ -21,6 +21,7 @@ import { usePhotoFeed } from "@/lib/feed";
 import { type NewBoardItem, type SwipeKind, useHestia, useHydrated } from "@/lib/store";
 import { forYouQueries } from "@/lib/topics";
 import type { Inspiration, Photo, Product, ProductCategory } from "@/lib/types";
+import { viaHestia } from "@/lib/image-proxy";
 
 const SWIPE_THRESHOLD = 110;
 
@@ -295,7 +296,7 @@ function CardFace({ card }: { card: Card }) {
     return (
       <div className="relative h-full overflow-hidden rounded-[1.75rem] shadow-xl" style={{ background: photo.color }}>
         {/* eslint-disable-next-line @next/next/no-img-element -- photo du CDN Pexels */}
-        <img src={photo.src.large} alt={photo.alt} draggable={false} className="h-full w-full object-cover" />
+        <img src={viaHestia(photo.src.large)} alt={photo.alt} draggable={false} className="h-full w-full object-cover" />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-5 pt-16 text-white">
           <p className="line-clamp-2 text-lg leading-snug first-letter:uppercase">{photo.alt}</p>
           <div className="mt-2 flex items-center justify-between gap-3">

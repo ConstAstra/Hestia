@@ -1,4 +1,4 @@
-import { timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { checkRateLimit } from "./rate-limit";
 
 /*
@@ -14,7 +14,7 @@ import { checkRateLimit } from "./rate-limit";
  * l'utilise que si TRUST_PROXY_HOPS indique combien de mandataires de confiance précèdent
  * l'application (on lit alors l'adresse ajoutée par le dernier d'entre eux).
  */
-export function clientIp(request: Request): string {
+function rawClientIp(request: Request): string {
   const platform = request.headers.get("x-vercel-forwarded-for") ?? request.headers.get("x-real-ip");
   if (platform) return platform.split(",")[0].trim();
   const hops = Number(process.env.TRUST_PROXY_HOPS ?? 0);
@@ -24,6 +24,20 @@ export function clientIp(request: Request): string {
     return chain[Math.max(0, chain.length - hops)] ?? "inconnu";
   }
   return "inconnu";
+}
+
+/*
+ * Anonymisation : l'adresse IP n'est jamais conservée telle quelle. On n'en garde qu'une
+ * empreinte salée, avec un sel aléatoire tiré au démarrage et renouvelé chaque jour, gardé
+ * en mémoire seulement : impossible de retrouver l'adresse, ni de relier deux journées.
+ */
+let salt = { value: randomBytes(32), day: new Date().toISOString().slice(0, 10) };
+
+/** Empreinte anonyme du client, suffisante pour les limites de requêtes. */
+export function clientIp(request: Request): string {
+  const today = new Date().toISOString().slice(0, 10);
+  if (salt.day !== today) salt = { value: randomBytes(32), day: today };
+  return createHash("sha256").update(salt.value).update(rawClientIp(request)).digest("base64url").slice(0, 22);
 }
 
 /**

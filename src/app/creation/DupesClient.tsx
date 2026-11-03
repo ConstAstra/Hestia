@@ -17,6 +17,7 @@ import { compressImage, type CompressedImage } from "@/lib/image";
 import { DUPES_PHOTO_KEY } from "@/lib/actions";
 import { type NewBoardItem, useHestia, useHydrated } from "@/lib/store";
 import type { CreationInfo, Dupe, DupesResult, Photo } from "@/lib/types";
+import { viaHestia } from "@/lib/image-proxy";
 
 interface Picked {
   /** Image déposée par l'utilisateur, prête pour l'API. */
@@ -61,7 +62,7 @@ export function DupesClient() {
       sessionStorage.removeItem(DUPES_PHOTO_KEY);
       const photo = JSON.parse(stored) as Photo;
       // eslint-disable-next-line react-hooks/set-state-in-effect -- lecture unique du stockage de session au montage
-      setInspiration({ photo, thumb: photo.src.medium });
+      setInspiration({ photo, thumb: viaHestia(photo.src.medium) });
     } catch {
       /* stockage indisponible : l'utilisateur déposera l'image lui-même */
     }
