@@ -2,7 +2,7 @@ import type { ProductCategory } from "./types";
 import { DECOR_STYLES, STYLES_BY_ID } from "./styles";
 
 /*
- * Questionnaire « Découvrez votre style de déco » : huit questions visuelles. Chaque
+ * Questionnaire « Découvrez votre style de déco » : dix questions visuelles. Chaque
  * réponse donne des points à des styles (src/lib/styles.ts) et peut apporter une
  * pièce, une palette, une matière, la pièce à transformer ou le budget.
  */
@@ -22,6 +22,8 @@ export interface QuizOption {
   piece?: string;
   room?: string;
   budget?: number;
+  /** Couleur de mur choisie : elle rejoint la palette du résultat. */
+  wall?: string;
 }
 
 export interface QuizQuestion {
@@ -70,6 +72,19 @@ export const QUIZ: QuizQuestion[] = [
     ],
   },
   {
+    id: "wall", title: "La couleur que vous oseriez sur un mur ?", subtitle: "Un seul pan suffit à changer une pièce.", kind: "choice",
+    options: [
+      { id: "sauge", label: "Vert sauge", hint: "Apaisant et naturel", styles: { kinfolk: 2, campagne: 2, scandinave: 1 }, palette: ["#9AAB8C"], wall: "#9AAB8C", piece: "Un mur vert sauge" },
+      { id: "terracotta", label: "Terracotta", hint: "Le soleil du Sud", styles: { mediterraneen: 3, boheme: 2 }, palette: ["#C0603D"], wall: "#C0603D", piece: "Un pan de mur terracotta" },
+      { id: "bleu-nuit", label: "Bleu nuit", hint: "Profond et chic", styles: { "art-deco": 2, "classique-contemporain": 2, haussmannien: 1 }, palette: ["#1F2F45"], wall: "#1F2F45", piece: "Un mur bleu nuit" },
+      { id: "blush", label: "Rose blush", hint: "Tendre et lumineux", styles: { pastel: 3, "campagne-anglaise": 1 }, palette: ["#F2D3CB"], wall: "#F2D3CB", piece: "Un mur rose blush" },
+      { id: "moutarde", label: "Jaune moutarde", hint: "Rétro et solaire", styles: { "mid-century": 2, vintage: 2, maximaliste: 1 }, palette: ["#C9A12E"], wall: "#C9A12E", piece: "Un mur jaune moutarde" },
+      { id: "fuchsia", label: "Rose fuchsia", hint: "Pour les cœurs audacieux", styles: { dopamine: 3, maximaliste: 1 }, palette: ["#E0218A"], wall: "#E0218A", piece: "Un mur rose fuchsia" },
+      { id: "blanc", label: "Blanc cassé, rien d'autre", hint: "La lumière avant tout", styles: { "minimalisme-chaleureux": 2, japandi: 1, moderne: 1, "bord-de-mer": 1 }, palette: ["#F4EFE6"], wall: "#F4EFE6" },
+      { id: "anthracite", label: "Anthracite", hint: "Graphique et enveloppant", styles: { industriel: 2, moderne: 2 }, palette: ["#3A3A3A"], wall: "#3A3A3A", piece: "Un mur anthracite" },
+    ],
+  },
+  {
     id: "sofa", title: "Le canapé de vos rêves ?", kind: "visual",
     options: [
       { id: "bouclette", label: "Arrondi en bouclette", styles: { contemporain: 3, pastel: 1 }, palette: ["#F4EFE6", "#E2D3B8", "#CBBFAE"], category: "canape", piece: "Un canapé arrondi en bouclette" },
@@ -78,6 +93,17 @@ export const QUIZ: QuizQuestion[] = [
       { id: "velours", label: "Velours vert profond", styles: { "art-deco": 3, maximaliste: 2, "classique-contemporain": 1 }, palette: ["#2F5446", "#3F6B5A", "#C9A12E"], category: "canape", piece: "Un canapé en velours vert profond" },
       { id: "banquette", label: "Banquette et coussins", styles: { boheme: 3, mediterraneen: 2 }, palette: ["#C0603D", "#D9A55B", "#F4EFE6"], category: "canape", piece: "Une banquette maçonnée garnie de coussins" },
       { id: "modulable", label: "Modulable et graphique", styles: { moderne: 3, scandinave: 1, "minimalisme-chaleureux": 1 }, palette: ["#C9C9C4", "#9C978D", "#1C1C1C"], category: "canape", piece: "Un canapé modulable aux lignes nettes" },
+    ],
+  },
+  {
+    id: "table", title: "La table où vous dîneriez tous les soirs ?", kind: "visual",
+    options: [
+      { id: "ferme", label: "Table de ferme en bois massif", styles: { campagne: 3, "campagne-anglaise": 1, kinfolk: 1 }, palette: ["#A08466", "#E2D3B8", "#5A3A28"], category: "table", piece: "Une grande table de ferme en bois massif" },
+      { id: "travertin", label: "Ronde en travertin", styles: { contemporain: 2, mediterraneen: 2, "wabi-sabi": 1 }, palette: ["#E5D4B8", "#CBBFAE", "#F4EFE6"], category: "table", piece: "Une table ronde en travertin" },
+      { id: "tulipe", label: "Tulipe blanche", styles: { moderne: 2, "mid-century": 1, pastel: 1, dopamine: 1 }, palette: ["#F4EFE6", "#C9C9C4", "#E0218A"], category: "table", piece: "Une table tulipe blanche" },
+      { id: "noyer", label: "Noyer et pieds compas", styles: { "mid-century": 3, vintage: 2 }, palette: ["#6B4A32", "#C9A12E", "#F4EFE6"], category: "table", piece: "Une table en noyer à pieds compas" },
+      { id: "marbre", label: "Marbre et laiton", styles: { "art-deco": 2, haussmannien: 2, "classique-contemporain": 1 }, palette: ["#F7F5F1", "#C9A12E", "#2F5446"], category: "table", piece: "Une table en marbre aux pieds en laiton" },
+      { id: "atelier", label: "Métal noir et bois brut", styles: { industriel: 3, moderne: 1 }, palette: ["#3A3A3A", "#A08466", "#C9C9C4"], category: "table", piece: "Une table d'atelier en métal noir et bois brut" },
     ],
   },
   {
@@ -147,7 +173,8 @@ export function computeQuizResult(answers: Record<string, string>): QuizResult {
   const total = chosen.reduce((sum, o) => sum + Math.max(0, ...Object.values(o.styles)), 0) || 1;
   const style = STYLES_BY_ID[first[0]];
   const paletteOption = chosen.find((o) => QUIZ.find((q) => q.id === "palette")?.options.includes(o));
-  const palette = [...new Set([...(paletteOption?.palette.slice(0, 3) ?? []), ...style.palette])].slice(0, 5);
+  const wall = chosen.find((o) => o.wall)?.wall;
+  const palette = [...new Set([...(wall ? [wall] : []), ...(paletteOption?.palette.slice(0, 3) ?? []), ...style.palette])].slice(0, 5);
   const pieces = chosen.flatMap((o) => (o.piece ? [o.piece] : []));
   pieces.push(...style.signatures.slice(0, 4 - pieces.length));
   const materials = [...new Set([...chosen.flatMap((o) => (o.material ? [o.material] : [])), ...style.materials])].slice(0, 4);

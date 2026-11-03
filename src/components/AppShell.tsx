@@ -7,15 +7,16 @@ import { LogoStacked } from "@/components/LogoEmblem";
 import { IconBoard, IconCards, IconHeart, IconHome, IconSpark, IconTrend, IconVintage, Logo } from "@/components/Ornaments";
 import { STORAGE_FULL_EVENT, useRehydrateOnMount } from "@/lib/store";
 
-// Chaque onglet a sa couleur ; `short` est le libellé de la barre mobile.
+// Chaque onglet a sa couleur vive, façon « dopamine » : pâle au repos, franche sur l'onglet actif ;
+// `short` est le libellé de la barre mobile.
 const LINKS = [
-  { href: "/", label: "Accueil", short: "Accueil", Icon: IconHome, color: "var(--blush)", soft: "var(--blush-soft)" },
-  { href: "/tendances", label: "Tendances", short: "Tendances", Icon: IconTrend, color: "var(--olive)", soft: "var(--olive-soft)" },
-  { href: "/swipe", label: "Swipe", short: "Swipe", Icon: IconCards, color: "var(--gold)", soft: "var(--gold-soft)" },
-  { href: "/creation", label: "Outil de création", short: "Création", Icon: IconSpark, color: "var(--accent)", soft: "var(--accent-soft)" },
-  { href: "/seconde-main", label: "Seconde main", short: "Chiner", Icon: IconVintage, color: "var(--olive)", soft: "var(--olive-soft)" },
-  { href: "/coups-de-coeur", label: "Coups de cœur", short: "Favoris", Icon: IconHeart, color: "var(--like)", soft: "var(--accent-soft)" },
-  { href: "/tableaux", label: "Tableaux", short: "Tableaux", Icon: IconBoard, color: "var(--blush)", soft: "var(--blush-soft)" },
+  { href: "/", label: "Accueil", short: "Accueil", Icon: IconHome, color: "#FF8FC7", soft: "#FFC2DF" },
+  { href: "/tendances", label: "Tendances", short: "Tendances", Icon: IconTrend, color: "#FFC72C", soft: "#FFE58A" },
+  { href: "/swipe", label: "Swipe", short: "Swipe", Icon: IconCards, color: "#1FB5AC", soft: "#9FE6DF" },
+  { href: "/creation", label: "Outil de création", short: "Création", Icon: IconSpark, color: "#FF7A1A", soft: "#FFC197" },
+  { href: "/seconde-main", label: "Seconde main", short: "Chiner", Icon: IconVintage, color: "#6CC24A", soft: "#BDE8A7" },
+  { href: "/coups-de-coeur", label: "Coups de cœur", short: "Favoris", Icon: IconHeart, color: "#F0412A", soft: "#FFA99D" },
+  { href: "/tableaux", label: "Tableaux", short: "Tableaux", Icon: IconBoard, color: "#8A3FFC", soft: "#D2B6FF" },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -101,7 +102,7 @@ function NavLinks({ variant, pathname }: { variant: Variant; pathname: string })
         }`}
         style={blobStyle}
       >
-        <Icon className="h-9 w-9 text-foreground" />
+        <Icon className={`h-9 w-9 text-foreground ${active ? "nav-pop" : ""}`} />
         <span className="hidden xl:inline">{label}</span>
         <span className="xl:hidden">{short}</span>
       </Link>
@@ -112,7 +113,7 @@ function NavLinks({ variant, pathname }: { variant: Variant; pathname: string })
         className={`hover-wiggle flex min-w-0 flex-col items-center gap-0.5 py-1.5 text-[10px] font-bold ${active ? "text-foreground" : "text-muted"}`}
         style={blobStyle}
       >
-        <Icon className="h-8 w-8 text-foreground" />
+        <Icon className={`h-8 w-8 text-foreground ${active ? "nav-pop" : ""}`} />
         {short}
       </Link>
     );

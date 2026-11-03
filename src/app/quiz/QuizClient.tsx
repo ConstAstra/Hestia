@@ -170,7 +170,7 @@ export function QuizClient() {
             </span>
           </h1>
           <p className="max-w-xl text-lg opacity-95">
-            Huit questions sur vos envies, un canapé, une lumière, une palette… et Hestia vous révèle votre style, vos couleurs, les
+            Dix questions sur vos envies, un canapé, une table, une lumière, une couleur de mur… et Hestia vous révèle votre style, vos couleurs, les
             pièces qui vous ressemblent, et ce que tout cela dit de votre personnalité.
           </p>
           <button onClick={start} className="btn bg-white px-7 py-3 text-base text-[#a8442a] shadow-xl hover:-translate-y-0.5">
@@ -229,7 +229,10 @@ function Result({ result, onRestart }: { result: QuizResult; onRestart: () => vo
           {second && <p className="text-sm opacity-90">Avec une touche de {second.name.toLowerCase()}.</p>}
           <div className="flex flex-wrap gap-2 pt-3">
             <button onClick={openShare} disabled={busy} className="btn bg-white px-6 py-3 text-[#a8442a] shadow-xl hover:-translate-y-0.5">
-              {busy ? "Préparation…" : "Partager mes résultats ↗"}
+              <span className="grid h-6 w-5 place-items-center rounded-[5px] border-2 border-current" aria-hidden>
+                <span className="h-2 w-2 rounded-full bg-current" />
+              </span>
+              {busy ? "Préparation…" : "Partager en story"}
             </button>
             <Link href="/creation?quiz=1" className="btn border-2 border-white/70 px-6 py-3 text-white hover:bg-white/15">
               Créer ce projet ✦
@@ -310,7 +313,7 @@ function Result({ result, onRestart }: { result: QuizResult; onRestart: () => vo
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element -- image générée localement */}
             <img src={preview.url} alt={`Story : mon style déco ${style.name}`} className="mx-auto max-h-[60vh] rounded-2xl shadow-lg" />
-            <button onClick={share} className="btn-primary w-full py-3">
+            <button onClick={share} className="btn w-full bg-gradient-warm py-3 text-base text-white shadow-[0_10px_24px_-10px_#a8442a] hover:-translate-y-0.5">
               Partager en story ↗
             </button>
             <p className="text-center text-xs text-muted">

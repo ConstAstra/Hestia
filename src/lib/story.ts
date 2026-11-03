@@ -69,12 +69,19 @@ export async function renderStory(result: QuizResult): Promise<Blob> {
   ctx.fillText("Mon style de déco", 90, 270);
 
   // Style dominant
-  ctx.font = "800 128px Poppins";
+  // Le nom du style : on réduit la taille jusqu'à ce que chaque mot tienne dans la largeur.
+  let size = 128;
+  const longestWord = () => Math.max(...style.name.split(" ").map((word) => ctx.measureText(word).width));
+  ctx.font = `800 ${size}px Poppins`;
+  while (size > 72 && longestWord() > W - 180) {
+    size -= 4;
+    ctx.font = `800 ${size}px Poppins`;
+  }
   const nameLines = wrap(ctx, style.name, W - 180);
   let y = 410;
   for (const line of nameLines) {
     ctx.fillText(line, 90, y);
-    y += 132;
+    y += size + 4;
   }
   const personality = PERSONALITIES[result.styleId];
   if (personality) {

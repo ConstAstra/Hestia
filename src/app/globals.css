@@ -243,11 +243,22 @@ body {
   animation: flame-glow 3s ease-in-out infinite;
 }
 
+/* Onglet actif : petit rebond à l'arrivée sur la page. */
+@keyframes nav-pop {
+  0% { transform: scale(0.8) rotate(-8deg); }
+  60% { transform: scale(1.15) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.nav-pop {
+  animation: nav-pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1.4);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hover-wiggle:hover > svg,
   .pop,
   .rise,
-  .shimmer {
+  .shimmer,
+  .nav-pop {
     animation: none;
   }
   /* Mouvement réduit demandé : la flamme vacille encore, mais très doucement. */
